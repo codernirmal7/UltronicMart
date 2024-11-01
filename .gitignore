@@ -1,0 +1,27 @@
+# Ignore node_modules in both backend and frontend
+backend/node_modules
+frontend/node_modules
+
+# Ignore build directories
+backend/dist
+frontend/build
+
+# Ignore environment files
+backend/.env
+frontend/.env
+
+# TypeScript compiled files
+*.js
+*.js.map
+
+# Build output
+dist/
+build/
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
