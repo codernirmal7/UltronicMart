@@ -3,6 +3,7 @@ import UserModel from "../models/user.model";
 import { sendVerificationEmailCode, sendWelcomeBackEmail } from "../nodemailer/email.nodemailer";
 import generateVerificationCode from "../utils/generateVerificationCode.utils";
 import bcrypt from "bcrypt";
+import generateAccessToken from "../utils/generateAccessToken.utils";
 
 const signUp = async (req: Request, res: Response): Promise<void> => {
   const { email, password, confirmPassword } = req.body;
@@ -198,9 +199,14 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
 
     sendWelcomeBackEmail(user.email , ipAddress , userAgent , user.email.split("@")[0])
 
+    res.cookie("token", generateAccessToken(user._id , user.email , user.lastTimeSignIn , user.createdAt), {
+      httpOnly: true,
+      maxAge: Date.now() + 7 * 24 * 60 * 60 * 1000, //7days
+    });
+
     res
     .status(200)
-    .json({ message: "Login successful. Redirecting to the home page" });
+    .json({ message: "Sign In successful. Redirecting to the home page" });
 
   } catch (error) {
     res.status(400).json({ message: error });

@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 import TUser from "../utils/types/TUser.types";
 import bcrypt from "bcrypt";
+import "dotenv/config"
 
 interface IUser extends TUser, Document {}
 
@@ -47,6 +48,9 @@ UserSchema.pre<IUser>("save", async function (next) {
     console.log(error);
   }
 });
+
+
+
 
 // Create the model
 const UserModel = mongoose.model<IUser>("User", UserSchema);
