@@ -101,14 +101,14 @@ const resendVerificationCode = async (
   const email = req.query.email;
 
   if (!email) {
-    res.status(200).json({ message: 'Please enter your email address.' });
+    res.status(400).json({ message: 'Please enter your email address.' });
     return;
   }
   try {
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      res.status(200).json({ message: "Invalid user." });
+      res.status(400).json({ message: "Invalid user." });
       return;
     }
 
