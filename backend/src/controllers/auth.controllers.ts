@@ -1,15 +1,22 @@
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
-import { sendVerificationEmailCode, sendWelcomeBackEmail } from "../nodemailer/email.nodemailer";
+import {
+  sendResetPasswordSuccessfulEmail,
+  sendResetPasswordVerificationCode,
+  sendVerificationEmailCode,
+  sendWelcomeBackEmail,
+} from "../nodemailer/email.nodemailer";
 import generateVerificationCode from "../utils/generateVerificationCode.utils";
 import bcrypt from "bcrypt";
 import generateAccessToken from "../utils/generateAccessToken.utils";
 
+
+//sign-up
 const signUp = async (req: Request, res: Response): Promise<void> => {
   const { email, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
-    res.status(400).json({ message: "Passwords do not match." });
+    res.status(400).json({ message: "Confirm password do not match with the password." });
     return;
   }
 
@@ -96,6 +103,8 @@ const verifyEmail = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+
+//resendVerificationCode
 const resendVerificationCode = async (
   req: Request,
   res: Response
@@ -135,6 +144,9 @@ const resendVerificationCode = async (
   }
 };
 
+
+//sign-in
+
 const signIn = async (req: Request, res: Response): Promise<void> => {
   const { email, password, ipAddress, userAgent } = req.body;
 
@@ -169,12 +181,10 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
     }
 
     if (user.accountDisabledAt) {
-      res
-        .status(400)
-        .json({
-          message:
-            "There is unusual activity on your account. It has been disabled",
-        });
+      res.status(400).json({
+        message:
+          "There is unusual activity on your account. It has been disabled",
+      });
       return;
     }
 
@@ -188,29 +198,137 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
       // Send verification email
       await sendVerificationEmailCode(user.email, verificationToken);
 
-      res
-        .status(400)
-        .json({ message: "Please verify your email before logging in. Verification code has been sent." });
+      res.status(400).json({
+        message:
+          "Please verify your email before logging in. Verification code has been sent.",
+      });
       return;
     }
 
-    user.lastTimeSignIn = new Date()
-    user.save()
+    user.lastTimeSignIn = new Date();
+    user.save();
 
-    sendWelcomeBackEmail(user.email , ipAddress , userAgent , user.email.split("@")[0])
+    sendWelcomeBackEmail(
+      user.email,
+      ipAddress,
+      userAgent,
+      user.email.split("@")[0]
+    );
 
-    res.cookie("token", generateAccessToken(user._id , user.email , user.lastTimeSignIn , user.createdAt), {
-      httpOnly: true,
-      maxAge: Date.now() + 7 * 24 * 60 * 60 * 1000, //7days
-    });
+    res.cookie(
+      "token",
+      generateAccessToken(
+        user._id,
+        user.email,
+        user.lastTimeSignIn,
+        user.createdAt
+      ),
+      {
+        httpOnly: true,
+        maxAge: Date.now() + 7 * 24 * 60 * 60 * 1000, //7days
+      }
+    );
 
     res
-    .status(200)
-    .json({ message: "Sign In successful. Redirecting to the home page" });
-
+      .status(200)
+      .json({ message: "Sign In successful. Redirecting to the home page" });
   } catch (error) {
-    res.status(400).json({ message: error });
+    res.status(500).json({ message: error });
   }
 };
 
-export { signUp, verifyEmail, resendVerificationCode, signIn };
+//forget-password
+const forgetPassword = async (req: Request, res: Response): Promise<void> => {
+  const { email } = req.body;
+
+  //validation
+  if (!email) {
+    res.status(400).json({ message: "Please enter your email address." });
+    return;
+  }
+
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      res.status(400).json({ message: "Invalid user." });
+      return;
+    }
+
+    if (user.accountDisabledAt) {
+      res.status(400).json({
+        message:
+          "There is unusual activity on your account. It has been disabled",
+      });
+      return;
+    }
+
+    const resetPasswordVerificationCode = generateVerificationCode(25);
+
+    user.resetPasswordToken = resetPasswordVerificationCode;
+    user.resetPasswordTokenExpiresAt = new Date(Date.now() + 3600000); //1 hours
+    await user.save();
+
+    sendResetPasswordVerificationCode(
+      email,
+      resetPasswordVerificationCode,
+      user.email.split("@")[0]
+    );
+
+    res.status(200).json({ message: "Email sent successfully Go and reset the password." });
+
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+
+//reset-password
+const resetPassword = async (req: Request, res: Response): Promise<void> => {
+  const { password, confirmPassword } = req.body;
+  const resetPasswordToken = req.params.token;
+
+  //validation
+  if(!password){
+    res.status(400).json({ message: "Please enter your new password" });
+    return;
+  }
+  if(password.length < 8 || password.length > 100){
+    res.status(400).json({ message: "Password length must be greater then 8 and less than 100" });
+    return;
+  }
+
+  if(confirmPassword !== password){
+    res.status(400).json({ message: "Confirm password do not match with the password." });
+    return;
+  }
+
+  try {
+    const user = await UserModel.findOne({
+      resetPasswordToken: resetPasswordToken.split(":")[1],
+      resetPasswordTokenExpiresAt: { $gt: Date.now() },
+    });
+
+    if(!user){
+      res.status(400).json({ message: "Invalid or expired link." });
+      return;
+    }
+
+    user.resetPasswordToken = null;
+    user.resetPasswordTokenExpiresAt = null;
+
+    user.password = password;
+
+    await user.save()
+
+    sendResetPasswordSuccessfulEmail(user.email,  user.email.split("@")[0]);
+
+    res.status(200).json({ message: "Password reset successful." });
+
+
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+
+};
+
+export { signUp, verifyEmail, resendVerificationCode, signIn, forgetPassword , resetPassword };

@@ -1,5 +1,5 @@
 import express, { Router } from "express"
-import { resendVerificationCode, signIn, signUp, verifyEmail } from "../controllers/auth.controllers";
+import { forgetPassword, resendVerificationCode, resetPassword, signIn, signUp, verifyEmail } from "../controllers/auth.controllers";
 
 const authRouter:Router = Router()
 
@@ -10,5 +10,7 @@ authRouter.route("/resend-verification").post(resendVerificationCode);
 
 //sign in parts routes
 authRouter.route("/sign-in").post(signIn);
+authRouter.route("/forget-password").post(forgetPassword);
+authRouter.route("/reset-password/:token").post(resetPassword);
 
 export default authRouter

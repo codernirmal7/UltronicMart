@@ -100,7 +100,7 @@ const EMAIL_VERIFICATION_TEMPLATE = (
 `;
 };
 
-const WELCOME_EMAIL_TEMPLATE = (FRONTSIDE_URL : string) => {
+const WELCOME_EMAIL_TEMPLATE = (FRONTSIDE_URL: string) => {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -188,8 +188,14 @@ const WELCOME_EMAIL_TEMPLATE = (FRONTSIDE_URL : string) => {
 `;
 };
 
-const WELCOME_BACK_EMAIL_TEMPLATE = (name : string , ipAddress:string , userAgent : string , websiteLink : string , contactSupport : string)=>{
-   return `
+const WELCOME_BACK_EMAIL_TEMPLATE = (
+  name: string,
+  ipAddress: string,
+  userAgent: string,
+  websiteLink: string,
+  contactSupport: string
+) => {
+  return `
      <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -305,9 +311,290 @@ const WELCOME_BACK_EMAIL_TEMPLATE = (name : string , ipAddress:string , userAgen
     </div>
 </body>
 </html>
+   `;
+};
 
+const RESET_PASSWORD_TEMPLATE = (resetPasswordLink: string, name: string) => {
+  return `
+           <!DOCTYPE html>
+<html lang="en">
 
-   `
-}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f7;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: none;
+            width: 100% !important;
+            height: 100% !important;
+        }
 
-export { EMAIL_VERIFICATION_TEMPLATE, WELCOME_EMAIL_TEMPLATE, WELCOME_BACK_EMAIL_TEMPLATE };
+        .email-wrapper {
+            width: 100%;
+            background-color: #f4f4f7;
+            padding: 20px;
+        }
+
+        .email-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .email-header {
+            background-color: #1F51FF;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .email-header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .email-body {
+            padding: 30px;
+        }
+
+        .email-body h2 {
+            font-size: 20px;
+            margin: 0 0 20px;
+            color: #333333;
+        }
+
+        .email-body p {
+            margin: 0 0 20px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #666666;
+        }
+
+        .email-body a.button {
+            display: inline-block;
+            background-color: #1F51FF;
+            color: #ffffff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .email-footer {
+            background-color: #f4f4f7;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666666;
+        }
+
+        .email-footer p {
+            margin: 0;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-body {
+                padding: 20px;
+            }
+
+            .email-header h1 {
+                font-size: 20px;
+            }
+
+            .email-body h2 {
+                font-size: 18px;
+            }
+
+            .email-body p {
+                font-size: 14px;
+            }
+
+            .email-body a.button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-wrapper">
+        <div class="email-content">
+            <div class="email-header">
+                <h1>Password Reset Request</h1>
+            </div>
+            <div class="email-body">
+                <h2>Hello ${name},</h2>
+                <p>We received a request to reset your password. Click the button below to reset it.</p>
+                <p>If you did not request a password reset, please ignore this email or contact support if you have questions.</p>
+                <p>This password reset is only valid for the next 1 hours.</p>
+                <a href="${resetPasswordLink}" class="button">Reset Password</a>
+            </div>
+            <div class="email-footer">
+                <p>If you’re having trouble clicking the "Reset Password" button, copy and paste the URL below into your web browser:</p>
+                <p><a href="${resetPasswordLink}" style="color: #4a90e2;">${resetPasswordLink}</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+        `;
+};
+
+const RESET_PASSWORD_SUCCESS_TEMPLATE = (name: string, signInUrl: string) => {
+  return `
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f7;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: none;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .email-wrapper {
+        width: 100%;
+        background-color: #f4f4f7;
+        padding: 20px;
+    }
+
+    .email-content {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .email-header {
+        background-color: #1F51FF;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .email-header h1 {
+        color: #ffffff;
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .email-body {
+        padding: 30px;
+    }
+
+    .email-body h2 {
+        font-size: 20px;
+        margin: 0 0 20px;
+        color: #333333;
+    }
+
+    .email-body p {
+        margin: 0 0 20px;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #666666;
+    }
+
+    .email-body a.button {
+        display: inline-block;
+        background-color: #1F51FF;
+        color: #ffffff;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .email-footer {
+        background-color: #f4f4f7;
+        padding: 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #666666;
+    }
+
+    .email-footer p {
+        margin: 0;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .email-body {
+            padding: 20px;
+        }
+
+        .email-header h1 {
+            font-size: 20px;
+        }
+
+        .email-body h2 {
+            font-size: 18px;
+        }
+
+        .email-body p {
+            font-size: 14px;
+        }
+
+        .email-body a.button {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+    }
+</style>
+</head>
+
+<body>
+<div class="email-wrapper">
+    <div class="email-content">
+        <div class="email-header">
+            <h1>Password Reset Successful</h1>
+        </div>
+        <div class="email-body">
+            <h2>Hello ${name},</h2>
+            <p>Your password has been successfully reset. You can now sign in using your new password.</p>
+            <p>If you did not make this change, please contact our support team immediately.</p>
+            <a href="${signInUrl}" class="button">Sign In Now</a>
+        </div>
+        <div class="email-footer">
+            <p>If you’re having trouble clicking the "Sign in Now" button, copy and paste the URL below into your web browser:</p>
+            <p><a href="${signInUrl}" style="color: #4a90e2;">${signInUrl}</a></p>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
+
+    `;
+};
+
+export {
+  EMAIL_VERIFICATION_TEMPLATE,
+  WELCOME_EMAIL_TEMPLATE,
+  WELCOME_BACK_EMAIL_TEMPLATE,
+  RESET_PASSWORD_TEMPLATE,
+  RESET_PASSWORD_SUCCESS_TEMPLATE,
+};
