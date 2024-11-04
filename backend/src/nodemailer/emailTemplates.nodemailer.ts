@@ -188,4 +188,126 @@ const WELCOME_EMAIL_TEMPLATE = (FRONTSIDE_URL : string) => {
 `;
 };
 
-export { EMAIL_VERIFICATION_TEMPLATE, WELCOME_EMAIL_TEMPLATE };
+const WELCOME_BACK_EMAIL_TEMPLATE = (name : string , ipAddress:string , userAgent : string , websiteLink : string , contactSupport : string)=>{
+   return `
+     <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333333;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dddddd;
+        }
+        .email-header {
+            background-color: #1F51FF;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .email-body {
+            padding: 20px;
+            text-align: center;
+        }
+        .email-body h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #007BFF;
+        }
+        .email-body p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555555;
+            margin-top: 10px;
+        }
+        .email-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+            font-size: 14px;
+            color: #333333;
+        }
+        .email-info strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #007BFF;
+        }
+        .email-footer {
+            background-color: #f4f4f4;
+            color: #888888;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+        .email-footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            .email-header h1, .email-body h2 {
+                font-size: 18px;
+            }
+            .email-body p {
+                font-size: 14px;
+            }
+            .email-info {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Email Header -->
+        <div class="email-header">
+            <h1>Successful Login Notification</h1>
+        </div>
+
+        <!-- Email Body -->
+        <div class="email-body">
+            <h2>Hello ${name},</h2>
+            <p>We noticed a successful login to your account. Here are the details:</p>
+            
+            <!-- User Agent and IP Address Information -->
+            <div class="email-info">
+                <strong>Login Device Information:</strong>
+                <p>User Agent: <em>${userAgent}</em></p>
+                <p>IP Address: <em>${ipAddress}</em></p>
+            </div>
+
+            <p>If this was you, no further action is needed. If you didn't log in, please reset your password and secure your account immediately.</p>
+        </div>
+
+        <!-- Email Footer -->
+        <div class="email-footer">
+            <p>Stay secure, <br>Ultronic Mart</p>
+            <p><a href="${websiteLink}">Visit our website</a> | <a href="${contactSupport}">Contact support</a></p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+   `
+}
+
+export { EMAIL_VERIFICATION_TEMPLATE, WELCOME_EMAIL_TEMPLATE, WELCOME_BACK_EMAIL_TEMPLATE };

@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
-import { sendVerificationEmailCode } from "../nodemailer/email.nodemailer";
+import { sendVerificationEmailCode, sendWelcomeBackEmail } from "../nodemailer/email.nodemailer";
 import generateVerificationCode from "../utils/generateVerificationCode.utils";
+import bcrypt from "bcrypt";
 
 const signUp = async (req: Request, res: Response): Promise<void> => {
   const { email, password, confirmPassword } = req.body;
@@ -101,7 +102,7 @@ const resendVerificationCode = async (
   const email = req.query.email;
 
   if (!email) {
-    res.status(400).json({ message: 'Please enter your email address.' });
+    res.status(400).json({ message: "Please enter your email address." });
     return;
   }
   try {
@@ -122,9 +123,8 @@ const resendVerificationCode = async (
     const verificationCode = generateVerificationCode(6);
 
     user.verificationToken = verificationCode;
-    user.verificationTokenExpiresAt = new Date(Date.now() + 3600000), //1 hours
-    
-    await user.save();
+    (user.verificationTokenExpiresAt = new Date(Date.now() + 3600000)), //1 hours
+      await user.save();
 
     await sendVerificationEmailCode(email.toString(), verificationCode);
 
@@ -134,4 +134,77 @@ const resendVerificationCode = async (
   }
 };
 
-export { signUp, verifyEmail, resendVerificationCode };
+const signIn = async (req: Request, res: Response): Promise<void> => {
+  const { email, password, ipAddress, userAgent } = req.body;
+
+  //validation
+  if (!email) {
+    res.status(400).json({ message: "Please enter your email address." });
+    return;
+  }
+
+  if (!password) {
+    res.status(400).json({ message: "Please enter your password." });
+    return;
+  }
+
+  if (!ipAddress || !userAgent) {
+    res.status(400).json({ message: "something is missing." });
+    return;
+  }
+
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      res.status(400).json({ message: "Invalid user." });
+      return;
+    }
+
+    const comparePassword = await bcrypt.compare(password, user.password);
+
+    if (!comparePassword) {
+      res.status(400).json({ message: "Email or password is invalid." });
+      return;
+    }
+
+    if (user.accountDisabledAt) {
+      res
+        .status(400)
+        .json({
+          message:
+            "There is unusual activity on your account. It has been disabled",
+        });
+      return;
+    }
+
+    if (!user.emailVerifiedAt) {
+      // Generate a verification token
+      const verificationToken = generateVerificationCode(6);
+      user.verificationToken = verificationToken;
+      user.verificationTokenExpiresAt = new Date(Date.now() + 3600000); // 1 hour expiration
+      await user.save();
+
+      // Send verification email
+      await sendVerificationEmailCode(user.email, verificationToken);
+
+      res
+        .status(400)
+        .json({ message: "Please verify your email before logging in. Verification code has been sent." });
+      return;
+    }
+
+    user.lastTimeSignIn = new Date()
+    user.save()
+
+    sendWelcomeBackEmail(user.email , ipAddress , userAgent , user.email.split("@")[0])
+
+    res
+    .status(200)
+    .json({ message: "Login successful. Redirecting to the home page" });
+
+  } catch (error) {
+    res.status(400).json({ message: error });
+  }
+};
+
+export { signUp, verifyEmail, resendVerificationCode, signIn };

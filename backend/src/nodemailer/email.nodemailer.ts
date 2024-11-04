@@ -1,4 +1,4 @@
-import { EMAIL_VERIFICATION_TEMPLATE, WELCOME_EMAIL_TEMPLATE } from "./emailTemplates.nodemailer";
+import { EMAIL_VERIFICATION_TEMPLATE, WELCOME_BACK_EMAIL_TEMPLATE, WELCOME_EMAIL_TEMPLATE } from "./emailTemplates.nodemailer";
 import { transporter } from "./nodemailer.config";
 import "dotenv/config"
 
@@ -41,4 +41,18 @@ const sendWelcomeEmail = async (email:string) =>  {
     }
 };
 
-export {sendVerificationEmailCode , sendWelcomeEmail}
+const sendWelcomeBackEmail = async (email:string, ipAddress:string , userAgent : string , name : string) =>  {
+  const mailOptions = {
+    from: sender,
+    to: email,
+    subject: "Sign In Successful",
+    html: WELCOME_BACK_EMAIL_TEMPLATE(name , ipAddress , userAgent , `${process.env.FRONTSIDE_URL}` , `${process.env.FRONTSIDE_URL}/contact`),
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    throw new Error(`An error occured : ${error}`)
+  }
+};
+
+export {sendVerificationEmailCode , sendWelcomeEmail , sendWelcomeBackEmail}
