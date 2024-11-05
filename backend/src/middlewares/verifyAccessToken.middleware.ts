@@ -3,7 +3,7 @@ import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 
 const verifyToken = async (req: Request, res: Response, next : NextFunction) => {
-  const token = req.cookies.token;
+  const token = req.cookies.accessToken;
   const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY as string;
 
   //validation

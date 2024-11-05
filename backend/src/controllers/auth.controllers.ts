@@ -216,7 +216,7 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
     );
 
     res.cookie(
-      "token",
+      "accessToken",
       generateAccessToken(
         user._id,
         user.email,
