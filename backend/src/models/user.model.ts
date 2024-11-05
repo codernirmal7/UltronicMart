@@ -23,6 +23,13 @@ const UserSchema: Schema = new Schema(
       type: String,
       required: [true, "Please enter a confirm password"],
     },
+    purchaseHistory: [
+      {
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+        quantity: { type: Number, required: true },
+        purchaseDate: { type: Date, default: Date.now },
+      },
+    ],
     emailVerifiedAt: { type: Date, default: null },
     lastTimeSignIn: { type: Date , default : null },
     accountDisabledAt: { type: Date, default: null },
@@ -48,8 +55,6 @@ UserSchema.pre<IUser>("save", async function (next) {
     console.log(error);
   }
 });
-
-
 
 
 // Create the model
