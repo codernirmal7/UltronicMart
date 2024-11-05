@@ -26,7 +26,7 @@ const ProductSchema: Schema = new mongoose.Schema<IProduct>(
           ref: "User",
           required: true,
         },
-        username: { type: String, required: true },
+        email: { type: String, required: true },
         rating: { type: Number, required: true },
         comment: { type: String },
         date: { type: Date, default: Date.now },
