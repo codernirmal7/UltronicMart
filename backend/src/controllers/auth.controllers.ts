@@ -343,6 +343,20 @@ const signOut = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+//user-data
+const userData = async (req : Request, res : Response): Promise<void> => {
+  try {
+    const userData = req.userData;
+    if (!userData) {
+       res.status(404).json({ message: 'User data not found' });
+       return;
+    }
+    res.status(200).json({ message: userData });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
 export {
   signUp,
   verifyEmail,
@@ -351,4 +365,5 @@ export {
   forgetPassword,
   resetPassword,
   signOut,
+  userData
 };

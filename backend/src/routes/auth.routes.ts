@@ -7,7 +7,9 @@ import {
   signOut,
   signUp,
   verifyEmail,
+  userData
 } from "../controllers/auth.controllers";
+import verifyToken from "../middlewares/verifyAccessToken.middleware";
 
 const authRouter: Router = Router();
 
@@ -21,6 +23,7 @@ authRouter.route("/sign-in").post(signIn);
 authRouter.route("/forget-password").post(forgetPassword);
 authRouter.route("/reset-password/:token").post(resetPassword);
 
-authRouter.route("/sign-out").post(signOut);
+authRouter.route("/sign-out").get(signOut);
+authRouter.route("/user-data").get(verifyToken, userData);
 
 export default authRouter;

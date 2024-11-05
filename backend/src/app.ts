@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import authRouter from "./routes/auth.routes";
+import cookieParser from 'cookie-parser';
 
 const app = express()
 
@@ -12,7 +13,7 @@ const corsOptions = {
     methods: ['GET', 'POST'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'],// Allowed headers
 };
-
+app.use(cookieParser());
 app.use(cors(corsOptions))
 app.use("/api/v1/auth",authRouter)
 
