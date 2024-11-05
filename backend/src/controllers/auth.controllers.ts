@@ -10,13 +10,14 @@ import generateVerificationCode from "../utils/generateVerificationCode.utils";
 import bcrypt from "bcrypt";
 import generateAccessToken from "../utils/generateAccessToken.utils";
 
-
 //sign-up
 const signUp = async (req: Request, res: Response): Promise<void> => {
   const { email, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
-    res.status(400).json({ message: "Confirm password do not match with the password." });
+    res
+      .status(400)
+      .json({ message: "Confirm password do not match with the password." });
     return;
   }
 
@@ -103,7 +104,6 @@ const verifyEmail = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-
 //resendVerificationCode
 const resendVerificationCode = async (
   req: Request,
@@ -143,7 +143,6 @@ const resendVerificationCode = async (
     res.status(500).json({ message: error });
   }
 };
-
 
 //sign-in
 
@@ -274,13 +273,13 @@ const forgetPassword = async (req: Request, res: Response): Promise<void> => {
       user.email.split("@")[0]
     );
 
-    res.status(200).json({ message: "Email sent successfully Go and reset the password." });
-
+    res
+      .status(200)
+      .json({ message: "Email sent successfully Go and reset the password." });
   } catch (error) {
     res.status(500).json({ message: error });
   }
 };
-
 
 //reset-password
 const resetPassword = async (req: Request, res: Response): Promise<void> => {
@@ -288,17 +287,23 @@ const resetPassword = async (req: Request, res: Response): Promise<void> => {
   const resetPasswordToken = req.params.token;
 
   //validation
-  if(!password){
+  if (!password) {
     res.status(400).json({ message: "Please enter your new password" });
     return;
   }
-  if(password.length < 8 || password.length > 100){
-    res.status(400).json({ message: "Password length must be greater then 8 and less than 100" });
+  if (password.length < 8 || password.length > 100) {
+    res
+      .status(400)
+      .json({
+        message: "Password length must be greater then 8 and less than 100",
+      });
     return;
   }
 
-  if(confirmPassword !== password){
-    res.status(400).json({ message: "Confirm password do not match with the password." });
+  if (confirmPassword !== password) {
+    res
+      .status(400)
+      .json({ message: "Confirm password do not match with the password." });
     return;
   }
 
@@ -308,7 +313,7 @@ const resetPassword = async (req: Request, res: Response): Promise<void> => {
       resetPasswordTokenExpiresAt: { $gt: Date.now() },
     });
 
-    if(!user){
+    if (!user) {
       res.status(400).json({ message: "Invalid or expired link." });
       return;
     }
@@ -318,17 +323,32 @@ const resetPassword = async (req: Request, res: Response): Promise<void> => {
 
     user.password = password;
 
-    await user.save()
+    await user.save();
 
-    sendResetPasswordSuccessfulEmail(user.email,  user.email.split("@")[0]);
+    sendResetPasswordSuccessfulEmail(user.email, user.email.split("@")[0]);
 
     res.status(200).json({ message: "Password reset successful." });
-
-
   } catch (error) {
     res.status(500).json({ message: error });
   }
-
 };
 
-export { signUp, verifyEmail, resendVerificationCode, signIn, forgetPassword , resetPassword };
+//sign-out
+const signOut = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res.clearCookie("accessToken");
+    res.status(404).json({ message: "Sign out successful." });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+export {
+  signUp,
+  verifyEmail,
+  resendVerificationCode,
+  signIn,
+  forgetPassword,
+  resetPassword,
+  signOut,
+};

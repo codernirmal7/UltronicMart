@@ -1,7 +1,15 @@
-import express, { Router } from "express"
-import { forgetPassword, resendVerificationCode, resetPassword, signIn, signUp, verifyEmail } from "../controllers/auth.controllers";
+import express, { Router } from "express";
+import {
+  forgetPassword,
+  resendVerificationCode,
+  resetPassword,
+  signIn,
+  signOut,
+  signUp,
+  verifyEmail,
+} from "../controllers/auth.controllers";
 
-const authRouter:Router = Router()
+const authRouter: Router = Router();
 
 //sign up parts routes
 authRouter.route("/sign-up").post(signUp);
@@ -13,4 +21,6 @@ authRouter.route("/sign-in").post(signIn);
 authRouter.route("/forget-password").post(forgetPassword);
 authRouter.route("/reset-password/:token").post(resetPassword);
 
-export default authRouter
+authRouter.route("/sign-out").post(signOut);
+
+export default authRouter;
