@@ -6,11 +6,11 @@ export const isAdmin = async (
   res: Response,
   next: NextFunction
 ) => {
-  const email = req.query.email;
+  const email = req.query.requestBy;
   try {
     const user = await UserModel.findOne({ email });
     if (!user) {
-      res.status(404).json({ message: "User not found." });
+      res.status(404).json({ message: "You must be sign up before doing this." });
       return;
     }
     if (!user?.adminAt) {

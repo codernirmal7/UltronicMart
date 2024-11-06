@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ProductModel from "../models/product.model";
 import fs from "fs";
+import mongoose from "mongoose";
 
 const addProduct = async (req: Request, res: Response): Promise<void> => {
   //get the products details from frontend
@@ -50,4 +51,23 @@ const addProduct = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { addProduct };
+
+const deleteProduct = async (req : Request,res : Response) : Promise<void> =>{
+  const productId = req.query.id;
+  if (!productId) {
+    res.status(400).json({ message: "Product ID is required." });
+    return;
+  }
+  try {
+    const product = await ProductModel.findOne({_id : productId})
+    if(!product){
+      res.status(404).json({ message: "Product not found." });
+    }
+    await product?.deleteOne();
+    res.status(200).json({ message: "Product deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Error while deleting products", error : error });
+  }
+}
+
+export { addProduct , deleteProduct };
