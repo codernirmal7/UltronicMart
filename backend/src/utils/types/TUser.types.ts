@@ -1,10 +1,17 @@
 import mongoose from "mongoose";
 
-// Interface for a purchased product
-type IPurchase = {
+// type for a purchased product
+type TPurchase = {
     productId: mongoose.Schema.Types.ObjectId;
     quantity: number;
     purchaseDate: Date;
+}
+
+// type for a purchased product
+type TCart = {
+    productId: mongoose.Schema.Types.ObjectId;
+    quantity: number;
+    cartAddedDate: Date;
 }
 
 type TUser = {
@@ -12,7 +19,8 @@ type TUser = {
     password: string;
     confirmPassword: string;
     emailVerifiedAt : Date | null;
-    purchaseHistory: IPurchase[];
+    purchaseHistory: TPurchase[];
+    cart : TCart[];
     lastTimeSignIn : Date;
     accountDisabledAt? : Date | null;
     resetPasswordToken?: string | null;

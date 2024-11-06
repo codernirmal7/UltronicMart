@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 import TUser from "../utils/types/TUser.types";
 import bcrypt from "bcrypt";
-import "dotenv/config"
+import "dotenv/config";
 
 interface IUser extends TUser, Document {}
 
@@ -25,17 +25,28 @@ const UserSchema: Schema = new Schema(
     },
     purchaseHistory: [
       {
-        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
         quantity: { type: Number, required: true },
         purchaseDate: { type: Date, default: Date.now },
       },
     ],
-    adminAt : {
-      type : Date,
-      default : null
+    cart: [
+      {
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number },
+        cartAddedDate: { type: Date },
+      },
+    ],
+    adminAt: {
+      type: Date,
+      default: null,
     },
     emailVerifiedAt: { type: Date, default: null },
-    lastTimeSignIn: { type: Date , default : null },
+    lastTimeSignIn: { type: Date, default: null },
     accountDisabledAt: { type: Date, default: null },
     resetPasswordToken: { type: String, default: null },
     resetPasswordTokenExpiresAt: { type: Date, default: null },
@@ -52,14 +63,12 @@ UserSchema.pre<IUser>("save", async function (next) {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(this.password, salt);
-    this.password = hashedPassword,
-    this.confirmPassword = hashedPassword;
+    (this.password = hashedPassword), (this.confirmPassword = hashedPassword);
     next();
   } catch (error) {
     console.log(error);
   }
 });
-
 
 // Create the model
 const UserModel = mongoose.model<IUser>("User", UserSchema);

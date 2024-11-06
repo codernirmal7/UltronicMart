@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import ProductModel from "../models/product.model";
+import UserModel from "../models/user.model";
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
@@ -51,4 +52,33 @@ const searchProducts = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllProducts, searchProducts };
+const addToCart = async (req : Request , res : Response) : Promise<void> => {
+  const {productId , quantity} = req.body;
+  if(!productId){
+    res.status(500).json({ message: "Product id is required." });
+    return;
+  }
+  if(!quantity){
+    res.status(500).json({ message: "Quantity id is required." });
+    return;
+  }
+  try {
+    // Update user's purchase history
+    await UserModel.findByIdAndUpdate(productId, {
+      $push: {
+        cart: {
+          productId,
+          quantity,
+          cartAddedDate: new Date(),
+        },
+      },
+    });
+
+    res.status(200).json({ message: "Product added successful." });
+    return;
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+}
+
+export { getAllProducts, searchProducts , addToCart };
