@@ -30,6 +30,10 @@ const UserSchema: Schema = new Schema(
         purchaseDate: { type: Date, default: Date.now },
       },
     ],
+    adminAt : {
+      type : Date,
+      default : null
+    },
     emailVerifiedAt: { type: Date, default: null },
     lastTimeSignIn: { type: Date , default : null },
     accountDisabledAt: { type: Date, default: null },

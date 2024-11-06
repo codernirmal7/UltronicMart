@@ -19,6 +19,7 @@ type TUser = {
     resetPasswordTokenExpiresAt?: Date | null;
     verificationToken?: string | null;
     verificationTokenExpiresAt?: Date | null;
+    adminAt : Date | null;
     createdAt: Date;
     updatedAt: Date;
 } 
