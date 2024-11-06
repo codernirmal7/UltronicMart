@@ -17,7 +17,17 @@ const ProductSchema: Schema = new mongoose.Schema<IProduct>(
         additionalPrice: { type: Number, default: 0 },
       },
     ],
-    images: [{ type: String, required: true }], // URLs for images
+    images: {
+      type: [String],
+      required: true,
+      validate: {
+        validator: function (value: string[]) {
+          return value.length <= 5; // Ensures the array length is at most 5
+        },
+        message: "You can only upload a maximum of 5 images.",
+      },
+    }, // URLs for images
+
     rating: { type: Number, default: 0 },
     reviews: [
       {
@@ -38,6 +48,6 @@ const ProductSchema: Schema = new mongoose.Schema<IProduct>(
   }
 );
 
-const ProductModel = mongoose.model<IProduct>('Product', ProductSchema);
+const ProductModel = mongoose.model<IProduct>("Product", ProductSchema);
 
-export default ProductModel
+export default ProductModel;
