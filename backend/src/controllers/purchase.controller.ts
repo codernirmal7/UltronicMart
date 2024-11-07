@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Stripe from "stripe";
 import ProductModel from "../models/product.model";
 import UserModel from "../models/user.model";
+import OrderModel from "../models/OrderSchema.model";
 
 // Initialize Stripe with your secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
@@ -53,7 +54,25 @@ const purchaseProduct = async (req: Request, res: Response): Promise<void> => {
         },
       });
 
-      res.status(200).json({ message: "Purchase successful", paymentIntent });
+      // Create a new order in the Order collection
+      const order = new OrderModel({
+        orderNumber: 'ORD-' + Date.now().toString(), // Generate unique order number
+        userId: userId,
+        products: [
+          {
+            productId: product._id,
+            name: product.name,
+            quantity: quantity,
+            price: product.price,
+          },
+        ],
+        totalAmount: totalPrice,
+        status: "completed",
+      });
+
+      await order.save(); // Save order to the database
+
+      res.status(200).json({ message: "Purchase successful", paymentIntent, order });
       return;
     } else {
       res.status(400).json({ message: "Payment failed" });
