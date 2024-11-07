@@ -170,4 +170,56 @@ const getAllUserData = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { addProduct, deleteProduct, updateProduct, getAllUserData };
+const updateUserData = async (req : Request , res : Response) : Promise<void> =>{
+  const {
+    email,
+    accountDisabledAt,
+    adminAt,
+  } = req.body;
+  const userId = req.query.id;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if(!emailRegex.test(email)){
+    res.status(400).json({ message: "Please enter valid email." });
+    return;
+  }
+  try {
+    // Check if the user exists before trying to update
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      res.status(404).json({ message: "User not found." });
+      return;
+    }
+    // Prepare update data
+    const updateData: any = {};
+
+    // Set the fields based on the request body, only if they are provided
+    if (email){
+      updateData.email = email;
+      user.emailVerifiedAt = null
+    }
+    
+    if (accountDisabledAt === true) updateData.description = Date.now();
+    if (adminAt === true) updateData.category = Date.now();
+
+    // Update the user
+    const updatedUser= await UserModel.updateOne(
+      { _id: userId },
+      { $set: updateData }
+    );
+
+    if (updatedUser.modifiedCount === 0) {
+      res.status(400).json({ message: "No changes were made to the user." });
+      return;
+    }
+
+    res
+      .status(200)
+      .json({ message: "User updated successfully.", updatedUser });
+
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+}
+
+export { addProduct, deleteProduct, updateProduct, getAllUserData , updateUserData };
