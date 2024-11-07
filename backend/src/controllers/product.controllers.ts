@@ -2,9 +2,14 @@ import { Request, Response } from "express";
 import ProductModel from "../models/product.model";
 import UserModel from "../models/user.model";
 
-const getAllProducts = async (req: Request, res: Response) => {
+const getProducts = async (req: Request, res: Response) => {
+  const id = req.query.id as string;
   try {
-    //fetch all products
+    if (id) {
+      const product = await ProductModel.find({ _id: id });
+      res.status(200).json({ product });
+      return;
+    }
     const products = await ProductModel.find({});
     res.status(200).json({ products });
   } catch (error) {
@@ -52,13 +57,13 @@ const searchProducts = async (req: Request, res: Response) => {
   }
 };
 
-const addToCart = async (req : Request , res : Response) : Promise<void> => {
-  const {productId , quantity} = req.body;
-  if(!productId){
+const addToCart = async (req: Request, res: Response): Promise<void> => {
+  const { productId, quantity } = req.body;
+  if (!productId) {
     res.status(500).json({ message: "Product id is required." });
     return;
   }
-  if(!quantity){
+  if (!quantity) {
     res.status(500).json({ message: "Quantity id is required." });
     return;
   }
@@ -79,6 +84,6 @@ const addToCart = async (req : Request , res : Response) : Promise<void> => {
   } catch (error) {
     res.status(500).json({ message: error });
   }
-}
+};
 
-export { getAllProducts, searchProducts , addToCart };
+export { getProducts, searchProducts, addToCart };
