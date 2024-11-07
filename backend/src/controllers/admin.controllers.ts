@@ -3,6 +3,7 @@ import ProductModel from "../models/product.model";
 import fs from "fs";
 import mongoose from "mongoose";
 import path from "path";
+import UserModel from "../models/user.model";
 
 const addProduct = async (req: Request, res: Response): Promise<void> => {
   //get the products details from frontend
@@ -149,4 +150,24 @@ const updateProduct = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { addProduct, deleteProduct, updateProduct };
+const getAllUserData = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userData = await UserModel.find(
+      {},
+      {
+        password: false,
+        confirmPassword: false,
+        resetPasswordToken: false,
+        resetPasswordTokenExpiresAt: false,
+        verificationToken: false,
+        verificationTokenExpiresAt: false,
+        __v: false,
+      }
+    );
+    res.status(200).json({ message: userData });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+export { addProduct, deleteProduct, updateProduct, getAllUserData };
