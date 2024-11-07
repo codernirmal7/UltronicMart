@@ -292,11 +292,9 @@ const resetPassword = async (req: Request, res: Response): Promise<void> => {
     return;
   }
   if (password.length < 8 || password.length > 100) {
-    res
-      .status(400)
-      .json({
-        message: "Password length must be greater then 8 and less than 100",
-      });
+    res.status(400).json({
+      message: "Password length must be greater then 8 and less than 100",
+    });
     return;
   }
 
@@ -344,17 +342,21 @@ const signOut = async (req: Request, res: Response): Promise<void> => {
 };
 
 //user-data
-const userData = async (req : Request, res : Response): Promise<void> => {
+const userData = async (req: Request, res: Response): Promise<void> => {
   try {
     const userData = req.userData;
     if (!userData) {
-       res.status(404).json({ message: 'User data not found' });
-       return;
+      res.status(404).json({ message: "User data not found" });
+      return;
     }
     res.status(200).json({ message: userData });
   } catch (error) {
     res.status(500).json({ message: error });
   }
+};
+
+const loggedInMessage = async (req: Request, res: Response): Promise<void> => {
+  res.status(200).json({ message: "Your are Logged." });
 };
 
 export {
@@ -365,5 +367,6 @@ export {
   forgetPassword,
   resetPassword,
   signOut,
-  userData
+  userData,
+  loggedInMessage
 };

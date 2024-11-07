@@ -7,7 +7,8 @@ import {
   signOut,
   signUp,
   verifyEmail,
-  userData
+  userData,
+  loggedInMessage
 } from "../controllers/auth.controllers";
 import verifyToken from "../middlewares/verifyAccessToken.middleware";
 
@@ -25,5 +26,6 @@ authRouter.route("/reset-password/:token").post(resetPassword);
 
 authRouter.route("/sign-out").get(signOut);
 authRouter.route("/user-data").get(verifyToken, userData);
+authRouter.route("/islogged-in").get(verifyToken,loggedInMessage)
 
 export default authRouter;
