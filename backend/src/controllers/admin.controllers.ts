@@ -170,16 +170,12 @@ const getAllUserData = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const updateUserData = async (req : Request , res : Response) : Promise<void> =>{
-  const {
-    email,
-    accountDisabledAt,
-    adminAt,
-  } = req.body;
+const updateUserData = async (req: Request, res: Response): Promise<void> => {
+  const { email, accountDisabledAt, adminAt } = req.body;
   const userId = req.query.id;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if(!emailRegex.test(email)){
+  if (!emailRegex.test(email)) {
     res.status(400).json({ message: "Please enter valid email." });
     return;
   }
@@ -194,16 +190,16 @@ const updateUserData = async (req : Request , res : Response) : Promise<void> =>
     const updateData: any = {};
 
     // Set the fields based on the request body, only if they are provided
-    if (email){
+    if (email) {
       updateData.email = email;
-      user.emailVerifiedAt = null
+      user.emailVerifiedAt = null;
     }
-    
+
     if (accountDisabledAt === true) updateData.description = Date.now();
     if (adminAt === true) updateData.category = Date.now();
 
     // Update the user
-    const updatedUser= await UserModel.updateOne(
+    const updatedUser = await UserModel.updateOne(
       { _id: userId },
       { $set: updateData }
     );
@@ -216,10 +212,37 @@ const updateUserData = async (req : Request , res : Response) : Promise<void> =>
     res
       .status(200)
       .json({ message: "User updated successfully.", updatedUser });
-
   } catch (error) {
     res.status(500).json({ message: error });
   }
-}
+};
 
-export { addProduct, deleteProduct, updateProduct, getAllUserData , updateUserData };
+const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.query.id;
+  if (!userId) {
+    res.status(400).json({ message: "User ID is required." });
+    return;
+  }
+  try {
+    const user = await UserModel.findOne({ _id: userId });
+    if (!user) {
+      res.status(404).json({ message: "User not found." });
+      return;
+    }
+    await user?.deleteOne();
+    res.status(200).json({ message: "User deleted successfully." });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error while deleting user", error: error });
+  }
+};
+
+export {
+  addProduct,
+  deleteProduct,
+  updateProduct,
+  getAllUserData,
+  updateUserData,
+  deleteUser,
+};

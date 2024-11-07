@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { isAdmin } from "../middlewares/isAdmin.middleware";
-import { addProduct, deleteProduct, getAllUserData, updateProduct, updateUserData } from "../controllers/admin.controllers";
+import { addProduct, deleteProduct, deleteUser, getAllUserData, updateProduct, updateUserData } from "../controllers/admin.controllers";
 import { upload } from "../middlewares/multer.middleware";
 
 const adminRouter = Router()
@@ -12,5 +12,7 @@ adminRouter.route("/product/update").post(isAdmin,upload.array("images",5),updat
 
 adminRouter.route("/user/get-all").get(isAdmin,getAllUserData)
 adminRouter.route("/user/update").post(isAdmin,updateUserData)
+adminRouter.route("/user/delete").get(isAdmin,deleteUser)
+
 
 export default adminRouter
