@@ -736,7 +736,7 @@ const ORDER_CONFIRMATION_TEMPLATE = (
     <tr>
       <td class="email-footer">
         <p>If you have any questions, feel free to contact our customer support at <a href="${contactSupport}">${contactSupport}</a>.</p>
-        <p>&copy; 2024 YourStore. All rights reserved.</p>
+        <p>&copy; 2024 Ultronic Mart. All rights reserved.</p>
       </td>
     </tr>
   </table>
