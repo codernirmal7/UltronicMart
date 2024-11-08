@@ -2,10 +2,8 @@ import mongoose from "mongoose";
 
 type TOrderProduct = {
   productId: mongoose.Schema.Types.ObjectId; // Reference to Product
-  name: string;
   quantity: number;
-  price: number;
-  additionalPrice?: number;
+  
 }
 
 type TOrder = {

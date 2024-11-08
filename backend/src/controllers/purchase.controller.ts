@@ -1,85 +1,138 @@
 import { Request, Response } from "express";
-import Stripe from "stripe";
 import ProductModel from "../models/product.model";
 import UserModel from "../models/user.model";
 import OrderModel from "../models/OrderSchema.model";
 
-// Initialize Stripe with your secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: "2024-10-28.acacia",
-});
-
 const purchaseProduct = async (req: Request, res: Response): Promise<void> => {
-  const { quantity, userId, paymentMethodId } = req.body;
-  const productId = req.query.productId;
+  const { email, cardNumber , cardExpireYDate,cardExpireMDate , cardCvv, address , postalCode } = req.body;
+  const productId: string[] = [];
+  let totalPriceOfProducts: number = 0;
+  let productsToUpdate: any[] = [];
 
+  //validation
+  if(!cardNumber){
+    res.status(404).json({ message: "Please enter a card number." });
+      return;
+  }
+  if(cardNumber.length > 16 || cardNumber.length < 16){
+    res.status(404).json({ message: "Invalid card number." });
+    return;
+  }
+  if(!cardExpireYDate){
+    res.status(404).json({ message: "Please enter a card expire year." });
+      return;
+  }
+  if(!cardExpireMDate){
+    res.status(404).json({ message: "Please enter a card expire month." });
+      return;
+  }
+  if(!cardCvv){
+    res.status(404).json({ message: "Please enter a card cvv." });
+      return;
+  }
+  if(!address){
+    res.status(404).json({ message: "Please enter your address." });
+      return;
+  }
+  if(!postalCode){
+    res.status(404).json({ message: "Please enter a postal code." });
+      return;
+  }
+  
+  
   try {
-    // Find the product
-    const product = await ProductModel.findById(productId);
-    if (!product) {
-      res.status(404).json({ message: "Product not found" });
-      return;
-    }
-    if (product.stock < quantity) {
-      res.status(400).json({ message: "Insufficient stock" });
+    // 1. Find the user
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
       return;
     }
 
-    // Calculate total price
-    const totalPrice = product.price * quantity;
-
-    // Create a Stripe PaymentIntent
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalPrice * 100, // Convert amount to cents for Stripe
-      currency: "usd",
-      payment_method: paymentMethodId,
-      confirm: true, // Immediately confirm the payment
+    // 2. Collect productIds and calculate total price
+    user.cart.forEach((item) => {
+      productId.push(item.productId.toString());
     });
 
-    // Handle successful payment
-    if (paymentIntent.status === "succeeded") {
-      // Deduct stock and update purchase count
-      product.stock -= quantity;
-      product.purchaseCount += quantity;
-      await product.save();
+    // 3. Fetch products from DB
+    const products = await ProductModel.find({ _id: { $in: productId } });
 
-      // Update user's purchase history
-      await UserModel.findByIdAndUpdate(userId, {
-        $push: {
-          purchaseHistory: {
-            productId,
-            quantity,
-            purchaseDate: new Date(),
+    if (!products.length) {
+      res.status(404).json({ message: "Products not found" });
+      return;
+    }
+
+    // 4. Calculate total price of the products in the cart and prepare the order items
+    const productPrices = products.map((item: any) => {
+      const cartItem = user.cart.find((cartItem) => cartItem.productId.toString() === item._id.toString());
+      if (cartItem) {
+        const productTotalPrice = item.price * cartItem.quantity;
+        totalPriceOfProducts += productTotalPrice;
+
+        // Prepare stock update data
+        productsToUpdate.push({
+          productId: item._id,
+          quantity: cartItem.quantity,
+          stock: item.stock - cartItem.quantity, // Deduct quantity from stock
+          purchaseCount: item.purchaseCount + cartItem.quantity, // Increase purchase count
+        });
+
+        return productTotalPrice;
+      }
+      return 0;
+    });
+
+  
+    // 6. Handle successful payment
+
+    // 7. Update product stock and purchase count for each product
+      for (const update of productsToUpdate) {
+        const product = await ProductModel.findById(update.productId);
+        if (product && product.stock > 0 ) {
+          product.stock = update.stock;
+          product.purchaseCount = update.purchaseCount;
+          await product.save();
+        }else{
+          res.status(404).json({ message: "Error while updating product stocks and purchaseCount." });
+          return;
+        }
+      }
+
+      // 8. Update user's purchase history
+      for (const cartItem of user.cart) {
+        await UserModel.findByIdAndUpdate(user._id, {
+          $push: {
+            purchaseHistory: {
+              productId: cartItem.productId,
+              quantity: cartItem.quantity,
+              purchaseDate: new Date(),
+            },
           },
-        },
-      });
-
-      // Create a new order in the Order collection
+        });
+      }
+     
+      // 10. Create a new order in the Order collection
       const order = new OrderModel({
         orderNumber: 'ORD-' + Date.now().toString(), // Generate unique order number
-        userId: userId,
-        products: [
-          {
-            productId: product._id,
-            name: product.name,
-            quantity: quantity,
-            price: product.price,
-          },
-        ],
-        totalAmount: totalPrice,
+        userId: user._id,
+        products: user.cart.map((cartItem) => ({
+          productId: cartItem.productId,
+          quantity: cartItem.quantity,
+        })),
+        totalAmount: totalPriceOfProducts,
         status: "completed",
       });
 
       await order.save(); // Save order to the database
 
-      res.status(200).json({ message: "Purchase successful", paymentIntent, order });
-      return;
-    } else {
-      res.status(400).json({ message: "Payment failed" });
-      return;
-    }
+       //9. Remove products from cart
+       user.cart = []
+       await user.save()
+ 
+
+      res.status(200).json({ message: "Purchase successful", order });
+    
   } catch (error) {
-    res.status(500).json({ message: "Error processing purchase", error });
+    res.status(500).json({ message: "Error processing purchase", error: error });
   }
 };
 

@@ -25,11 +25,13 @@ const UserSchema: Schema = new Schema(
     },
     purchaseHistory: [
       {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
+        productId: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
+            required: true,
+          }
+        ],
         quantity: { type: Number, required: true },
         purchaseDate: { type: Date, default: Date.now },
       },

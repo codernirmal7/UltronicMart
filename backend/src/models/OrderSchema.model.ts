@@ -18,10 +18,8 @@ const OrderSchema: Schema = new Schema<IOrder>(
           ref: "Product",
           required: true,
         },
-        name: { type: String, required: true },
         quantity: { type: Number, required: true },
-        price: { type: Number, required: true },
-        additionalPrice: { type: Number }, // For optional price variations (e.g., customizations)
+        
       },
     ],
     totalAmount: { type: Number, required: true },
