@@ -591,10 +591,166 @@ const RESET_PASSWORD_SUCCESS_TEMPLATE = (name: string, signInUrl: string) => {
     `;
 };
 
+const ORDER_CONFIRMATION_TEMPLATE = (
+  name: string,
+  orderNumber: string,
+  orderDate: Date,
+  address: string,
+  totalAmount: number,
+  contactSupport: string,
+  orderdHistory: string
+) => {
+  return `
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation</title>
+  <style>
+    /* General styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 16px;
+    }
+
+    /* Header */
+    .email-header {
+      background-color: #1F51FF;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .email-header h1 {
+      margin: 0;
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    /* Main content */
+    .email-content {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .email-content h2 {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .email-content p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .email-footer {
+      background-color: #f9f9f9;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .email-button {
+      background-color: #1F51FF;
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .email-button:hover {
+      background-color: #163cbf;
+    }
+
+    /* Responsive styles */
+    @media only screen and (max-width: 600px) {
+      .email-header h1 {
+        font-size: 28px;
+      }
+
+      .email-content {
+        padding: 15px;
+      }
+
+      td {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <td class="email-header">
+        <h1>Order Confirmation</h1>
+      </td>
+    </tr>
+    <tr>
+      <td class="email-content">
+        <h2>Dear ${name},</h2>
+        <p>Thank you for your order! We are pleased to confirm that your order has been successfully placed and is now being processed. Here are the details of your order:</p>
+        <table>
+          <tr>
+            <td><strong>Order Number:</strong></td>
+            <td>${orderNumber}</td>
+          </tr>
+          <tr>
+            <td><strong>Order Date:</strong></td>
+            <td>${orderDate}</td>
+          </tr>
+          <tr>
+            <td><strong>Shipping Address:</strong></td>
+            <td>${address}</td>
+          </tr>
+          <tr>
+            <td><strong>Total Amount:</strong></td>
+            <td>$${totalAmount}</td>
+          </tr>
+        </table>
+        <a href="${orderdHistory}" style="color : white;" class="email-button">Track Your Order</a>
+      </td>
+    </tr>
+    <tr>
+      <td class="email-footer">
+        <p>If you have any questions, feel free to contact our customer support at <a href="${contactSupport}">${contactSupport}</a>.</p>
+        <p>&copy; 2024 YourStore. All rights reserved.</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+
+    `;
+};
+
 export {
   EMAIL_VERIFICATION_TEMPLATE,
   WELCOME_EMAIL_TEMPLATE,
   WELCOME_BACK_EMAIL_TEMPLATE,
   RESET_PASSWORD_TEMPLATE,
   RESET_PASSWORD_SUCCESS_TEMPLATE,
+  ORDER_CONFIRMATION_TEMPLATE,
 };

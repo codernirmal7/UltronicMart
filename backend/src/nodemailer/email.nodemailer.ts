@@ -1,5 +1,6 @@
 import {
   EMAIL_VERIFICATION_TEMPLATE,
+  ORDER_CONFIRMATION_TEMPLATE,
   RESET_PASSWORD_SUCCESS_TEMPLATE,
   RESET_PASSWORD_TEMPLATE,
   WELCOME_BACK_EMAIL_TEMPLATE,
@@ -116,10 +117,40 @@ const sendResetPasswordSuccessfulEmail = async (
   }
 };
 
+const sendOrderConfirmationEmail = async (
+  email: string,
+  name: string,
+  orderNumber: string,
+  orderDate: Date,
+  address: string,
+  totalAmount: number,
+) => {
+  const mailOptions = {
+    from: sender,
+    to: email,
+    subject: "Order confirmation",
+    html: ORDER_CONFIRMATION_TEMPLATE(
+      name,
+      orderNumber,
+      orderDate,
+      address,
+      totalAmount,
+      `${process.env.FRONTSIDE_URL}/contact`,
+      `${process.env.FRONTSIDE_URL}/orderd-history?id=${orderNumber}`
+    ),
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    throw new Error(`An error occured : ${error}`);
+  }
+};
+
 export {
   sendVerificationEmailCode,
   sendWelcomeEmail,
   sendWelcomeBackEmail,
   sendResetPasswordVerificationCode,
-  sendResetPasswordSuccessfulEmail
+  sendResetPasswordSuccessfulEmail,
+  sendOrderConfirmationEmail
 };
