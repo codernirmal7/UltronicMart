@@ -13,7 +13,6 @@ const ProductSchema: Schema = new mongoose.Schema<IProduct>(
       {
         size: { type: String },
         color: { type: String },
-        stock: { type: Number, default: 0 },
         additionalPrice: { type: Number, default: 0 },
       },
     ],

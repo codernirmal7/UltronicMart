@@ -4,7 +4,6 @@ import mongoose, { Document } from "mongoose";
 interface IVariant {
   size?: string;
   color?: string;
-  stock: number;
   additionalPrice?: number; // For price difference by variant
 }
 

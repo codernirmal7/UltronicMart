@@ -37,7 +37,6 @@ const addProduct = async (req: Request, res: Response): Promise<void> => {
       variants: {
         size,
         color,
-        stock,
       },
       rating,
     });
