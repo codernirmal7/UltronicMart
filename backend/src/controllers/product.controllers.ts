@@ -87,7 +87,9 @@ const addToCart = async (req: Request, res: Response): Promise<void> => {
 
     // Check if the product stock is available
     if (product.stock < quantity) {
-      res.status(400).json({ message: "Not enough stock available for this product." });
+      res
+        .status(400)
+        .json({ message: "Not enough stock available for this product." });
       return;
     }
 
@@ -126,7 +128,6 @@ const addToCart = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-
 const removeProductFromCart = async (
   req: Request,
   res: Response
@@ -163,12 +164,59 @@ const removeProductFromCart = async (
     res
       .status(200)
       .json({ message: "Product removed from cart successfully." });
-
-    res.status(200).json({ message: "Product added successful." });
-    return;
   } catch (error) {
     res.status(500).json({ message: error });
   }
 };
 
-export { getProducts, searchProducts, addToCart, removeProductFromCart };
+const comment = async (req: Request, res: Response): Promise<void> => {
+  const { productId , email, rating, comment } = req.body;
+  if (!email) {
+    res.status(400).json({ message: "Email is required." });
+    return;
+  }
+  if (rating > 4 || rating < 0) {
+    res.status(400).json({ message: "Rating must be 4 and not less than 0." });
+    return;
+  }
+  if (comment.length < 3 || comment.length > 100) {
+    res
+      .status(400)
+      .json({
+        message:
+          "Comments must be 3 characters long and comments must be less than 100 characters.",
+      });
+      return;
+  }
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      res.status(500).json({ message: "Sorry, You can't comment." });
+      return;
+    }
+    const product = await ProductModel.findByIdAndUpdate(productId , {
+      $push : {
+        reviews : {
+          userId : user?._id,
+          email,
+          rating,
+          comment,
+          date : new Date()
+        }
+      }
+    })
+
+    res.status(200).json({message : "Comment added."})
+    
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+export {
+  getProducts,
+  searchProducts,
+  addToCart,
+  removeProductFromCart,
+  comment,
+};
