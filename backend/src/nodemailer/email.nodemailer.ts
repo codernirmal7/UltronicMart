@@ -86,7 +86,7 @@ const sendResetPasswordVerificationCode = async (
     to: email,
     subject: "Reset Password",
     html: RESET_PASSWORD_TEMPLATE(
-      `${process.env.FRONTSIDE_URL}/auth/reset-password/${resetPasswordToken}`,
+      `${process.env.FRONTSIDE_URL}/auth/reset-password/:${resetPasswordToken}`,
       name
     ),
   };

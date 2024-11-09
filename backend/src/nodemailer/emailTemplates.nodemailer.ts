@@ -475,7 +475,7 @@ const RESET_PASSWORD_TEMPLATE = (resetPasswordLink: string, name: string) => {
 
 const RESET_PASSWORD_SUCCESS_TEMPLATE = (name: string, signInUrl: string) => {
   return `
-    <!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -491,6 +491,7 @@ const RESET_PASSWORD_SUCCESS_TEMPLATE = (name: string, signInUrl: string) => {
         -webkit-text-size-adjust: none;
         width: 100% !important;
         height: 100% !important;
+        overflow: hidden;
     }
 
     .email-wrapper {
@@ -607,6 +608,7 @@ const RESET_PASSWORD_SUCCESS_TEMPLATE = (name: string, signInUrl: string) => {
 </body>
 
 </html>
+
 
     `;
 };
