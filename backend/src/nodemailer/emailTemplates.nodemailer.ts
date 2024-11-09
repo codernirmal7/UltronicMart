@@ -13,7 +13,7 @@ const EMAIL_VERIFICATION_TEMPLATE = (
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 1rem;
             background-color: #f7f7f7;
         }
         .container {
@@ -29,6 +29,11 @@ const EMAIL_VERIFICATION_TEMPLATE = (
             color: #ffffff;
             padding: 20px;
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
         }
         .header h1 {
             margin: 0;
@@ -75,11 +80,35 @@ const EMAIL_VERIFICATION_TEMPLATE = (
             font-size: 12px;
             color: #888888;
         }
+        @media only screen and (max-width: 600px) {
+           
+            .header h1 {
+                font-size: 20px;
+            }
+            .content h2 {
+                font-size: 18px;
+            }
+            .content p {
+                font-size: 14px;
+            }
+            .code {
+                font-size: 20px;
+                padding: 8px;
+            }
+            .button {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+            .footer {
+                font-size: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
+           
             <h1>Email Verification</h1>
         </div>
         <div class="content">
@@ -91,7 +120,7 @@ const EMAIL_VERIFICATION_TEMPLATE = (
             <a href="${verificationLink}" class="button">Verify Email</a>
         </div>
         <div class="footer">
-            <p>&copy; [Year] Ultronic Mart. All rights reserved.</p>
+            <p>&copy; 2024 Ultronic Mart. All rights reserved.</p>
         </div>
     </div>
 </body>
