@@ -225,7 +225,7 @@ const WELCOME_BACK_EMAIL_TEMPLATE = (
   contactSupport: string
 ) => {
   return `
-     <!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -233,7 +233,7 @@ const WELCOME_BACK_EMAIL_TEMPLATE = (
     <style>
         body {
             margin: 0;
-            padding: 0;
+            padding: 1rem;
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             color: #333333;
@@ -297,17 +297,7 @@ const WELCOME_BACK_EMAIL_TEMPLATE = (
             color: #007BFF;
             text-decoration: none;
         }
-        @media (max-width: 600px) {
-            .email-header h1, .email-body h2 {
-                font-size: 18px;
-            }
-            .email-body p {
-                font-size: 14px;
-            }
-            .email-info {
-                font-size: 13px;
-            }
-        }
+        
     </style>
 </head>
 <body>
