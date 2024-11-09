@@ -141,7 +141,7 @@ const WELCOME_EMAIL_TEMPLATE = (FRONTSIDE_URL: string) => {
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 1rem;
             background-color: #f7f7f7;
         }
         .container {
@@ -193,6 +193,7 @@ const WELCOME_EMAIL_TEMPLATE = (FRONTSIDE_URL: string) => {
             font-size: 12px;
             color: #888888;
         }
+       
     </style>
 </head>
 <body>
@@ -213,7 +214,6 @@ const WELCOME_EMAIL_TEMPLATE = (FRONTSIDE_URL: string) => {
     </div>
 </body>
 </html>
-
 `;
 };
 

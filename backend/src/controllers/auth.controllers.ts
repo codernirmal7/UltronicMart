@@ -5,6 +5,7 @@ import {
   sendResetPasswordVerificationCode,
   sendVerificationEmailCode,
   sendWelcomeBackEmail,
+  sendWelcomeEmail,
 } from "../nodemailer/email.nodemailer";
 import generateVerificationCode from "../utils/generateVerificationCode.utils";
 import bcrypt from "bcrypt";
@@ -58,7 +59,7 @@ const signUp = async (req: Request, res: Response): Promise<void> => {
 
 // Verify email function
 const verifyEmail = async (req: Request, res: Response): Promise<void> => {
-  const email = req.query.email;
+  const email = req.query.email as string;
   const codeUrl = req.query.code;
   const { code } = req.body;
 
@@ -97,6 +98,8 @@ const verifyEmail = async (req: Request, res: Response): Promise<void> => {
     user.verificationToken = null; // Clear the token
     user.verificationTokenExpiresAt = null; // Clear the expiration
     await user.save();
+
+    sendWelcomeEmail(email)
 
     res.status(200).json({ message: "Email verified successfully!" });
   } catch (error) {
