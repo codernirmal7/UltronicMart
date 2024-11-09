@@ -349,8 +349,8 @@ const RESET_PASSWORD_TEMPLATE = (resetPasswordLink: string, name: string) => {
             padding: 0;
             -webkit-font-smoothing: antialiased;
             -webkit-text-size-adjust: none;
-            width: 100% !important;
-            height: 100% !important;
+            overflow: hidden;
+          
         }
 
         .email-wrapper {
@@ -468,6 +468,7 @@ const RESET_PASSWORD_TEMPLATE = (resetPasswordLink: string, name: string) => {
 </body>
 
 </html>
+
 
         `;
 };
