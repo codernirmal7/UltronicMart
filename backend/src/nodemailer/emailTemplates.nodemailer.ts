@@ -623,147 +623,148 @@ const ORDER_CONFIRMATION_TEMPLATE = (
   orderdHistory: string
 ) => {
   return `
-    <!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Confirmation</title>
-  <style>
-    /* General styles */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 1rem;
+        }
+        table {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-spacing: 0;
+        }
+        .header {
+            background-color: #1F51FF;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+        .content {
+            padding: 20px;
+            font-size: 16px;
+            color: #333333;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 
-    table {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      border-collapse: collapse;
-    }
+        }
+        .content h2 {
+            color: #1F51FF;
+        }
+        .order-details {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .order-details th, .order-details td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-details th {
+            background-color: #f2f2f2;
+        }
+        .button {
+            background-color: #1F51FF;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .footer {
+            background-color: #f7f7f7;
+            color: #888888;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 
-    td {
-      padding: 16px;
-    }
-
-    /* Header */
-    .email-header {
-      background-color: #1F51FF;
-      color: white;
-      text-align: center;
-      padding: 30px 20px;
-    }
-
-    .email-header h1 {
-      margin: 0;
-      font-size: 36px;
-      font-weight: bold;
-    }
-
-    /* Main content */
-    .email-content {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .email-content h2 {
-      font-size: 22px;
-      color: #333;
-      margin-bottom: 10px;
-    }
-
-    .email-content p {
-      font-size: 16px;
-      color: #555;
-      line-height: 1.5;
-    }
-
-    .email-footer {
-      background-color: #f9f9f9;
-      text-align: center;
-      padding: 20px 0;
-      font-size: 14px;
-      color: #888;
-    }
-
-    .email-button {
-      background-color: #1F51FF;
-      color: white;
-      text-decoration: none;
-      padding: 12px 20px;
-      border-radius: 5px;
-      font-weight: bold;
-      text-align: center;
-      display: inline-block;
-      margin-top: 20px;
-    }
-
-    .email-button:hover {
-      background-color: #163cbf;
-    }
-
-    /* Responsive styles */
-    @media only screen and (max-width: 600px) {
-      .email-header h1 {
-        font-size: 28px;
-      }
-
-      .email-content {
-        padding: 15px;
-      }
-
-      td {
-        padding: 10px;
-      }
-    }
-  </style>
+        }
+        .footer a {
+            color: #1F51FF;
+            text-decoration: none;
+        }
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 15px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .order-details td, .order-details th {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .button {
+                padding: 8px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <table>
-    <tr>
-      <td class="email-header">
-        <h1>Order Confirmation</h1>
-      </td>
-    </tr>
-    <tr>
-      <td class="email-content">
-        <h2>Dear ${name},</h2>
-        <p>Thank you for your order! We are pleased to confirm that your order has been successfully placed and is now being processed. Here are the details of your order:</p>
-        <table>
-          <tr>
-            <td><strong>Order Number:</strong></td>
-            <td>${orderNumber}</td>
-          </tr>
-          <tr>
-            <td><strong>Order Date:</strong></td>
-            <td>${orderDate}</td>
-          </tr>
-          <tr>
-            <td><strong>Shipping Address:</strong></td>
-            <td>${address}</td>
-          </tr>
-          <tr>
-            <td><strong>Total Amount:</strong></td>
-            <td>$${totalAmount}</td>
-          </tr>
-        </table>
-        <a href="${orderdHistory}" style="color : white;" class="email-button">Track Your Order</a>
-      </td>
-    </tr>
-    <tr>
-      <td class="email-footer">
-        <p>If you have any questions, feel free to contact our customer support at <a href="${contactSupport}">${contactSupport}</a>.</p>
-        <p>&copy; 2024 Ultronic Mart. All rights reserved.</p>
-      </td>
-    </tr>
-  </table>
+    <table>
+        <!-- Header Section -->
+        <tr>
+            <td class="header">
+                <h1>Order Confirmation</h1>
+            </td>
+        </tr>
+        <!-- Content Section -->
+        <tr>
+            <td class="content">
+                <h2>Thank you for your order, ${name}!</h2>
+                <p>Your order has been successfully received and is being processed. Below are your order details:</p>
+
+                <!-- Order Details Table -->
+                <table class="order-details">
+                    <tr>
+                        <th>Order ID</th>
+                        <td>${orderNumber}</td>
+                    </tr>
+                    <tr>
+                        <th>Order Date</th>
+                        <td>${orderDate}</td>
+                    </tr>
+                    <tr>
+                        <th>Shipping Address</th>
+                        <td>${address}</td>
+                    </tr>
+                    <tr>
+                        <th>Order Total</th>
+                        <td>${totalAmount}</td>
+                    </tr>
+                </table>
+
+                <p>If you have any questions, feel free to <a href="${contactSupport}" style="color: #1F51FF;">contact us</a>.</p>
+
+                <!-- Call-to-Action Button -->
+                <a href="${orderdHistory}" class="button">View Order Details</a>
+            </td>
+        </tr>
+        <!-- Footer Section -->
+        <tr>
+            <td class="footer">
+                <p>Thank you for choosing Untronic Mart.</p>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
+
 
     `;
 };

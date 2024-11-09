@@ -136,7 +136,7 @@ const sendOrderConfirmationEmail = async (
       address,
       totalAmount,
       `${process.env.FRONTSIDE_URL}/contact`,
-      `${process.env.FRONTSIDE_URL}/orderd-history?id=${orderNumber}`
+      `${process.env.FRONTSIDE_URL}/user/payment-history`
     ),
   };
   try {
