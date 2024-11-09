@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import ProductModel from "../models/product.model";
 import fs from "fs";
 import UserModel from "../models/user.model";
+import OrderModel from "../models/OrderSchema.model";
 
 const addProduct = async (req: Request, res: Response): Promise<void> => {
   //get the products details from frontend
@@ -235,6 +236,26 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getOrderDetails = async (req: Request, res: Response): Promise<void> => {
+  const orderId = req.query.id;
+  try {
+    if (!orderId) {
+      const orders = await OrderModel.find({});
+      res.status(200).json({ message: orders });
+      return;
+    }
+    const order = await OrderModel.findById(orderId);
+    if (!order) {
+      res.status(400).json({ message: "Invalid order id." });
+      return;
+    }
+
+    res.status(200).json({ message: order });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
 export {
   addProduct,
   deleteProduct,
@@ -242,4 +263,5 @@ export {
   getAllUserData,
   updateUserData,
   deleteUser,
+  getOrderDetails,
 };
