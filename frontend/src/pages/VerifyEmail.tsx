@@ -8,7 +8,7 @@ import { ResendVerificationEmailAuth, verifyEmailAuth } from "@/redux/slices/aut
 import { Label } from "@radix-ui/react-label";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function VerifyEmail() {
   const [verificationCode, setVerificationCode] = useState<string>("");
@@ -24,6 +24,7 @@ export default function VerifyEmail() {
     message: "",
   });
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate()
 
   const location = useLocation();
 
@@ -46,6 +47,8 @@ export default function VerifyEmail() {
         show: true,
         message: 'Email verified successfully!',
       });
+      navigate(`/sign-in`, { replace: true });
+
 
       // Optionally, handle navigation or form reset here
     } catch (error: unknown) {
