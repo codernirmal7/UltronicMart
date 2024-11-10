@@ -6,6 +6,10 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "baseUrl": ".",  // This means the root of the project
+    "paths": {
+      "@/*": ["src/*"]  // Alias '@' to the 'src' directory
+    },
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
