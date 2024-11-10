@@ -8,11 +8,13 @@ import ErrorAlert from "@/components/alerts/ErrorAlert";
 import { useDispatch } from "react-redux";
 import { signUpAuth } from "@/redux/slices/authSlice";
 import { AppDispatch } from "@/redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const navigate = useNavigate()
   const [isShowSuccessAlert, setIsShowSuccessAlert] = useState({
     show: false,
     message: '',
@@ -41,14 +43,14 @@ export default function Signup() {
 
     try {
       // Dispatch the signUp action and unwrap the result
-      const result = await dispatch(signUpAuth({ email, password, confirmPassword })).unwrap();
+      await dispatch(signUpAuth({ email, password, confirmPassword })).unwrap();
 
       // On success, show success message
-      console.log('Sign up successful:', result);
       setIsShowSuccessAlert({
         show: true,
         message: 'User registered successfully. Check your email to verify.',
       });
+      navigate(`/verify?email=${email}`, { replace: true });
 
       // Optionally, handle navigation or form reset here
     } catch (error: unknown) {
