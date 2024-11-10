@@ -27,6 +27,3 @@ build/
 
 #image folder
 productImages
-
-#dev testing frontend file
-index.html
