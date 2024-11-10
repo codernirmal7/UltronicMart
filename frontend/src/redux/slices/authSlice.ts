@@ -41,6 +41,17 @@ interface ResendVerificationEmailResponse {
   message: string;
 }
 
+interface SignInPayload {
+  email: string;
+  password: string;
+  ipAddress : string;
+  userAgent : string;
+}
+
+interface SignInResponse {
+  message: string;
+}
+
 // Create an async thunk for signing up
 export const signUpAuth = createAsyncThunk<
   SignUpResponse, // The type of data that will be returned from the async action
@@ -130,6 +141,34 @@ export const ResendVerificationEmailAuth = createAsyncThunk<
     }
   }
 );
+
+// Create an async thunk for signing
+export const signInAuth = createAsyncThunk<
+  SignInResponse, // The type of data that will be returned from the async action
+  SignInPayload, // The type of the arguments passed to the action
+  { rejectValue: string } // You can also handle errors in a specific way using rejectValue
+>("/api/v1/auth/sign-up", async (payload: SignInPayload, thunkAPI) => {
+  try {
+    const response = await axios.post("/api/v1/auth/sign-in", payload);
+    return response.data; // Returning the data as the resolved value
+  } catch (error: unknown) {
+    // Handle errors with a proper fallback message
+    if (axios.isAxiosError(error)) {
+      // If it's an Axios error, we can safely access `error.response`
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "An unexpected error occurred"
+      );
+    } else if (error instanceof Error) {
+      // If it's a general Error object
+      return thunkAPI.rejectWithValue(
+        error.message || "An unknown error occurred"
+      );
+    } else {
+      // Fallback for unknown error types
+      return thunkAPI.rejectWithValue("An unknown error occurred");
+    }
+  }
+});
 
 // Create the auth slice using createSlice
 const authSlice = createSlice({
