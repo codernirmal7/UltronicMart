@@ -163,8 +163,8 @@ export default function VerifyEmail() {
         </form>
       </div>
       <SuccessAlert
-        message={isShowSuccessAlert.message}
-        isOpenSuccessAlert={isShowSuccessAlert.show}
+        isShowSuccessAlert={isShowSuccessAlert}
+        setIsShowSuccessAlert={setIsShowSuccessAlert}
       />
       <ErrorAlert
         isShowErrorAlert={isShowErrorAlert}

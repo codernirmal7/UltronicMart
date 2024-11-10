@@ -1,26 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaCircleCheck } from "react-icons/fa6";
 
 // Define prop types for the component
 type SuccessAlertProps = {
-  message: string;
-  isOpenSuccessAlert: boolean;
+  isShowSuccessAlert : {
+      show : boolean,
+      message : string | null
+  },
+  setIsShowSuccessAlert : any
 };
 
 const SuccessAlert: React.FC<SuccessAlertProps> = ({
-  message,
-  isOpenSuccessAlert,
+  isShowSuccessAlert,
+  setIsShowSuccessAlert
 }) => {
+  useEffect(()=>{
+    if(isShowSuccessAlert.show === true){
+        setTimeout(()=>{
+          setIsShowSuccessAlert({
+                show : false,
+                message : ""
+            }) 
+        },2000)
+    }
+},[isShowSuccessAlert])
   return (
     <>
       <div
-        className={`flex items-center p-4 mb-4 text-base rounded-lg bg-gray-800 text-green-400 z-50 fixed bottom-0 left-2 transition-all ${
-          isOpenSuccessAlert ? "scale-100" : "scale-0"
+        className={`flex items-center p-4 mb-4 text-sm rounded-lg bg-gray-800 text-green-400 z-50 fixed bottom-0 left-2 transition-all ${
+          isShowSuccessAlert.show ? "scale-100" : "scale-0"
         }`}
         role="alert"
       >
         <FaCircleCheck className="mr-2" />
-        <div>{message}</div>
+        <div>{isShowSuccessAlert.message}</div>
       </div>
     </>
   );
