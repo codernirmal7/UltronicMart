@@ -222,7 +222,7 @@ export const getUserData = createAsyncThunk<
 
 // Create an async thunk for checking if the user is logged in
 export const isLoggedIn = createAsyncThunk(
-  'auth/isLoggedIn',  // action type (the first argument)
+  '/api/v1/auth/isLoggedIn',  // action type (the first argument)
   async () => {
     try {
       const response = await axios.get('/api/v1/auth/islogged-in');
@@ -234,6 +234,21 @@ export const isLoggedIn = createAsyncThunk(
     } catch (error: unknown) {
       // Return false if there's an error
       return false;
+    }
+  }
+);
+
+// Create an async thunk for checking if the user is logged in
+export const signOut = createAsyncThunk(
+  '/api/v1/auth/sign-out',  // action type (the first argument)
+  async () => {
+    try {
+      const response = await axios.get('/api/v1/auth/sign-out');
+      // If the API responds that the user is logged in, return true
+     return response.data;
+    } catch (error: unknown) {
+      // Return false if there's an error
+      throw error
     }
   }
 );

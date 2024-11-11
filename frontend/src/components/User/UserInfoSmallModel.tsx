@@ -1,5 +1,7 @@
-import { RootState } from '@/redux/index';
+import { AppDispatch, RootState } from '@/redux/index';
+import { signOut } from '@/redux/slices/authSlice';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import {  useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +11,7 @@ interface UserInfoProps {
 
 const UserInfo: React.FC<UserInfoProps> = ({ isVisible }) => {
   const auth = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch<AppDispatch>()
   const { userData , isLoggedIn } = auth;
 
 
@@ -30,7 +33,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isVisible }) => {
          <ul className='mt-3 flex flex-col gap-2'>
             <Link to="/user/payment-history" className='text-primary'>Payment History</Link>
             <Link to="/settings" className='text-primary'>Settings</Link>
-            <button className='bg-primary/75 border-none text-white p-2 rounded-full hover:bg-primary mt-3'>Sign out</button>
+            <button className='bg-primary/75 border-none text-white p-2 rounded-full hover:bg-primary mt-3' onClick={()=> dispatch(signOut())}>Sign out</button>
          </ul>
          </div>
         </>
