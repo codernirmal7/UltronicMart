@@ -25,7 +25,7 @@ interface SignUpResponse {
 }
 
 interface VerifyEmailPayload {
-  code: string;
+  code: string | null;
   email : string | null
 }
 

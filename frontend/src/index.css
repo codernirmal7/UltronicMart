@@ -22,6 +22,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 ::selection{
   background-color: rgb(192, 188, 250);
 }

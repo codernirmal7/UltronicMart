@@ -27,7 +27,7 @@ const SuccessAlert: React.FC<SuccessAlertProps> = ({
   return (
     <>
       <div
-        className={`flex items-center p-4 mb-4 text-sm rounded-lg bg-gray-800 text-green-400 z-50 fixed bottom-0 left-2 transition-all ${
+        className={`flex items-center p-4 mb-4 text-sm rounded-lg bg-green-500 text-white z-50 fixed bottom-0 left-2 transition-all ${
           isShowSuccessAlert.show ? "scale-100" : "scale-0"
         }`}
         role="alert"
