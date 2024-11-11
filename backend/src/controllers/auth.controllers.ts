@@ -61,7 +61,6 @@ const signUp = async (req: Request, res: Response): Promise<void> => {
 const verifyEmail = async (req: Request, res: Response): Promise<void> => {
   const email = req.query.email as string;
   const codeUrl = req.query.code;
-  const { code } = req.body;
 
   if (!email) {
     res.status(400).json({
@@ -72,7 +71,7 @@ const verifyEmail = async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  if (!code && !codeUrl) {
+  if (!codeUrl) {
     res.status(400).json({
       success: false,
       error: "Verification code is required.",
@@ -83,7 +82,8 @@ const verifyEmail = async (req: Request, res: Response): Promise<void> => {
 
   try {
     const user = await UserModel.findOne({
-      verificationToken: code || codeUrl,
+      email,
+      verificationToken: codeUrl,
       verificationTokenExpiresAt: { $gt: new Date() }, // Check if the token is not expired
     });
 
