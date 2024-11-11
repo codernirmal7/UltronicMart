@@ -112,7 +112,7 @@ const Signin: React.FC<SignInProps> = ({
     >
       <div className="max-w-lg w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 ">
         <h2 className="font-extrabold text-3xl lg:text-4xl text-neutral-800 dark:text-neutral-200">
-          Sign in to you account.
+          Sign in to your account.
         </h2>
 
         <form className="my-8" onSubmit={signIn}>
