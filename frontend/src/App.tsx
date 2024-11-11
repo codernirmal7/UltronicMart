@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "./redux";
 import { getUserData, isLoggedIn } from "./redux/slices/authSlice";
 import { useEffect } from "react";
+import ForgetPassword from "./pages/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,23 @@ const router = createBrowserRouter([
     element: (
       <>
         <VerifyEmail />
+      </>
+    ),
+  },
+  {
+    path: "/auth/forget-password",
+    element: (
+      <>
+        <ForgetPassword />
+      </>
+    ),
+  },
+
+  {
+    path: "/auth/reset-password/:token",
+    element: (
+      <>
+        <ResetPassword />
       </>
     ),
   },

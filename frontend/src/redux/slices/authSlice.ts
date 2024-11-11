@@ -71,6 +71,24 @@ interface IsLogedResponse {
 
 interface IsLoggedPayload {}
 
+interface ForgetPasswordPayload {
+  email: string | null;
+}
+
+interface ForgetPasswordResponse {
+  message: string;
+}
+
+interface ResetPasswordPayload {
+  password: string | null;
+  confirmPassword: string | null;
+  token : string | undefined | null;
+}
+
+interface ResetPasswordResponse {
+  message: string;
+}
+
 // Create an async thunk for signing up
 export const signUpAuth = createAsyncThunk<
   SignUpResponse, // The type of data that will be returned from the async action
@@ -222,12 +240,12 @@ export const getUserData = createAsyncThunk<
 
 // Create an async thunk for checking if the user is logged in
 export const isLoggedIn = createAsyncThunk(
-  '/api/v1/auth/isLoggedIn',  // action type (the first argument)
+  "/api/v1/auth/isLoggedIn", // action type (the first argument)
   async () => {
     try {
-      const response = await axios.get('/api/v1/auth/islogged-in');
+      const response = await axios.get("/api/v1/auth/islogged-in");
       // If the API responds that the user is logged in, return true
-      if (response.data.message === 'Your are Logged.') {
+      if (response.data.message === "Your are Logged.") {
         return true;
       }
       return false;
@@ -238,20 +256,89 @@ export const isLoggedIn = createAsyncThunk(
   }
 );
 
-// Create an async thunk for checking if the user is logged in
+// Create an async thunk for checking if the sign out
 export const signOut = createAsyncThunk(
-  '/api/v1/auth/sign-out',  // action type (the first argument)
+  "/api/v1/auth/sign-out", // action type (the first argument)
   async () => {
     try {
-      const response = await axios.get('/api/v1/auth/sign-out');
+      const response = await axios.get("/api/v1/auth/sign-out");
       // If the API responds that the user is logged in, return true
-     return response.data;
+      return response.data;
     } catch (error: unknown) {
       // Return false if there's an error
-      throw error
+      throw error;
     }
   }
 );
+
+// Create an async thunk for forget password
+export const forgetPasswordAuth = createAsyncThunk<
+  ForgetPasswordResponse, // The type of data that will be returned from the async action
+  ForgetPasswordPayload, // The type of the arguments passed to the action
+  { rejectValue: string } // You can also handle errors in a specific way using rejectValue
+>(
+  "/api/v1/auth/forget-password",
+  async (payload: ForgetPasswordPayload, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `/api/v1/auth/forget-password`,
+        payload
+      );
+      return response.data; // Returning the data as the resolved value
+    } catch (error: unknown) {
+      // Handle errors with a proper fallback message
+      if (axios.isAxiosError(error)) {
+        // If it's an Axios error, we can safely access `error.response`
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message || "An unexpected error occurred"
+        );
+      } else if (error instanceof Error) {
+        // If it's a general Error object
+        return thunkAPI.rejectWithValue(
+          error.message || "An unknown error occurred"
+        );
+      } else {
+        // Fallback for unknown error types
+        return thunkAPI.rejectWithValue("An unknown error occurred");
+      }
+    }
+  }
+);
+
+// Create an async thunk for reset password
+export const resetPasswordAuth = createAsyncThunk<
+  ResetPasswordResponse, // The type of data that will be returned from the async action
+  ResetPasswordPayload, // The type of the arguments passed to the action
+  { rejectValue: string } // You can also handle errors in a specific way using rejectValue
+>(
+  "/api/v1/auth/reset-password/:token",
+  async (payload: ResetPasswordPayload, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `/api/v1/auth/reset-password/:${payload.token}`,
+        payload
+      );
+      return response.data; // Returning the data as the resolved value
+    } catch (error: unknown) {
+      // Handle errors with a proper fallback message
+      if (axios.isAxiosError(error)) {
+        // If it's an Axios error, we can safely access `error.response`
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message || "An unexpected error occurred"
+        );
+      } else if (error instanceof Error) {
+        // If it's a general Error object
+        return thunkAPI.rejectWithValue(
+          error.message || "An unknown error occurred"
+        );
+      } else {
+        // Fallback for unknown error types
+        return thunkAPI.rejectWithValue("An unknown error occurred");
+      }
+    }
+  }
+);
+
 
 // Create the auth slice using createSlice
 const authSlice = createSlice({
