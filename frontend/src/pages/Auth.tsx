@@ -1,5 +1,6 @@
 import ErrorAlert from "@/components/alerts/ErrorAlert";
 import SuccessAlert from "@/components/alerts/SuccessAlert";
+import LogoNavbar from "@/components/Navbar/LogoNavbar";
 import Signin from "@/components/SignIn/Signin";
 import Signup from "@/components/SignUp/Signup";
 import { useState } from "react";
@@ -31,10 +32,11 @@ export default function Auth() {
   };
   return (
     <>
-      <div className="flex justify-center lg:grid grid-cols-2 w-full items-center h-screen">
+    <LogoNavbar/>
+      <div className="flex lg:grid grid-cols-2 w-full">
         {/* auth form */}
-        <div className="w-full flex justify-center items-center">
-          <div className="relative w-full h-[35rem] p-8 overflow-hidden ">
+        <div className=" w-full flex justify-center items-center">
+          <div className="relative max-w-xl w-full h-[35rem] p-8 overflow-hidden ">
             <Signup
               isSignInState={isSignInState}
               toggleForm={toggleForm}

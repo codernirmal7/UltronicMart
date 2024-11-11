@@ -99,7 +99,7 @@ const Signup: React.FC<SignUpProps> = ({
       }`}
     >
       <div className="max-w-lg w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 ">
-        <h2 className="font-bold text-3xl lg:text-4xl text-neutral-800 dark:text-neutral-200">
+        <h2 className="font-extrabold text-3xl lg:text-4xl text-neutral-800 dark:text-neutral-200">
           Create a new account.
         </h2>
 
