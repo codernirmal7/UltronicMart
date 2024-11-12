@@ -7,6 +7,7 @@ import { getUserData, isLoggedIn } from "./redux/slices/authSlice";
 import { useEffect } from "react";
 import ForgetPassword from "./pages/ForgetPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
     element: (
       <>
         <ResetPassword />
+      </>
+    ),
+  },
+  {
+    path: "/",
+    element: (
+      <>
+        <Home />
       </>
     ),
   },
