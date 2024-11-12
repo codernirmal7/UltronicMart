@@ -11,6 +11,7 @@ import { getAllProductsData } from "@/redux/slices/productSlice";
 import { useSelector } from "react-redux";
 import LaptopSlider from "@/components/ProductSlider/LaptopSlider";
 import PhonesSlider from "@/components/ProductSlider/Phones";
+import TvSlider from "@/components/ProductSlider/TvSlider";
 
 const slides = [
   {
@@ -139,6 +140,8 @@ export default function Home() {
           <LaptopSlider error={error} loading={loading} productData={productData}/>
            {/*Product Phones  preview */}
            <PhonesSlider error={error} loading={loading} productData={productData}/>
+            {/*Product tv  preview */}
+            <TvSlider error={error} loading={loading} productData={productData}/>
         </div>
       </section>
     </>
