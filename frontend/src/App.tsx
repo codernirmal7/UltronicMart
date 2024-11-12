@@ -8,6 +8,10 @@ import { useEffect } from "react";
 import ForgetPassword from "./pages/ForgetPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
+import "swiper/css";
+import "swiper/css/pagination";
+
+
 
 const router = createBrowserRouter([
   {

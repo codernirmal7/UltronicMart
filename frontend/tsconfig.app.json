@@ -10,8 +10,6 @@
     "paths": {
       "@/*": ["src/*"]  // Alias '@' to the 'src' directory
     },
-
-    /* Bundler mode */
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
