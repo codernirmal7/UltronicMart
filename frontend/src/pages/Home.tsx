@@ -1,9 +1,16 @@
 import Herosection from "@/components/HeroSection/Herosection";
 import Navbar from "@/components/Navbar/Navbar";
-import { FaHeadphones, FaTruckFast } from "react-icons/fa6";
+import {  FaHeadphones, FaTruckFast } from "react-icons/fa6";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import { FaShieldAlt } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "@/redux";
+import { useEffect } from "react";
+import { getAllProductsData } from "@/redux/slices/productSlice";
+import { useSelector } from "react-redux";
+import LaptopSlider from "@/components/ProductSlider/LaptopSlider";
+
 
 const slides = [
   {
@@ -30,6 +37,15 @@ const slides = [
 ];
 
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>();
+  const product = useSelector((state: RootState) => state.product);
+  //Extrate all properties from product
+  const { loading, productData, error } = product;
+
+  useEffect(() => {
+    dispatch(getAllProductsData());
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -43,7 +59,6 @@ export default function Home() {
               loop={true}
               autoplay={{ delay: 3000 }}
               pagination={{ clickable: true }}
-             
             >
               {slides.map((slide) => (
                 <SwiperSlide key={slide.id}>
@@ -58,7 +73,7 @@ export default function Home() {
           </div>
           <div className="w-full py-8 grid grid-cols-2 lg:grid-cols-3 xl:gap-16 xl:grid-cols-4 items-center gap-7">
             <div className="flex items-center max-[1024px]:justify-center gap-4">
-              <FaHeadphones size={30} className="fill-primary"/>
+              <FaHeadphones size={30} className="fill-primary" />
               <div>
                 <span className="font-medium text-lg text-primary">
                   Responsive
@@ -68,17 +83,10 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-4">
-              <FaShieldAlt size={30} 
-                className="fill-primary"
-              
-              />
+              <FaShieldAlt size={30} className="fill-primary" />
               <div>
-                <span className="font-medium text-lg text-primary">
-                  Secure
-                </span>
-                <p className="text-gray-500">
-                  Data full secure guarantee
-                </p>
+                <span className="font-medium text-lg text-primary">Secure</span>
+                <p className="text-gray-500">Data full secure guarantee</p>
               </div>
             </div>
 
@@ -120,13 +128,16 @@ export default function Home() {
                 </g>
               </svg>
               <div>
-                <span className="font-medium text-lg text-primary">
-                  Refund
-                </span>
-                <p className="text-gray-500">Money back guarantee within 7 days</p>
+                <span className="font-medium text-lg text-primary">Refund</span>
+                <p className="text-gray-500">
+                  Money back guarantee within 7 days
+                </p>
               </div>
             </div>
           </div>
+          {/* Product laptop preview */}
+          <LaptopSlider error={error} loading={loading} productData={productData}/>
+          
         </div>
       </section>
     </>

@@ -42,42 +42,45 @@
   background: white !important;
   opacity: 1;
 }
-.swiper-button-prev,
-.swiper-button-next{
+/* Custom swiper navigation buttons */
+.custom-swiper-button-next1,
+.custom-swiper-button-prev1 {
   position: absolute;
   top: 50%;
-  width: 50px;
-  height: 50px;
-  margin-top: -25px;
   z-index: 10;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+  transform: translateY(-50%);
 }
 
-.swiper-button-prev {
+.custom-swiper-button-prev1 {
   left: 0px;
 }
 
-.swiper-button-next{
+.custom-swiper-button-next1 {
   right: 0px;
 }
 
-.swiper-button-prev::after,
-.custom-swiper-button-next::after {
-  font-size: 20px;
-  color: white;
-}
-
-.swiper-button-prev {
-  background-color: rgba(210, 210, 210, 0.8);
-  padding: 0.5rem;
-}
-.swiper-button-next{
-  background-color: rgba(210, 210, 210, 1);
+.custom-swiper-button-next1 svg,
+.custom-swiper-button-prev1 svg {
+  width: 40px;
+  height: 40px;
+  fill: #fff;
+  background-color: #c4d2ff;
+  border-radius: 100%; 
   padding: 0.5rem;
 }
 
+
+.productslider{
+  width: 24rem !important;
+  padding: 0rem 0rem 1rem 0rem;
+}
+@media screen and (max-width : 580px) {
+  .productslider{
+    width: 100% !important;
+    padding: 0rem 1rem 1rem 1rem;
+  }
+}
