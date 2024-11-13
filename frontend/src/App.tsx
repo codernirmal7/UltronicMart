@@ -10,6 +10,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
 import "swiper/css";
 import "swiper/css/pagination";
+import Laptops from "./pages/Laptops";
 
 
 
@@ -56,7 +57,14 @@ const router = createBrowserRouter([
       </>
     ),
   },
- 
+  {
+    path: "/laptops",
+    element: (
+      <>
+        <Laptops />
+      </>
+    ),
+  },
  
 ]);
 
