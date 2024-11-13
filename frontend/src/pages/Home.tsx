@@ -50,7 +50,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <section id="home" className="hero-slider flex justify-center">
+      <section id="home" className="hero-slider flex justify-center mt-24">
         <div className="w-full max-w-screen-xl py-7 px-3 ">
           <div className="bg-primary rounded-xl ">
             <Swiper

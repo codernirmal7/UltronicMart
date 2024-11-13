@@ -2,7 +2,6 @@ import { Dialog, Popover, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import {
   FaBars,
-  FaCartArrowDown,
   FaMagnifyingGlass,
   FaRegCircleUser,
   FaXmark,
@@ -136,11 +135,11 @@ export default function Navbar() {
           </Dialog>
         </Transition.Root>
 
-        <header className="relative border-b border-gray-200">
+        <header className="fixed bg-white left-0 right-0 top-0 z-40  border-b border-gray-200 ">
         <p className="flex h-10 items-center justify-center bg-primary px-4  font-medium text-white sm:px-6 lg:px-8">
           Get free delivery on orders over $100
         </p>
-          <nav aria-label="Top" className="mx-auto max-w-[1300px] px-3">
+          <nav aria-label="Top" className="mx-auto max-w-[1300px] px-3 ">
             <div>
               <div className="flex h-16 items-center">
                 <button
