@@ -17,7 +17,7 @@ type ProductDataType = {
       additionalPrice: number;
     }
   ];
-  images : [];
+  images : string[];
   rating : number;
   reviews: [
     {
