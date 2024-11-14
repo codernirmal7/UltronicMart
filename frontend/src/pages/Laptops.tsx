@@ -1,9 +1,9 @@
 import Navbar from "@/components/Navbar/Navbar";
 import ProductCard from "@/components/ProductCard/ProductCard";
+import ProductCard2 from "@/components/ProductCard/ProductCard2";
 import { AppDispatch, RootState } from "@/redux";
 import { getAllProductsData } from "@/redux/slices/productSlice";
 import { useEffect } from "react";
-import { FaArrowRight } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
@@ -28,9 +28,9 @@ export default function Laptops() {
             ) : product.error ? (
               <span>An error occurred.</span>
             ) : (
-              <div className="py-5 grid grid-cols-3 gap-5">
+              <div className="w-full py-5 grid grid-cols-1 gap-5">
                 {filteredProducts.map((item) => (
-                  <ProductCard
+                  <ProductCard2
                     id={item.id}
                     image={`http://localhost:4000/productImages${
                       item.images[0].split("productImages")[1]
