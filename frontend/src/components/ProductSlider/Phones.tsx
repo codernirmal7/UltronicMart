@@ -3,6 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard from "../ProductCard/ProductCard"; // Assuming ProductCard is in the same folder
 import { Navigation } from "swiper/modules";
+import { Link } from "react-router-dom";
 
 type Product = {
   id: string;
@@ -25,9 +26,9 @@ const PhonesSlider: React.FC<PhonesSliderProps> = ({
   error,
 }) => {
   // Filter products by 'phones' category
-  const filteredProducts = productData.filter(
-    (product) => product.category.toLowerCase() === "phones"
-  );
+  const filteredProducts = productData
+    .filter((product) => product.category.toLowerCase() === "phones")
+    .slice(0, 5);
 
   return (
     <div className="pt-12 relative">
@@ -35,10 +36,13 @@ const PhonesSlider: React.FC<PhonesSliderProps> = ({
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
           New Phones
         </h2>
-        <a href="#" className="flex items-center gap-1 font-medium text-main">
+        <Link
+          to="/phones"
+          className="flex items-center gap-1 font-medium text-main"
+        >
           View more
           <FaArrowRight />
-        </a>
+        </Link>
       </div>
 
       {loading ? (
@@ -54,9 +58,9 @@ const PhonesSlider: React.FC<PhonesSliderProps> = ({
             slidesPerView={3} // Show 3 products per slide
             pagination={{ clickable: true }}
             navigation={{
-                nextEl: ".custom-swiper-button-next1",
-                prevEl: ".custom-swiper-button-prev1",
-             }}
+              nextEl: ".custom-swiper-button-next1",
+              prevEl: ".custom-swiper-button-prev1",
+            }}
             breakpoints={{
               640: {
                 slidesPerView: 1, // Mobile: show 1 product per slide
@@ -70,10 +74,15 @@ const PhonesSlider: React.FC<PhonesSliderProps> = ({
             }}
           >
             {filteredProducts.map((item) => (
-              <SwiperSlide key={item.id} className="productslider flex justify-center">
+              <SwiperSlide
+                key={item.id}
+                className="productslider flex justify-center"
+              >
                 <ProductCard
                   id={item.id}
-                  image={`http://localhost:4000/productImages${item.images[0].split("productImages")[1]}`}
+                  image={`http://localhost:4000/productImages${
+                    item.images[0].split("productImages")[1]
+                  }`}
                   name={item.name}
                   price={item.price}
                   rating={item.rating}
