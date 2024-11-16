@@ -189,8 +189,8 @@ const LaptopsProductFilter = ({
 
                   {/* clear all Filters */}
                   <button
+                    className="mt-auto bg-primary/75 text-white rounded p-2 hover:bg-primary"
                     onClick={handleClearFilters}
-                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                   >
                     Clear All Filters
                   </button>
@@ -305,10 +305,10 @@ const LaptopsProductFilter = ({
           </select>
         </div>
 
-        {/* clear all Filters */}
+        {/* Clear All Filters Button */}
         <button
+          className="mt-auto bg-primary/75 text-white rounded p-2 hover:bg-primary"
           onClick={handleClearFilters}
-          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
         >
           Clear All Filters
         </button>

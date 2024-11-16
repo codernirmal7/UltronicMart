@@ -165,7 +165,7 @@ const TelevisionProductFilter = ({
 
       {/* Clear All Filters Button */}
       <button
-        className="mt-auto bg-red-500 text-white rounded p-2 hover:bg-red-600"
+        className="mt-auto bg-primary/75 text-white rounded p-2 hover:bg-primary"
         onClick={handleClearFilters}
       >
         Clear All Filters
@@ -268,7 +268,7 @@ const TelevisionProductFilter = ({
 
       {/* Clear All Filters Button */}
       <button
-        className="mt-auto bg-red-500 text-white rounded p-2 hover:bg-red-600"
+        className="mt-auto bg-primary/75 text-white rounded p-2 hover:bg-primary"
         onClick={handleClearFilters}
       >
         Clear All Filters

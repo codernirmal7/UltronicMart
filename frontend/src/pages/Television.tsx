@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import ProductCard2 from "@/components/ProductCard/ProductCard2";
 import { AppDispatch, RootState } from "@/redux";
@@ -13,57 +13,61 @@ export default function Television() {
   const product = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch<AppDispatch>();
   const [navbarOpen, setnavbarOpen] = useState(false);
- // State to hold active filters
- const [activeFilters, setActiveFilters] = useState({
+  // State to hold active filters
+  const [activeFilters, setActiveFilters] = useState({
     brand: "",
     screenSize: "",
     resolution: "",
     panelType: "",
     priceRange: [0, 3000],
   });
-    const handleFilterChange = (updatedFilters: any) => {
-        setActiveFilters((prev) => ({
-          ...prev,
-          ...updatedFilters,
-        }));
-      };
-    
-      // Filter products based on category and active filters
-      const filteredProducts = product.productData.filter((product) => {
-        const matchesCategory = product.category.toLowerCase() === "television";
-        const matchesBrand =
-          !activeFilters.brand ||
-          product.name.toLowerCase().includes(activeFilters.brand.toLowerCase());
-        const matchesPrice =
-          product.price >= activeFilters.priceRange[0] &&
-          product.price <= activeFilters.priceRange[1];
-        const matchesProcessor =
-          !activeFilters.screenSize ||
-          product.name
-            .toLowerCase()
-            .includes(activeFilters.screenSize.toLowerCase());
-        const matchesRAM =
-          !activeFilters.resolution ||
-          product.name.toLowerCase().includes(activeFilters.resolution.toLowerCase());
-        const matchesStorage =
-          !activeFilters.panelType ||
-          product.name.toLowerCase().includes(activeFilters.panelType.toLowerCase());
-        const matchesScreenSize =
-          !activeFilters.screenSize ||
-          product.name
-            .toLowerCase()
-            .includes(activeFilters.screenSize.toLowerCase());
-    
-        return (
-          matchesCategory &&
-          matchesBrand &&
-          matchesPrice &&
-          matchesProcessor &&
-          matchesRAM &&
-          matchesStorage &&
-          matchesScreenSize
-        );
-      });
+  const handleFilterChange = (updatedFilters: any) => {
+    setActiveFilters((prev) => ({
+      ...prev,
+      ...updatedFilters,
+    }));
+  };
+
+  // Filter products based on category and active filters
+  const filteredProducts = product.productData.filter((product) => {
+    const matchesCategory = product.category.toLowerCase() === "television";
+    const matchesBrand =
+      !activeFilters.brand ||
+      product.name.toLowerCase().includes(activeFilters.brand.toLowerCase());
+    const matchesPrice =
+      product.price >= activeFilters.priceRange[0] &&
+      product.price <= activeFilters.priceRange[1];
+    const matchesProcessor =
+      !activeFilters.screenSize ||
+      product.name
+        .toLowerCase()
+        .includes(activeFilters.screenSize.toLowerCase());
+    const matchesRAM =
+      !activeFilters.resolution ||
+      product.name
+        .toLowerCase()
+        .includes(activeFilters.resolution.toLowerCase());
+    const matchesStorage =
+      !activeFilters.panelType ||
+      product.name
+        .toLowerCase()
+        .includes(activeFilters.panelType.toLowerCase());
+    const matchesScreenSize =
+      !activeFilters.screenSize ||
+      product.name
+        .toLowerCase()
+        .includes(activeFilters.screenSize.toLowerCase());
+
+    return (
+      matchesCategory &&
+      matchesBrand &&
+      matchesPrice &&
+      matchesProcessor &&
+      matchesRAM &&
+      matchesStorage &&
+      matchesScreenSize
+    );
+  });
 
   useEffect(() => {
     dispatch(getAllProductsData());
@@ -72,9 +76,7 @@ export default function Television() {
   return (
     <>
       <Navbar />
-      <section
-        className="flex justify-center mt-[4.7rem]"
-      >
+      <section className="flex justify-center mt-[4.7rem]">
         <div className="w-full max-w-screen-xl py-7 px-3">
           <div className="relative">
             {product.loading ? (
@@ -83,7 +85,11 @@ export default function Television() {
               <span>An error occurred.</span>
             ) : (
               <div className="min-[1085px]:flex gap-5">
-                <FaFilter className="filterOpenButton mt-4 fill-primary" size={25} onClick={()=> setnavbarOpen(true)}/>
+                <FaFilter
+                  className="filterOpenButton mt-4 fill-primary"
+                  size={25}
+                  onClick={() => setnavbarOpen(true)}
+                />
                 <div className="w-full max-w-xs hidden min-[1085px]:flex">
                   <TelevisionProductFilter
                     navbarOpen={navbarOpen}
