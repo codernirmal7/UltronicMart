@@ -84,3 +84,9 @@
     padding: 0rem 1rem 1rem 1rem;
   }
 }
+
+@media screen and (min-width : 1085px){
+  .filterOpenButton{
+     display: none;
+  }
+}

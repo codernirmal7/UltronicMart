@@ -1,18 +1,66 @@
+import React, { useState } from "react";
+import LaptopsProductFilter from "@/components/FilterProduct/LaptopsProductFilter";
 import Navbar from "@/components/Navbar/Navbar";
-import ProductCard from "@/components/ProductCard/ProductCard";
 import ProductCard2 from "@/components/ProductCard/ProductCard2";
 import { AppDispatch, RootState } from "@/redux";
 import { getAllProductsData } from "@/redux/slices/productSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { FaFilter } from "react-icons/fa6";
 
 export default function Laptops() {
   const product = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch<AppDispatch>();
-  const filteredProducts = product.productData.filter(
-    (product) => product.category.toLowerCase() === "laptops"
-  );
+  const [navbarOpen, setnavbarOpen] = useState(false);
+
+  // State to hold active filters
+  const [activeFilters, setActiveFilters] = useState({
+    brand: "",
+    priceRange: [0, 2000], // Default range
+    processor: "",
+    ram: "",
+    storage: "",
+    screenSize: "",
+  });
+
+  // Filter products based on category and active filters
+  const filteredProducts = product.productData.filter((product) => {
+    const matchesCategory = product.category.toLowerCase() === "laptops";
+    const matchesBrand =
+      !activeFilters.brand ||
+      product.name.toLowerCase().includes(activeFilters.brand.toLowerCase());
+    const matchesPrice =
+      product.price >= activeFilters.priceRange[0] &&
+      product.price <= activeFilters.priceRange[1];
+    const matchesProcessor =
+      !activeFilters.processor ||
+      product.name
+        .toLowerCase()
+        .includes(activeFilters.processor.toLowerCase());
+    const matchesRAM =
+      !activeFilters.ram ||
+      product.name.toLowerCase().includes(activeFilters.ram.toLowerCase());
+    const matchesStorage =
+      !activeFilters.storage ||
+      product.name.toLowerCase().includes(activeFilters.storage.toLowerCase());
+    const matchesScreenSize =
+      !activeFilters.screenSize ||
+      product.name
+        .toLowerCase()
+        .includes(activeFilters.screenSize.toLowerCase());
+
+    return (
+      matchesCategory &&
+      matchesBrand &&
+      matchesPrice &&
+      matchesProcessor &&
+      matchesRAM &&
+      matchesStorage &&
+      matchesScreenSize
+    );
+  });
+
   useEffect(() => {
     dispatch(getAllProductsData());
   }, []);
@@ -20,26 +68,40 @@ export default function Laptops() {
   return (
     <>
       <Navbar />
-      <section id="home" className="hero-slider flex justify-center mt-24">
-        <div className="w-full max-w-screen-xl py-7 px-3 ">
+      <section
+        id="home"
+        className="hero-slider flex justify-center mt-[4.7rem]"
+      >
+        <div className="w-full max-w-screen-xl py-7 px-3">
           <div className="relative">
             {product.loading ? (
               <span>Loading...</span>
             ) : product.error ? (
               <span>An error occurred.</span>
             ) : (
-              <div className="w-full py-5 grid grid-cols-1 gap-5">
-                {filteredProducts.map((item) => (
-                  <ProductCard2
-                    id={item.id}
-                    image={`http://localhost:4000/productImages${
-                      item.images[0].split("productImages")[1]
-                    }`}
-                    name={item.name}
-                    price={item.price}
-                    rating={item.rating}
+              <div className="min-[1085px]:flex gap-5">
+                <FaFilter className="filterOpenButton mt-4 fill-primary" size={25} onClick={()=> setnavbarOpen(true)}/>
+                <div className="w-full max-w-xs hidden min-[1085px]:flex">
+                  <LaptopsProductFilter
+                    navbarOpen={navbarOpen}
+                    setnavbarOpen={setnavbarOpen}
+                    onFilterChange={(filters) => setActiveFilters(filters)}
                   />
-                ))}
+                </div>
+                <div className="w-full py-8 grid grid-cols-1 gap-5">
+                  {filteredProducts.map((item) => (
+                    <ProductCard2
+                      key={item.id}
+                      id={item.id}
+                      image={`http://localhost:4000/productImages${
+                        item.images[0].split("productImages")[1]
+                      }`}
+                      name={item.name}
+                      price={item.price}
+                      rating={item.rating}
+                    />
+                  ))}
+                </div>
               </div>
             )}
           </div>
