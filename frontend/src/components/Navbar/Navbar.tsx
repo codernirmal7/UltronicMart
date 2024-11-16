@@ -247,7 +247,7 @@ export default function Navbar() {
           </nav>
         </header>
         <Transition.Root show={cartOpen} as={Fragment}>
-          <Dialog className="relative z-10" onClose={setcartOpen}>
+          <Dialog className="relative z-50" onClose={setcartOpen}>
             <Transition.Child
               as={Fragment}
               enter="ease-in-out duration-500"
