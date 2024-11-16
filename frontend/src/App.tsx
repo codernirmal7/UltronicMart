@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import "swiper/css";
 import "swiper/css/pagination";
 import Laptops from "./pages/Laptops";
+import Phones from "./pages/Phones";
 
 
 
@@ -65,7 +66,14 @@ const router = createBrowserRouter([
       </>
     ),
   },
- 
+  {
+    path: "/phones",
+    element: (
+      <>
+        <Phones />
+      </>
+    ),
+  },
 ]);
 
 function App() {
