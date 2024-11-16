@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import LaptopsProductFilter from "@/components/FilterProduct/LaptopsProductFilter";
 import Navbar from "@/components/Navbar/Navbar";
 import ProductCard2 from "@/components/ProductCard/ProductCard2";
@@ -69,8 +69,7 @@ export default function Laptops() {
     <>
       <Navbar />
       <section
-        id="home"
-        className="hero-slider flex justify-center mt-[4.7rem]"
+        className="flex justify-center mt-[4.7rem]"
       >
         <div className="w-full max-w-screen-xl py-7 px-3">
           <div className="relative">

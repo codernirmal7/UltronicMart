@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import LaptopsProductFilter from "@/components/FilterProduct/LaptopsProductFilter";
+import  { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import ProductCard2 from "@/components/ProductCard/ProductCard2";
 import { AppDispatch, RootState } from "@/redux";
