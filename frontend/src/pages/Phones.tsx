@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import ProductCard2 from "@/components/ProductCard/ProductCard2";
 import { AppDispatch, RootState } from "@/redux";
@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
 import PhonesProductFilter from "@/components/FilterProduct/PhonesProductFilter";
+import { Link } from "react-router-dom";
 
 export default function Phones() {
   const product = useSelector((state: RootState) => state.product);
@@ -68,9 +69,7 @@ export default function Phones() {
   return (
     <>
       <Navbar />
-      <section
-        className="flex justify-center mt-[4.7rem]"
-      >
+      <section className="flex justify-center mt-[4.7rem]">
         <div className="w-full max-w-screen-xl py-7 px-3">
           <div className="relative">
             {product.loading ? (
@@ -79,7 +78,11 @@ export default function Phones() {
               <span>An error occurred.</span>
             ) : (
               <div className="min-[1085px]:flex gap-5">
-                <FaFilter className="filterOpenButton mt-4 fill-primary" size={25} onClick={()=> setnavbarOpen(true)}/>
+                <FaFilter
+                  className="filterOpenButton mt-4 fill-primary"
+                  size={25}
+                  onClick={() => setnavbarOpen(true)}
+                />
                 <div className="w-full max-w-xs hidden min-[1085px]:flex">
                   <PhonesProductFilter
                     navbarOpen={navbarOpen}
@@ -89,16 +92,21 @@ export default function Phones() {
                 </div>
                 <div className="w-full py-8 grid grid-cols-1 gap-5">
                   {filteredProducts.map((item) => (
-                    <ProductCard2
-                      key={item.id}
-                      id={item.id}
-                      image={`http://localhost:4000/productImages${
-                        item.images[0].split("productImages")[1]
-                      }`}
-                      name={item.name}
-                      price={item.price}
-                      rating={item.rating}
-                    />
+                    <Link
+                      to={`/product/${item._id}`}
+                      className="block"
+                      key={item._id}
+                    >
+                      <ProductCard2
+                        id={item._id}
+                        image={`http://localhost:4000/productImages${
+                          item.images[0].split("productImages")[1]
+                        }`}
+                        name={item.name}
+                        price={item.price}
+                        rating={item.rating}
+                      />
+                    </Link>
                   ))}
                 </div>
               </div>

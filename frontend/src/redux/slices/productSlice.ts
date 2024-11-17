@@ -3,7 +3,7 @@ import axios from "axios";
 
 //define the type of product Data
 type ProductDataType = {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   category: string;

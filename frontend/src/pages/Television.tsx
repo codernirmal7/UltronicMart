@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
 import TelevisionProductFilter from "@/components/FilterProduct/TelevisionProductFilter";
+import { Link } from "react-router-dom";
 
 export default function Television() {
   const product = useSelector((state: RootState) => state.product);
@@ -99,16 +100,21 @@ export default function Television() {
                 </div>
                 <div className="w-full py-8 grid grid-cols-1 gap-5">
                   {filteredProducts.map((item) => (
-                    <ProductCard2
-                      key={item.id}
-                      id={item.id}
-                      image={`http://localhost:4000/productImages${
-                        item.images[0].split("productImages")[1]
-                      }`}
-                      name={item.name}
-                      price={item.price}
-                      rating={item.rating}
-                    />
+                    <Link
+                      to={`/product/${item._id}`}
+                      className="block"
+                      key={item._id}
+                    >
+                      <ProductCard2
+                        id={item._id}
+                        image={`http://localhost:4000/productImages${
+                          item.images[0].split("productImages")[1]
+                        }`}
+                        name={item.name}
+                        price={item.price}
+                        rating={item.rating}
+                      />
+                    </Link>
                   ))}
                 </div>
               </div>

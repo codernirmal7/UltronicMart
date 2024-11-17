@@ -13,6 +13,7 @@ import "swiper/css/pagination";
 import Laptops from "./pages/Laptops";
 import Phones from "./pages/Phones";
 import Television from "./pages/Television";
+import ProductDetail from "./pages/ProductDetail";
 
 
 
@@ -80,6 +81,14 @@ const router = createBrowserRouter([
     element: (
       <>
         <Television />
+      </>
+    ),
+  },
+  {
+    path: "/product/:id",
+    element: (
+      <>
+        <ProductDetail />
       </>
     ),
   },
