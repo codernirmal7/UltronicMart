@@ -6,7 +6,7 @@ import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
 
 type Product = {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   rating: number;
@@ -75,18 +75,24 @@ const PhonesSlider: React.FC<PhonesSliderProps> = ({
           >
             {filteredProducts.map((item) => (
               <SwiperSlide
-                key={item.id}
+                key={item._id}
                 className="productslider flex justify-center"
               >
-                <ProductCard
-                  id={item.id}
-                  image={`http://localhost:4000/productImages${
-                    item.images[0].split("productImages")[1]
-                  }`}
-                  name={item.name}
-                  price={item.price}
-                  rating={item.rating}
-                />
+                <Link
+                  to={`/product/${item._id}`}
+                  className="block"
+                  key={item._id}
+                >
+                  <ProductCard
+                    id={item._id}
+                    image={`http://localhost:4000/productImages${
+                      item.images[0].split("productImages")[1]
+                    }`}
+                    name={item.name}
+                    price={item.price}
+                    rating={item.rating}
+                  />
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>
