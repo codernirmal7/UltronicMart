@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
-import { AiFillStar } from "react-icons/ai";
 import Navbar from "@/components/Navbar/Navbar";
 import { FaStar } from "react-icons/fa6";
 import { Lens } from "@/components/ui/lens";
-import { motion } from "framer-motion";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
