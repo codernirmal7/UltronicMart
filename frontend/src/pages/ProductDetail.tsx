@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux";
+import { RootState } from "@/redux";
 import Navbar from "@/components/Navbar/Navbar";
 import { FaStar } from "react-icons/fa6";
 import { Lens } from "@/components/ui/lens";
