@@ -55,23 +55,13 @@ const PhonesSlider: React.FC<PhonesSliderProps> = ({
           <Swiper
             modules={[Navigation]}
             spaceBetween={10}
-            slidesPerView={3} // Show 3 products per slide
+            slidesPerView={1} // Show 1 products per slide
             pagination={{ clickable: true }}
             navigation={{
               nextEl: ".custom-swiper-button-next1",
               prevEl: ".custom-swiper-button-prev1",
             }}
-            breakpoints={{
-              640: {
-                slidesPerView: 1, // Mobile: show 1 product per slide
-              },
-              768: {
-                slidesPerView: 2, // Tablet: show 2 products per slide
-              },
-              1024: {
-                slidesPerView: 3, // Desktop: show 3 products per slide
-              },
-            }}
+           
           >
             {filteredProducts.map((item) => (
               <SwiperSlide

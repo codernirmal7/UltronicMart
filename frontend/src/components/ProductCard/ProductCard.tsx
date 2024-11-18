@@ -35,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </a>
 
       {/* Content Section */}
-      <div className="px-5 py-4 flex flex-col justify-between absolute bottom-0">
+      <div className="w-full px-5 py-4 flex flex-col justify-between absolute bottom-0">
         {/* Product Title */}
         <a href="#" className="text-main hover:underline">
           <h5 className="text-md font-medium text-slate-900 hover:text-main h-auto">
