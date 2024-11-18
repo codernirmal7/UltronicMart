@@ -47,6 +47,49 @@ const initialState: AuthState = {
   error: null,
 };
 
+interface WriteCommentPayload {
+  productId: string | undefined;
+  email: string;
+  rating: number;
+  comment: string;
+}
+
+interface WriteCommentResponse {
+  message: string;
+}
+
+// Create an async thunk for write comment on product
+export const addReview = createAsyncThunk<
+  WriteCommentResponse, // The type of data that will be returned from the async action
+  WriteCommentPayload, // The type of the arguments passed to the action
+  { rejectValue: string } // You can also handle errors in a specific way using rejectValue
+>("/api/v1/product/comment", async (payload: WriteCommentPayload, thunkAPI) => {
+  try {
+    const response = await axios.post(
+      `/api/v1/product/comment`,
+      payload
+    );
+    return response.data; // Returning the data as the resolved value
+  } catch (error: unknown) {
+    // Handle errors with a proper fallback message
+    if (axios.isAxiosError(error)) {
+      // If it's an Axios error, we can safely access `error.response`
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "An unexpected error occurred"
+      );
+    } else if (error instanceof Error) {
+      // If it's a general Error object
+      return thunkAPI.rejectWithValue(
+        error.message || "An unknown error occurred"
+      );
+    } else {
+      // Fallback for unknown error types
+      return thunkAPI.rejectWithValue("An unknown error occurred");
+    }
+  }
+});
+
+
 // Create an async thunk for checking if the sign out
 export const getAllProductsData = createAsyncThunk(
   "/api/v1/product/get", // action type (the first argument)

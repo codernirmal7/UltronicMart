@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "@/redux";
+import { AppDispatch, RootState } from "@/redux";
 import Navbar from "@/components/Navbar/Navbar";
 import { FaStar } from "react-icons/fa6";
 import { Lens } from "@/components/ui/lens";
+import CustomerReviews from "@/components/CustomerReviews/CustomerReviews";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +15,8 @@ const ProductDetails: React.FC = () => {
     state.product.productData.find((item) => item._id === id)
   );
   const descriptionItems = product?.description.split("\\n");
+ 
+
 
   if (!product) {
     return (
@@ -30,8 +33,8 @@ const ProductDetails: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-white min-h-screen my-24">
-        <div className="max-w-screen-xl mx-auto px-4 md:py-12">
+      <div className="bg-white min-h-screen my-24 max-w-screen-xl mx-auto ">
+        <div className="px-4 md:py-12">
           {/* Product Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left Side - Image Gallery */}
@@ -117,6 +120,7 @@ const ProductDetails: React.FC = () => {
             </div>
           </div>
         </div>
+        <CustomerReviews productData={product}/>
       </div>
     </>
   );
