@@ -1,5 +1,6 @@
 import React from "react";
 import { FaStar } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 type ProductCardProps = {
   id: string;
@@ -7,6 +8,7 @@ type ProductCardProps = {
   name: string;
   price: number;
   rating: number;
+  handelAddToCart : ()=> void;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -15,6 +17,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   name,
   price,
   rating,
+  handelAddToCart
 }) => {
   return (
     <div
@@ -23,25 +26,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
       style={{ height: '450px' }} // Set a fixed height for all cards
     >
       {/* Image Section */}
-      <a
+      <Link
         className="relative flex justify-center items-center h-60 overflow-hidden rounded-xl"
-        href="#"
+        to={`/product/${id}`}
       >
         <img
           className="object-contain w-full h-full"
           src={image}
           alt="product image"
         />
-      </a>
+      </Link>
 
       {/* Content Section */}
       <div className="w-full px-5 py-4 flex flex-col justify-between absolute bottom-0">
         {/* Product Title */}
-        <a href="#" className="text-main hover:underline">
+        <Link to={`/product/${id}`} className="text-main hover:underline">
           <h5 className="text-md font-medium text-slate-900 hover:text-main h-auto">
             {name}
           </h5>
-        </a>
+        </Link>
 
         {/* Price and Rating Section */}
         <div className="mt-2 mb-4 flex items-center justify-between">
@@ -63,9 +66,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* Add to Cart Button */}
-        <a
-          href="#"
+        <button
           className="flex items-center justify-center rounded-md bg-primary/75 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-4 focus:ring-blue-300"
+          onClick={handelAddToCart}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +85,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             />
           </svg>
           Add to cart
-        </a>
+        </button>
       </div>
     </div>
   );

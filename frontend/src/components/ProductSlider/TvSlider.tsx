@@ -4,6 +4,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard from "../ProductCard/ProductCard"; // Assuming ProductCard is in the same folder
 import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "@/redux";
+import { addProductToCart } from "@/redux/slices/productSlice";
+import { useSelector } from "react-redux";
 
 type Product = {
   _id: string;
@@ -25,6 +29,9 @@ const TvSlider: React.FC<TvSliderProps> = ({ productData, loading, error }) => {
   const filteredProducts = productData
     .filter((product) => product.category.toLowerCase() === "television")
     .slice(0, 5);
+
+  const dispatch = useDispatch<AppDispatch>()
+  const user = useSelector((state : RootState)=> state.auth)
 
   return (
     <div className="pt-12 relative">
@@ -64,12 +71,8 @@ const TvSlider: React.FC<TvSliderProps> = ({ productData, loading, error }) => {
                 key={item._id}
                 className="productslider flex justify-center"
               >
-                <Link
-                  to={`/product/${item._id}`}
-                  className="block"
-                  key={item._id}
-                >
                   <ProductCard
+                  key={item._id}
                     id={item._id}
                     image={`http://localhost:4000/productImages${
                       item.images[0].split("productImages")[1]
@@ -77,8 +80,9 @@ const TvSlider: React.FC<TvSliderProps> = ({ productData, loading, error }) => {
                     name={item.name}
                     price={item.price}
                     rating={item.rating}
+                    handelAddToCart={()=> dispatch(addProductToCart({productId :  item._id , quantity : 1 , userId : user.userData.message.id}))}
+
                   />
-                </Link>
               </SwiperSlide>
             ))}
           </Swiper>

@@ -12,6 +12,8 @@ import brandName from "@/constant/BrandName";
 import SearchSmallModel from "../Search/SearchSmallModel";
 import { FaShoppingCart } from "react-icons/fa";
 import Cart from "../Cart/Cart";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux";
 
 const navigation = {
   pages: [
@@ -26,6 +28,8 @@ const navigation = {
 export default function Navbar() {
   const [navbarOpen, setnavbarOpen] = useState(false);
   const [cartOpen, setcartOpen] = useState(false);
+  const user = useSelector((state : RootState)=> state.auth)
+
 
   const [isUserInfoVisible, setIsUserInfoVisible] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -194,7 +198,7 @@ export default function Navbar() {
                     >
                       <div className="indicator relative w-[3.6rem] h-14 flex items-center ">
                         <span className="bg-accent absolute text-white mt-[6px] right-0 top-0 h-6 w-6 text-center rounded-full">
-                          2
+                          {user.userData?.message?.cart.length}
                         </span>
                         <div className="flex">
                           <a
