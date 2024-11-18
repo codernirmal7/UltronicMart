@@ -8,7 +8,8 @@ import {
   signUp,
   verifyEmail,
   userData,
-  loggedInMessage
+  loggedInMessage,
+  getUserCartAndPaymentHistory
 } from "../controllers/auth.controllers";
 import verifyToken from "../middlewares/verifyAccessToken.middleware";
 
@@ -27,5 +28,7 @@ authRouter.route("/reset-password/:token").post(resetPassword);
 authRouter.route("/sign-out").get(signOut);
 authRouter.route("/user-data").get(verifyToken, userData);
 authRouter.route("/islogged-in").get(verifyToken,loggedInMessage)
+
+authRouter.route("/user-activities").post(getUserCartAndPaymentHistory)
 
 export default authRouter;

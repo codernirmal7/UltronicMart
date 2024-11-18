@@ -361,6 +361,32 @@ const userData = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getUserCartAndPaymentHistory = async (req : Request , res : Response)=>{
+  const {email} = req.body
+  try {
+    const data = await UserModel.findOne({email},{
+        password: false,
+        confirmPassword: false,
+        resetPasswordToken: false,
+        resetPasswordTokenExpiresAt: false,
+        verificationToken: false,
+        verificationTokenExpiresAt: false,
+        adminAt : false,
+        email : false,
+        _id : false,
+        __v: false,
+        createdAt : false,
+        updatedAt : false,
+        accountDisabledAt : false
+      }
+    )
+    res.status(200).json({ message: data });
+
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+}
+
 const loggedInMessage = async (req: Request, res: Response): Promise<void> => {
   res.status(200).json({ message: "Your are Logged." });
 };
@@ -374,5 +400,6 @@ export {
   resetPassword,
   signOut,
   userData,
-  loggedInMessage
+  loggedInMessage,
+  getUserCartAndPaymentHistory
 };
