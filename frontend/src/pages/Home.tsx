@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import LaptopSlider from "@/components/ProductSlider/LaptopSlider";
 import PhonesSlider from "@/components/ProductSlider/Phones";
 import TvSlider from "@/components/ProductSlider/TvSlider";
+import Footer from "@/components/Footer/Footer";
 
 const slides = [
   {
@@ -144,6 +145,7 @@ export default function Home() {
             <TvSlider error={error} loading={loading} productData={productData}/>
         </div>
       </section>
+      <Footer/>
     </>
   );
 }
