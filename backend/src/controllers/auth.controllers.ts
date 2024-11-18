@@ -223,7 +223,10 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
         user._id,
         user.email,
         user.lastTimeSignIn,
-        user.createdAt
+        user.createdAt,
+        user.purchaseHistory,
+        user.cart,
+        user.adminAt
       ),
       {
         httpOnly: true,

@@ -3,13 +3,15 @@ import jwt from "jsonwebtoken"
 import "dotenv/config"
 
 
-const generateAccessToken = (_id : ObjectId | unknown, _email : string , _lastTimeSignIn :Date, _accountCreatedAt : Date) :string=> {
+const generateAccessToken = (_id : ObjectId | unknown, _email : string , _lastTimeSignIn :Date, _accountCreatedAt : Date , _purchaseHistory : any , _cart : any , _adminAt : Date | null) :string=> {
     const payload = {
       id: _id,
       email: _email,
       lastTimeSignIn: _lastTimeSignIn,
       accountCreatedAt: _accountCreatedAt,
-      
+      purchaseHistory : _purchaseHistory,
+      cart : _cart,
+      adminAt : _adminAt
     };
   
     if (!process.env.JWT_PRIVATE_KEY) {
