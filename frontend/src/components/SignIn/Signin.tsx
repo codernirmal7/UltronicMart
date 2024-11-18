@@ -2,13 +2,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { AppDispatch } from "@/redux";
-import { signInAuth } from "@/redux/slices/authSlice";
+import { getUserData, signInAuth } from "@/redux/slices/authSlice";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { isLoggedIn as isLoggedInAuth } from '@/redux/slices/authSlice';
+
 
 type SignInProps = {
   isSignInState: string;
@@ -62,6 +64,10 @@ const Signin: React.FC<SignInProps> = ({
         show: true,
         message: "Sign In successful. Redirecting to the home page....",
       });
+      dispatch(isLoggedInAuth());
+      dispatch(getUserData("user-data"));
+
+
       setTimeout(()=>{
         navigate(`/`, { replace: true });
       },2000)
