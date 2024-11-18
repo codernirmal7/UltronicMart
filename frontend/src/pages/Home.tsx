@@ -13,6 +13,7 @@ import LaptopSlider from "@/components/ProductSlider/LaptopSlider";
 import PhonesSlider from "@/components/ProductSlider/Phones";
 import TvSlider from "@/components/ProductSlider/TvSlider";
 import Footer from "@/components/Footer/Footer";
+import Faq from "@/components/Faq/FaqItem";
 
 const slides = [
   {
@@ -143,6 +144,7 @@ export default function Home() {
            <PhonesSlider error={error} loading={loading} productData={productData}/>
             {/*Product tv  preview */}
             <TvSlider error={error} loading={loading} productData={productData}/>
+            <Faq/>
         </div>
       </section>
       <Footer/>
