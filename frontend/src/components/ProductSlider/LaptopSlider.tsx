@@ -4,11 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard from "../ProductCard/ProductCard"; // Assuming ProductCard is in the same folder
 import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "@/redux";
-import { useSelector } from "react-redux";
-import { addProductToCart } from "@/redux/slices/productSlice";
-import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 
 type Product = {
   _id: string;
@@ -35,27 +30,6 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
   const filteredProducts = productData
     .filter((product) => product.category.toLowerCase() === "laptops")
     .slice(0, 5);
-  const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.auth);
-
-  const handelAddToCart = async (item: any) => {
-    try {
-     await dispatch(
-        addProductToCart({
-          productId: item._id,
-          quantity: 1,
-          userId: user.userData.message.id,
-        })
-      ).unwrap();
-
-      //on Success
-      dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
-      );
-    } catch (error) {
-      console.log(error)
-    }
-  };
 
   return (
     <div className="pt-12 relative">
@@ -103,7 +77,6 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
                   price={item.price}
                   rating={item.rating}
                   stock={item.stock}
-                  handelAddToCart={() => handelAddToCart(item)}
                 />
               </SwiperSlide>
             ))}

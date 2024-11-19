@@ -2,19 +2,17 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import ProductCard2 from "@/components/ProductCard/ProductCard2";
 import { AppDispatch, RootState } from "@/redux";
-import { addProductToCart, getAllProductsData } from "@/redux/slices/productSlice";
+import { getAllProductsData } from "@/redux/slices/productSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
 import TelevisionProductFilter from "@/components/FilterProduct/TelevisionProductFilter";
-import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 
 export default function Television() {
   const product = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch<AppDispatch>();
   const [navbarOpen, setnavbarOpen] = useState(false);
-  const user = useSelector((state: RootState) => state.auth);
 
   // State to hold active filters
   const [activeFilters, setActiveFilters] = useState({
@@ -71,24 +69,7 @@ export default function Television() {
   }, []);
 
 
-  const handelAddToCart = async (item: any) => {
-    try {
-     await dispatch(
-        addProductToCart({
-          productId: item._id,
-          quantity: 1,
-          userId: user.userData.message.id,
-        })
-      ).unwrap();
-
-      //on Success
-      dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
-      );
-    } catch (error) {
-      console.log(error)
-    }
-  };
+  
 
   return (
     <>
@@ -126,7 +107,6 @@ export default function Television() {
                         price={item.price}
                         rating={item.rating}
                         stock={item.stock}
-                        handelAddToCart={() => handelAddToCart(item)}
 
                       />
                   ))}

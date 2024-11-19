@@ -1,5 +1,10 @@
+import { AppDispatch, RootState } from "@/redux";
+import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
+import { addProductToCart } from "@/redux/slices/productSlice";
 import React from "react";
 import { FaStar } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 type ProductCardProps = {
@@ -9,7 +14,6 @@ type ProductCardProps = {
   price: number;
   rating: number;
   stock: number;
-  handelAddToCart: () => void;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -19,8 +23,30 @@ const ProductCard: React.FC<ProductCardProps> = ({
   price,
   rating,
   stock,
-  handelAddToCart,
 }) => {
+
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.auth);
+
+  const handelAddToCart = async () => {
+    try {
+     await dispatch(
+        addProductToCart({
+          productId: id,
+          quantity: 1,
+          userId: user.userData.message.id,
+        })
+      ).unwrap();
+
+      //on Success
+      dispatch(
+        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+      );
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   return (
     <div
       className="relative flex flex-col w-full max-w-xl max-[580px]:max-w-xl border border-gray-100 bg-white shadow-md rounded-lg overflow-hidden"
