@@ -1,10 +1,13 @@
 import { AppDispatch, RootState } from "@/redux";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
+import { addProductToCart } from "@/redux/slices/productSlice";
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { FaCirclePlus, FaXmark } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import SuccessAlert from "../alerts/SuccessAlert";
+import ErrorAlert from "../alerts/ErrorAlert";
 
 type CartProps = {
   cartOpen: boolean;
@@ -19,6 +22,18 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
       state.auth.userCartAndPaymentHistory?.message?.cart || []
   );
   const products = useSelector((state: RootState) => state.product.productData);
+
+  const [isShowSuccessAlert, setIsShowSuccessAlert] = useState({
+    show: false,
+    message: "",
+  });
+  const [isShowErrorAlert, setIsShowErrorAlert] = useState<{
+    show: boolean;
+    message: string | null;
+  }>({
+    show: false,
+    message: "",
+  });
 
   useEffect(() => {
     if (user.userData.message?.email) {
@@ -48,6 +63,45 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
       total + (item?.price || 0) * (item?.quantity || 1),
     0
   );
+
+  const handelIncreaseQuantity = async (id: string) => {
+    try {
+      await dispatch(
+        addProductToCart({
+          productId: id,
+          quantity: 1,
+          userId: user.userData.message.id,
+        })
+      ).unwrap();
+
+      //on Success
+      dispatch(
+        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+      );
+      setIsShowSuccessAlert({
+        show: true,
+        message: "Quantity added successful.",
+      });
+    } catch (error) {
+      console.log(error);
+      if (typeof error === "string") {
+        setIsShowErrorAlert({
+          show: true,
+          message: error, // This will be the error string from rejectWithValue
+        });
+      } else if (error instanceof Error) {
+        setIsShowErrorAlert({
+          show: true,
+          message: error.message,
+        });
+      } else {
+        setIsShowErrorAlert({
+          show: true,
+          message: "An unexpected error occurred.",
+        });
+      }
+    }
+  };
 
   return (
     <Transition.Root show={cartOpen} as={Fragment}>
@@ -115,9 +169,15 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                                   <p className="text-gray-500">
                                     Qty: {product?.quantity}
                                   </p>
-                                  <FaCirclePlus size={25} className="fill-primary cursor-pointer"/>
+                                  <FaCirclePlus
+                                    size={25}
+                                    className="fill-primary cursor-pointer"
+                                    onClick={() =>
+                                      handelIncreaseQuantity(product?._id)
+                                    }
+                                  />
                                   <button
-                                    className="text-primary hover:text-red-500"
+                                    className="text-primary hover:text-red-500 select-none"
                                     onClick={() => {
                                       /* Add remove logic */
                                     }}
@@ -152,7 +212,17 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
             </div>
           </div>
         </div>
+         {/* Success and Error Alerts */}
+      <SuccessAlert
+        isShowSuccessAlert={isShowSuccessAlert}
+        setIsShowSuccessAlert={setIsShowSuccessAlert}
+      />
+      <ErrorAlert
+        isShowErrorAlert={isShowErrorAlert}
+        setIsShowErrorAlert={setIsShowErrorAlert}
+      />
       </Dialog>
+     
     </Transition.Root>
   );
 };
