@@ -125,6 +125,10 @@ const ProductDetails: React.FC = () => {
                   {product.rating}
                 </span>
               </div>
+             <div className="h-7">
+             <span className="font-medium text-base">Stock available : {product.stock}</span>
+
+             </div>
               {/* Highlights */}
               <h2 className="text-xl font-medium text-gray-700 mt-6">
                 Key Features
