@@ -3,17 +3,20 @@ import LaptopsProductFilter from "@/components/FilterProduct/LaptopsProductFilte
 import Navbar from "@/components/Navbar/Navbar";
 import ProductCard2 from "@/components/ProductCard/ProductCard2";
 import { AppDispatch, RootState } from "@/redux";
-import { getAllProductsData } from "@/redux/slices/productSlice";
+import { addProductToCart, getAllProductsData } from "@/redux/slices/productSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 
 export default function Laptops() {
   const product = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch<AppDispatch>();
   const [navbarOpen, setnavbarOpen] = useState(false);
+  const user = useSelector((state: RootState) => state.auth);
+
 
   // State to hold active filters
   const [activeFilters, setActiveFilters] = useState({
@@ -66,6 +69,26 @@ export default function Laptops() {
     dispatch(getAllProductsData());
   }, []);
 
+
+  const handelAddToCart = async (item: any) => {
+    try {
+     await dispatch(
+        addProductToCart({
+          productId: item._id,
+          quantity: 1,
+          userId: user.userData.message.id,
+        })
+      ).unwrap();
+
+      //on Success
+      dispatch(
+        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+      );
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -92,11 +115,6 @@ export default function Laptops() {
                 </div>
                 <div className="w-full py-8 grid grid-cols-1 gap-5">
                   {filteredProducts.map((item) => (
-                    <Link
-                      to={`/product/${item._id}`}
-                      className="block"
-                      key={item._id}
-                    >
                       <ProductCard2
                         id={item._id}
                         image={`http://localhost:4000/productImages${
@@ -105,8 +123,9 @@ export default function Laptops() {
                         name={item.name}
                         price={item.price}
                         rating={item.rating}
+                        handelAddToCart={() => handelAddToCart(item)}
+
                       />
-                    </Link>
                   ))}
                 </div>
               </div>

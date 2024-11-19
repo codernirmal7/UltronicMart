@@ -4,6 +4,7 @@ import axios from "axios";
 // Define the types for the state
 interface AuthState {
   userData: any;
+  userCartAndPaymentHistory : any;
   isLoggedIn: boolean;
   loading: boolean;
   error: string | null;
@@ -12,6 +13,7 @@ interface AuthState {
 // Define the initial state
 const initialState: AuthState = {
   userData: [],
+  userCartAndPaymentHistory : [],
   loading: false,
   error: null,
   isLoggedIn: false,
@@ -87,6 +89,15 @@ interface ResetPasswordPayload {
 
 interface ResetPasswordResponse {
   message: string;
+}
+
+interface GetUserCartAndPaymentHistoryPayload {
+  email : string;
+}
+
+interface GetUserCartAndPaymentHistoryResponse {
+  cart : any;
+  paymentHistory : any;
 }
 
 // Create an async thunk for signing up
@@ -238,6 +249,33 @@ export const getUserData = createAsyncThunk<
   }
 });
 
+export const getUserCartAndPaymentHistory = createAsyncThunk<
+  GetUserCartAndPaymentHistoryResponse, 
+  GetUserCartAndPaymentHistoryPayload, 
+  { rejectValue: string }
+>("/api/v1/auth/activities", async (payload: GetUserCartAndPaymentHistoryPayload, thunkAPI) => {
+  try {
+    const response = await axios.post("/api/v1/auth/user-activities", payload);
+    return response.data; 
+  } catch (error: unknown) {
+    // Handle errors with a proper fallback message
+    if (axios.isAxiosError(error)) {
+      // If it's an Axios error, we can safely access `error.response`
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "An unexpected error occurred"
+      );
+    } else if (error instanceof Error) {
+      // If it's a general Error object
+      return thunkAPI.rejectWithValue(
+        error.message || "An unknown error occurred"
+      );
+    } else {
+      // Fallback for unknown error types
+      return thunkAPI.rejectWithValue("An unknown error occurred");
+    }
+  }
+});
+
 // Create an async thunk for checking if the user is logged in
 export const isLoggedIn = createAsyncThunk(
   "/api/v1/auth/isLoggedIn", // action type (the first argument)
@@ -370,6 +408,19 @@ const authSlice = createSlice({
         state.isLoggedIn = action.payload;
       })
       .addCase(isLoggedIn.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "An error occured.";
+      })
+      .addCase(getUserCartAndPaymentHistory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUserCartAndPaymentHistory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.userCartAndPaymentHistory = action.payload;
+      })
+      .addCase(getUserCartAndPaymentHistory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "An error occured.";
       });

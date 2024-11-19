@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/redux";
 import { useSelector } from "react-redux";
 import { addProductToCart } from "@/redux/slices/productSlice";
+import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 
 type Product = {
   _id: string;
@@ -33,8 +34,27 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
   const filteredProducts = productData
     .filter((product) => product.category.toLowerCase() === "laptops")
     .slice(0, 5);
-    const dispatch = useDispatch<AppDispatch>()
-  const user = useSelector((state : RootState)=> state.auth)
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.auth);
+
+  const handelAddToCart = async (item: any) => {
+    try {
+     await dispatch(
+        addProductToCart({
+          productId: item._id,
+          quantity: 1,
+          userId: user.userData.message.id,
+        })
+      ).unwrap();
+
+      //on Success
+      dispatch(
+        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+      );
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   return (
     <div className="pt-12 relative">
@@ -67,26 +87,22 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
               nextEl: ".custom-swiper-button-next1",
               prevEl: ".custom-swiper-button-prev1",
             }}
-           
           >
             {filteredProducts.map((item) => (
               <SwiperSlide
                 key={item._id}
                 className="productslider flex justify-center"
               >
-              
-                  <ProductCard
-                    id={item._id}
-                    image={`http://localhost:4000/productImages${
-                      item.images[0].split("productImages")[1]
-                    }`}
-                    name={item.name}
-                    price={item.price}
-                    rating={item.rating}
-                    handelAddToCart={()=> dispatch(addProductToCart({productId :  item._id , quantity : 1 , userId : user.userData.message.id}))}
-
-                  />
-             
+                <ProductCard
+                  id={item._id}
+                  image={`http://localhost:4000/productImages${
+                    item.images[0].split("productImages")[1]
+                  }`}
+                  name={item.name}
+                  price={item.price}
+                  rating={item.rating}
+                  handelAddToCart={() => handelAddToCart(item)}
+                />
               </SwiperSlide>
             ))}
           </Swiper>

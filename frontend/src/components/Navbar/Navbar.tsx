@@ -28,7 +28,8 @@ const navigation = {
 export default function Navbar() {
   const [navbarOpen, setnavbarOpen] = useState(false);
   const [cartOpen, setcartOpen] = useState(false);
-  const user = useSelector((state : RootState)=> state.auth)
+  const cart = useSelector((state: RootState) => state.auth.userCartAndPaymentHistory?.message?.cart || []);
+
 
 
   const [isUserInfoVisible, setIsUserInfoVisible] = useState(false);
@@ -198,7 +199,7 @@ export default function Navbar() {
                     >
                       <div className="indicator relative w-[3.6rem] h-14 flex items-center ">
                         <span className="bg-accent absolute text-white mt-[6px] right-0 top-0 h-6 w-6 text-center rounded-full">
-                          {user.userData?.message?.cart.length}
+                          {cart.length}
                         </span>
                         <div className="flex">
                           <a

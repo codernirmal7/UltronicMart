@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "@/redux";
+import { AppDispatch, RootState } from "@/redux";
 import Navbar from "@/components/Navbar/Navbar";
 import { FaStar } from "react-icons/fa6";
 import { Lens } from "@/components/ui/lens";
 import CustomerReviews from "@/components/CustomerReviews/CustomerReviews";
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "@/redux/slices/productSlice";
+import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,9 +17,9 @@ const ProductDetails: React.FC = () => {
   const product = useSelector((state: RootState) =>
     state.product.productData.find((item) => item._id === id)
   );
+  const user = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
   const descriptionItems = product?.description.split("\\n");
- 
-
 
   if (!product) {
     return (
@@ -30,6 +33,25 @@ const ProductDetails: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const handelAddToCart = async () => {
+    try {
+     await dispatch(
+        addProductToCart({
+          productId: id,
+          quantity: 1,
+          userId: user.userData.message.id,
+        })
+      ).unwrap();
+
+      //on Success
+      dispatch(
+        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+      );
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -40,11 +62,15 @@ const ProductDetails: React.FC = () => {
             {/* Left Side - Image Gallery */}
             <div>
               <div>
-              <div className="relative">
+                <div className="relative">
                   <div className="relative z-10">
                     <Lens hovering={hovering} setHovering={setHovering}>
                       <img
-                        src={`http://localhost:4000/productImages${product.images[selectedImage].split("productImages")[1]}`}
+                        src={`http://localhost:4000/productImages${
+                          product.images[selectedImage].split(
+                            "productImages"
+                          )[1]
+                        }`}
                         alt="image"
                         className="rounded-2xl w-full h-[30rem] md:h-[33rem]"
                       />
@@ -52,26 +78,27 @@ const ProductDetails: React.FC = () => {
                   </div>
                 </div>
                 <div className="mt-4 flex space-x-4">
-              {product.images.map((image, index) => (
-                <button
-                  key={index}
-                  className={`w-16 h-16 border rounded-lg overflow-hidden ${
-                    selectedImage === index
-                      ? "border-primary ring-2 ring-primary"
-                      : "border-gray-200"
-                  }`}
-                  onClick={() => setSelectedImage(index)}
-                >
-                  <img
-                    src={`http://localhost:4000/productImages${image.split("productImages")[1]}`}
-                    alt={`Thumbnail ${index + 1}`}
-                    className="object-cover w-full h-full"
-                  />
-                </button>
-              ))}
-            </div>
+                  {product.images.map((image, index) => (
+                    <button
+                      key={index}
+                      className={`w-16 h-16 border rounded-lg overflow-hidden ${
+                        selectedImage === index
+                          ? "border-primary ring-2 ring-primary"
+                          : "border-gray-200"
+                      }`}
+                      onClick={() => setSelectedImage(index)}
+                    >
+                      <img
+                        src={`http://localhost:4000/productImages${
+                          image.split("productImages")[1]
+                        }`}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="object-cover w-full h-full"
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
-             
             </div>
 
             {/* Right Side - Product Details */}
@@ -113,14 +140,17 @@ const ProductDetails: React.FC = () => {
 
               {/* Add to Bag Button */}
               <div className="mt-8 flex items-center space-x-4">
-                <button className="bg-primary text-white text-base font-medium py-3 px-10 rounded-lg shadow-lg hover:bg-primary/90">
+                <button
+                  className="bg-primary text-white text-base font-medium py-3 px-10 rounded-lg shadow-lg hover:bg-primary/90"
+                  onClick={() => handelAddToCart()}
+                >
                   Add to Cart
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <CustomerReviews productData={product}/>
+        <CustomerReviews productData={product} />
       </div>
     </>
   );

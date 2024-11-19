@@ -1,8 +1,10 @@
-import { RootState } from '@/redux';
-import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment } from 'react';
-import { FaXmark } from 'react-icons/fa6';
-import { useSelector } from 'react-redux';
+import { AppDispatch, RootState } from "@/redux";
+import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
+import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment, useEffect } from "react";
+import { FaCirclePlus, FaXmark } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 type CartProps = {
   cartOpen: boolean;
@@ -10,16 +12,42 @@ type CartProps = {
 };
 
 const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
-  const cart = useSelector((state: RootState) => state.auth.userData?.message?.cart || []);
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.auth);
+  const cart = useSelector(
+    (state: RootState) =>
+      state.auth.userCartAndPaymentHistory?.message?.cart || []
+  );
   const products = useSelector((state: RootState) => state.product.productData);
 
-  // Find product details based on cart items
-  const cartItems = cart.map((cartItem: any) => {
-     return products.find((product) => product._id === cartItem.productId);
-  })
+  useEffect(() => {
+    if (user.userData.message?.email) {
+      dispatch(
+        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+      );
+    }
+  }, [dispatch, user.userData.message?.email]);
+
+  // Validate cart as an array
+  const cartItems = Array.isArray(cart)
+    ? cart
+        .map((cartItem: any) => {
+          const product = products.find(
+            (product) => product._id === cartItem.productId
+          );
+          return product
+            ? { ...product, quantity: cartItem.quantity || 1 } // Default quantity to 1 if not available
+            : null;
+        })
+        .filter(Boolean) // Remove null values if product is not found
+    : [];
 
   // Calculate subtotal
-  const subtotal = cartItems.reduce((total: number, item: any) => total + (item?.price || 0) * (item?.quantity || 1), 0);
+  const subtotal = cartItems.reduce(
+    (total: number, item: any) =>
+      total + (item?.price || 0) * (item?.quantity || 1),
+    0
+  );
 
   return (
     <Transition.Root show={cartOpen} as={Fragment}>
@@ -52,7 +80,9 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                   <div className="flex h-full flex-col bg-white shadow-xl">
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 py-4 sm:px-6">
-                      <h2 className="text-lg font-medium text-gray-900">Shopping Cart</h2>
+                      <h2 className="text-lg font-medium text-gray-900">
+                        Shopping Cart
+                      </h2>
                       <button
                         type="button"
                         className="text-gray-400 hover:text-gray-500"
@@ -81,9 +111,11 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                                   <h3>{product?.name}</h3>
                                   <p className="ml-4">${product?.price}</p>
                                 </div>
-                                <p className="text-gray-500">{product?.color}</p>
                                 <div className="mt-2 flex justify-between">
-                                  <p className="text-gray-500">Qty: {product?.quantity}</p>
+                                  <p className="text-gray-500">
+                                    Qty: {product?.quantity}
+                                  </p>
+                                  <FaCirclePlus size={25} className="fill-primary cursor-pointer"/>
                                   <button
                                     className="text-primary hover:text-red-500"
                                     onClick={() => {
@@ -98,7 +130,9 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                           ))}
                         </ul>
                       ) : (
-                        <p className="text-center text-gray-500">Your cart is empty.</p>
+                        <p className="text-center text-gray-500">
+                          Your cart is empty.
+                        </p>
                       )}
                     </div>
 
@@ -108,10 +142,7 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                         <p>Subtotal</p>
                         <p>${subtotal.toFixed(2)}</p>
                       </div>
-                      <button
-                        className="mt-6 w-full rounded-full bg-primary px-6 py-3 text-white hover:bg-dark-primary"
-                        
-                      >
+                      <button className="mt-6 w-full rounded-full bg-primary px-6 py-3 text-white hover:bg-dark-primary">
                         Checkout
                       </button>
                     </div>

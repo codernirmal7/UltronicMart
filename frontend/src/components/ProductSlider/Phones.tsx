@@ -8,6 +8,7 @@ import { AppDispatch, RootState } from "@/redux";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { addProductToCart } from "@/redux/slices/productSlice";
+import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 
 type Product = {
   _id: string;
@@ -34,8 +35,27 @@ const PhonesSlider: React.FC<PhonesSliderProps> = ({
     .filter((product) => product.category.toLowerCase() === "phones")
     .slice(0, 5);
 
-  const dispatch = useDispatch<AppDispatch>()
-  const user = useSelector((state : RootState)=> state.auth)
+    const dispatch = useDispatch<AppDispatch>();
+    const user = useSelector((state: RootState) => state.auth);
+  
+    const handelAddToCart = async (item: any) => {
+      try {
+       await dispatch(
+          addProductToCart({
+            productId: item._id,
+            quantity: 1,
+            userId: user.userData.message.id,
+          })
+        ).unwrap();
+  
+        //on Success
+        dispatch(
+          getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        );
+      } catch (error) {
+        console.log(error)
+      }
+    };
   return (
     <div className="pt-12 relative">
       <div className="flex justify-between items-center">
@@ -83,7 +103,7 @@ const PhonesSlider: React.FC<PhonesSliderProps> = ({
                     name={item.name}
                     price={item.price}
                     rating={item.rating}
-                    handelAddToCart={()=> dispatch(addProductToCart({productId :  item._id , quantity : 1 , userId : user.userData.message.id}))}
+                    handelAddToCart={() => handelAddToCart(item)}
 
                   />
               </SwiperSlide>
