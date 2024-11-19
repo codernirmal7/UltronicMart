@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
 import TelevisionProductFilter from "@/components/FilterProduct/TelevisionProductFilter";
-import { Link } from "react-router-dom";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 
 export default function Television() {
@@ -25,12 +24,6 @@ export default function Television() {
     panelType: "",
     priceRange: [0, 3000],
   });
-  const handleFilterChange = (updatedFilters: any) => {
-    setActiveFilters((prev) => ({
-      ...prev,
-      ...updatedFilters,
-    }));
-  };
 
   // Filter products based on category and active filters
   const filteredProducts = product.productData.filter((product) => {
@@ -132,6 +125,7 @@ export default function Television() {
                         name={item.name}
                         price={item.price}
                         rating={item.rating}
+                        stock={item.stock}
                         handelAddToCart={() => handelAddToCart(item)}
 
                       />

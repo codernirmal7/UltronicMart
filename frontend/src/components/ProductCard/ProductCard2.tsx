@@ -7,6 +7,7 @@ type Product2CardProps = {
   image: string;
   name: string;
   price: number;
+  stock: number;
   rating: number;
   handelAddToCart: () => void;
 };
@@ -18,6 +19,7 @@ const ProductCard2: React.FC<Product2CardProps> = ({
   price,
   rating,
   handelAddToCart,
+  stock
 }) => {
   return (
     <div
@@ -55,6 +57,8 @@ const ProductCard2: React.FC<Product2CardProps> = ({
         <div className="text-2xl sm:text-2xl font-bold text-primary mt-2">
           ${price}
         </div>
+        <span className="py-3 font-medium text-base">stock available : {stock}</span>
+
 
         <button
           className="bg-primary/75 hover:bg-primary text-white sm:w-36 px-4 sm:px-5 py-2 sm:py-3 rounded-full mt-3 transition duration-200"

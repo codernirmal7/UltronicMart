@@ -15,6 +15,7 @@ type Product = {
   name: string;
   price: number;
   rating: number;
+  stock: number;
   category: string; // Add category to product data
   images: string[];
 };
@@ -101,6 +102,7 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
                   name={item.name}
                   price={item.price}
                   rating={item.rating}
+                  stock={item.stock}
                   handelAddToCart={() => handelAddToCart(item)}
                 />
               </SwiperSlide>

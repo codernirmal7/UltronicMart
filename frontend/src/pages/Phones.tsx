@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
 import PhonesProductFilter from "@/components/FilterProduct/PhonesProductFilter";
-import { Link } from "react-router-dom";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 
 export default function Phones() {
@@ -123,6 +122,7 @@ export default function Phones() {
                         name={item.name}
                         price={item.price}
                         rating={item.rating}
+                        stock={item.stock}
                         handelAddToCart={() => handelAddToCart(item)}
 
                       />

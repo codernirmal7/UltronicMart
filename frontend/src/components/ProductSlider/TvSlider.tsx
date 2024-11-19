@@ -15,6 +15,7 @@ type Product = {
   name: string;
   price: number;
   rating: number;
+  stock: number;
   category: string; // Add category to product data
   images: string[];
 };
@@ -99,6 +100,7 @@ const TvSlider: React.FC<TvSliderProps> = ({ productData, loading, error }) => {
                     name={item.name}
                     price={item.price}
                     rating={item.rating}
+                    stock={item.stock}
                     handelAddToCart={() => handelAddToCart(item)}
 
                   />

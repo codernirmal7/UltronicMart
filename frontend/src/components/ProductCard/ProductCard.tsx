@@ -8,7 +8,8 @@ type ProductCardProps = {
   name: string;
   price: number;
   rating: number;
-  handelAddToCart : ()=> void;
+  stock: number;
+  handelAddToCart: () => void;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -17,13 +18,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
   name,
   price,
   rating,
-  handelAddToCart
+  stock,
+  handelAddToCart,
 }) => {
   return (
     <div
       className="relative flex flex-col w-full max-w-xl max-[580px]:max-w-xl border border-gray-100 bg-white shadow-md rounded-lg overflow-hidden"
       key={id}
-      style={{ height: '450px' }} // Set a fixed height for all cards
+      style={{ height: "490px" }} // Set a fixed height for all cards
     >
       {/* Image Section */}
       <Link
@@ -49,7 +51,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {/* Price and Rating Section */}
         <div className="mt-2 mb-4 flex items-center justify-between">
           <p>
-            <span className="text-xl font-bold text-primary ">${price.toFixed(2)}</span>
+            <span className="text-xl font-bold text-primary ">
+              ${price.toFixed(2)}
+            </span>
           </p>
           <div className="flex items-center">
             {/* Render Star Rating dynamically based on rating */}
@@ -64,6 +68,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </span>
           </div>
         </div>
+        <span className="pb-3 font-medium text-base">
+          stock available : {stock}
+        </span>
 
         {/* Add to Cart Button */}
         <button
