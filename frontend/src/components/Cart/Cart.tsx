@@ -1,6 +1,6 @@
 import { AppDispatch, RootState } from "@/redux";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
-import { addProductToCart } from "@/redux/slices/productSlice";
+import { addProductToCart, removeProductFromCart } from "@/redux/slices/productSlice";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { FaCirclePlus, FaXmark } from "react-icons/fa6";
@@ -179,7 +179,7 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                                   <button
                                     className="text-primary hover:text-red-500 select-none"
                                     onClick={() => {
-                                      /* Add remove logic */
+                                      dispatch(removeProductFromCart({productId : product.productId , userId : user.userData._id}))
                                     }}
                                   >
                                     Remove
