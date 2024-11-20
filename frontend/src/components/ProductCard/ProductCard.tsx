@@ -1,7 +1,7 @@
 import { AppDispatch, RootState } from "@/redux";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 import { addProductToCart } from "@/redux/slices/productSlice";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -24,13 +24,36 @@ const ProductCard: React.FC<ProductCardProps> = ({
   rating,
   stock,
 }) => {
-
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth);
+  const cart = useSelector(
+    (state: RootState) =>
+      state.auth.userCartAndPaymentHistory?.message?.cart || []
+  );
+  const [buttonState , setButtonState] = useState({
+    text : "Add to cart",
+    isDisabled : false
+  })
 
-  const handelAddToCart = async () => {
+   // Check if product is already in cart
+   useEffect(() => {
+    const cartProductIds = cart.map((cartItem: any) => cartItem.productId);
+    if (cartProductIds.includes(id)) {
+      setButtonState({
+        text: "Product Already Added",
+        isDisabled: true,
+      });
+    } else {
+      setButtonState({
+        text: "Add to cart",
+        isDisabled: false,
+      });
+    }
+  }, [cart, id]);
+
+  const handleAddToCart = async () => {
     try {
-     await dispatch(
+      await dispatch(
         addProductToCart({
           productId: id,
           quantity: 1,
@@ -38,15 +61,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
         })
       ).unwrap();
 
-      //on Success
+      // Refresh cart data
       dispatch(
         getUserCartAndPaymentHistory({ email: user.userData.message?.email })
       );
     } catch (error) {
-      console.log(error)
+      console.error("Failed to add product to cart:", error);
     }
   };
-
   return (
     <div
       className="relative flex flex-col w-full max-w-xl max-[580px]:max-w-xl border border-gray-100 bg-white shadow-md rounded-lg overflow-hidden"
@@ -100,8 +122,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Add to Cart Button */}
         <button
-          className="flex items-center justify-center rounded-md bg-primary/75 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-4 focus:ring-blue-300"
-          onClick={handelAddToCart}
+          className="flex items-center justify-center rounded-md bg-primary/75 px-5 py-2.5 text-center text-sm font-medium  text-white hover:bg-primary focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:bg-gray-400"
+          onClick={handleAddToCart}
+          disabled={buttonState.isDisabled}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +140,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
             />
           </svg>
-          Add to cart
+          {buttonState.text}
         </button>
       </div>
     </div>
