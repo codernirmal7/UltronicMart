@@ -128,6 +128,48 @@ const addToCart = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const decreaseQuantityOfProduct = async (req : Request , res : Response)=>{
+  const { cartProductId, userId } = req.body;
+  if (!cartProductId) {
+    res.status(400).json({ message: "Product id is required." });
+    return;
+  }
+  try {
+    // Find the user by userId
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      res.status(404).json({ message: "User not found." });
+      return;
+    }
+
+    // Find if the product is already in the cart
+    const existingProductIndex = user.cart.findIndex(
+      (item) => item.productId.toString() === cartProductId
+    );
+    if(!existingProductIndex){
+      res.status(404).json({ message: "Product not found." });
+      return;
+    }
+
+    if(user.cart[existingProductIndex].quantity <= 1){
+      res.status(404).json({ message: "Product quantity cannot decrease." });
+      return;
+    }
+
+    user.cart[existingProductIndex].quantity - 1;
+
+    // Save the updated cart
+    await user.save()
+
+    res.status(200).json({ message: "Product quantity decrease in cart successfully." });
+
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error adding product to cart." });
+  }
+}
+
 const removeProductFromCart = async (
   req: Request,
   res: Response
@@ -219,4 +261,5 @@ export {
   addToCart,
   removeProductFromCart,
   comment,
+  decreaseQuantityOfProduct
 };
