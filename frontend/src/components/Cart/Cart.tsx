@@ -1,6 +1,9 @@
 import { AppDispatch, RootState } from "@/redux";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
-import { addProductToCart, removeProductFromCart } from "@/redux/slices/productSlice";
+import {
+  addProductToCart,
+  removeProductFromCart,
+} from "@/redux/slices/productSlice";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { FaCirclePlus, FaXmark } from "react-icons/fa6";
@@ -103,6 +106,28 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
     }
   };
 
+  const handelRemoveProduct = async (product : any) => {
+    try {
+      await dispatch(
+        removeProductFromCart({
+          productId: product._id,
+          userId: user.userData.message.id,
+        })
+      ).unwrap();
+
+      //on Success
+      dispatch(
+        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+      );
+      setIsShowSuccessAlert({
+        show: true,
+        message: "product removed.",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Transition.Root show={cartOpen} as={Fragment}>
       <Dialog className="relative z-50" onClose={setCartOpen}>
@@ -178,9 +203,7 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                                   />
                                   <button
                                     className="text-primary hover:text-red-500 select-none"
-                                    onClick={() => {
-                                      dispatch(removeProductFromCart({productId : product.productId , userId : user.userData._id}))
-                                    }}
+                                    onClick={() => handelRemoveProduct(product)}
                                   >
                                     Remove
                                   </button>
@@ -212,17 +235,16 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
             </div>
           </div>
         </div>
-         {/* Success and Error Alerts */}
-      <SuccessAlert
-        isShowSuccessAlert={isShowSuccessAlert}
-        setIsShowSuccessAlert={setIsShowSuccessAlert}
-      />
-      <ErrorAlert
-        isShowErrorAlert={isShowErrorAlert}
-        setIsShowErrorAlert={setIsShowErrorAlert}
-      />
+        {/* Success and Error Alerts */}
+        <SuccessAlert
+          isShowSuccessAlert={isShowSuccessAlert}
+          setIsShowSuccessAlert={setIsShowSuccessAlert}
+        />
+        <ErrorAlert
+          isShowErrorAlert={isShowErrorAlert}
+          setIsShowErrorAlert={setIsShowErrorAlert}
+        />
       </Dialog>
-     
     </Transition.Root>
   );
 };
