@@ -128,7 +128,7 @@ const addToCart = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const decreaseQuantityOfProduct = async (req : Request , res : Response)=>{
+const decreaseQuantityOfProduct = async (req: Request, res: Response) => {
   const { cartProductId, userId } = req.body;
   if (!cartProductId) {
     res.status(400).json({ message: "Product id is required." });
@@ -146,29 +146,31 @@ const decreaseQuantityOfProduct = async (req : Request , res : Response)=>{
     const existingProductIndex = user.cart.findIndex(
       (item) => item.productId.toString() === cartProductId
     );
-    if(!existingProductIndex){
-      res.status(404).json({ message: "Product not found." });
+    
+
+    if (user.cart[existingProductIndex].quantity <= 1) {
+      // Remove the product from the cart
+      user.cart.splice(existingProductIndex, 1);
+      await user.save();
+      res
+      .status(200)
+      .json({ message: "Product quantity decrease in cart successfully." });
       return;
     }
 
-    if(user.cart[existingProductIndex].quantity <= 1){
-      res.status(404).json({ message: "Product quantity cannot decrease." });
-      return;
-    }
-
-    user.cart[existingProductIndex].quantity - 1;
+    user.cart[existingProductIndex].quantity--;
 
     // Save the updated cart
-    await user.save()
+    await user.save();
 
-    res.status(200).json({ message: "Product quantity decrease in cart successfully." });
-
-
+    res
+      .status(200)
+      .json({ message: "Product quantity decrease in cart successfully." });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error adding product to cart." });
   }
-}
+};
 
 const removeProductFromCart = async (
   req: Request,
@@ -212,7 +214,7 @@ const removeProductFromCart = async (
 };
 
 const comment = async (req: Request, res: Response): Promise<void> => {
-  const { productId , email, rating, comment } = req.body;
+  const { productId, email, rating, comment } = req.body;
   if (!email) {
     res.status(400).json({ message: "Email is required." });
     return;
@@ -222,13 +224,11 @@ const comment = async (req: Request, res: Response): Promise<void> => {
     return;
   }
   if (comment.length < 3 || comment.length > 100) {
-    res
-      .status(400)
-      .json({
-        message:
-          "Comments must be 3 characters long and comments must be less than 100 characters.",
-      });
-      return;
+    res.status(400).json({
+      message:
+        "Comments must be 3 characters long and comments must be less than 100 characters.",
+    });
+    return;
   }
   try {
     const user = await UserModel.findOne({ email });
@@ -236,20 +236,19 @@ const comment = async (req: Request, res: Response): Promise<void> => {
       res.status(500).json({ message: "Sorry, You can't comment." });
       return;
     }
-    const product = await ProductModel.findByIdAndUpdate(productId , {
-      $push : {
-        reviews : {
-          userId : user?._id,
+    const product = await ProductModel.findByIdAndUpdate(productId, {
+      $push: {
+        reviews: {
+          userId: user?._id,
           email,
           rating,
           comment,
-          date : new Date()
-        }
-      }
-    })
+          date: new Date(),
+        },
+      },
+    });
 
-    res.status(200).json({message : "Comment added."})
-    
+    res.status(200).json({ message: "Comment added." });
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -261,5 +260,5 @@ export {
   addToCart,
   removeProductFromCart,
   comment,
-  decreaseQuantityOfProduct
+  decreaseQuantityOfProduct,
 };
