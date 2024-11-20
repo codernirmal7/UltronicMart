@@ -1,7 +1,7 @@
 import { AppDispatch, RootState } from "@/redux";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 import { addProductToCart } from "@/redux/slices/productSlice";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -27,8 +27,32 @@ const ProductCard2: React.FC<Product2CardProps> = ({
 
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth);
+  const cart = useSelector(
+    (state: RootState) =>
+      state.auth.userCartAndPaymentHistory?.message?.cart || []
+  );
+  const [buttonState , setButtonState] = useState({
+    text : "Add to cart",
+    isDisabled : false
+  })
 
-  const handelAddToCart = async () => {
+  // Check if product is already in cart
+   useEffect(() => {
+    const cartProductIds = cart.map((cartItem: any) => cartItem.productId);
+    if (cartProductIds.includes(id)) {
+      setButtonState({
+        text: "Product Already Added",
+        isDisabled: true,
+      });
+    } else {
+      setButtonState({
+        text: "Add to cart",
+        isDisabled: false,
+      });
+    }
+  }, [cart, id]);
+
+  const handleAddToCart = async () => {
     try {
      await dispatch(
         addProductToCart({
@@ -86,10 +110,11 @@ const ProductCard2: React.FC<Product2CardProps> = ({
 
 
         <button
-          className="bg-primary/75 hover:bg-primary text-white sm:w-36 px-4 sm:px-5 py-2 sm:py-3 rounded-full mt-3 transition duration-200"
-          onClick={handelAddToCart}
+          className="bg-primary/75 hover:bg-primary text-white sm:w-52 px-4 sm:px-5 py-2 sm:py-3 rounded-full mt-3 transition duration-200 disabled:cursor-not-allowed disabled:bg-gray-400"
+          onClick={handleAddToCart}
+          disabled={buttonState.isDisabled}
         >
-          Add to cart
+          {buttonState.text}
         </button>
       </div>
     </div>
