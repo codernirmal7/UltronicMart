@@ -2,11 +2,12 @@ import { AppDispatch, RootState } from "@/redux";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 import {
   addProductToCart,
+  decreaseQuantityOfProductFromCart,
   removeProductFromCart,
 } from "@/redux/slices/productSlice";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
-import { FaCirclePlus, FaXmark } from "react-icons/fa6";
+import { FaCircleMinus, FaCirclePlus, FaXmark } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SuccessAlert from "../alerts/SuccessAlert";
@@ -81,10 +82,40 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
       dispatch(
         getUserCartAndPaymentHistory({ email: user.userData.message?.email })
       );
-      setIsShowSuccessAlert({
-        show: true,
-        message: "Quantity added successful.",
-      });
+    } catch (error) {
+      console.log(error);
+      if (typeof error === "string") {
+        setIsShowErrorAlert({
+          show: true,
+          message: error, // This will be the error string from rejectWithValue
+        });
+      } else if (error instanceof Error) {
+        setIsShowErrorAlert({
+          show: true,
+          message: error.message,
+        });
+      } else {
+        setIsShowErrorAlert({
+          show: true,
+          message: "An unexpected error occurred.",
+        });
+      }
+    }
+  };
+
+  const handelDecreaseQuantity = async (id: string) => {
+    try {
+      await dispatch(
+        decreaseQuantityOfProductFromCart({
+          cartProductId: id,
+          userId: user.userData.message.id,
+        })
+      ).unwrap();
+
+      //on Success
+      dispatch(
+        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+      );
     } catch (error) {
       console.log(error);
       if (typeof error === "string") {
@@ -194,6 +225,13 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                                   <p className="text-gray-500">
                                     Qty: {product?.quantity}
                                   </p>
+                                  <FaCircleMinus
+                                    size={25}
+                                    className="fill-primary cursor-pointer"
+                                    onClick={() =>
+                                      handelDecreaseQuantity(product?._id)
+                                    }
+                                  />
                                   <FaCirclePlus
                                     size={25}
                                     className="fill-primary cursor-pointer"
