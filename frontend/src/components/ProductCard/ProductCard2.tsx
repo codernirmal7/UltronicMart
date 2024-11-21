@@ -37,20 +37,22 @@ const ProductCard2: React.FC<Product2CardProps> = ({
   })
 
   // Check if product is already in cart
-   useEffect(() => {
-    const cartProductIds = cart.map((cartItem: any) => cartItem.productId);
-    if (cartProductIds.includes(id)) {
-      setButtonState({
-        text: "Product Already Added",
-        isDisabled: true,
-      });
-    } else {
-      setButtonState({
-        text: "Add to cart",
-        isDisabled: false,
-      });
-    }
-  }, [cart, id]);
+  if(user.isLoggedIn){
+    useEffect(() => {
+      const cartProductIds = cart.map((cartItem: any) => cartItem.productId);
+      if (cartProductIds.includes(id)) {
+        setButtonState({
+          text: "Product Already Added",
+          isDisabled: true,
+        });
+      } else {
+        setButtonState({
+          text: "Add to cart",
+          isDisabled: false,
+        });
+      }
+    }, [cart]);
+   }
 
   const handleAddToCart = async () => {
     try {
