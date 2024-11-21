@@ -35,7 +35,7 @@ const ProductDetails: React.FC = () => {
 
   const handelAddToCart = async () => {
     try {
-     await dispatch(
+      await dispatch(
         addProductToCart({
           productId: id,
           quantity: 1,
@@ -48,7 +48,7 @@ const ProductDetails: React.FC = () => {
         getUserCartAndPaymentHistory({ email: user.userData.message?.email })
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -125,10 +125,11 @@ const ProductDetails: React.FC = () => {
                   {product.rating}
                 </span>
               </div>
-             <div className="h-7">
-             <span className="font-medium text-base">Stock available : {product.stock}</span>
-
-             </div>
+              <div className="h-7">
+                <span className="font-medium text-base">
+                  Stock available : {product.stock}
+                </span>
+              </div>
               {/* Highlights */}
               <h2 className="text-xl font-medium text-gray-700 mt-6">
                 Key Features
@@ -143,14 +144,18 @@ const ProductDetails: React.FC = () => {
               </ul>
 
               {/* Add to Bag Button */}
-              <div className="mt-8 flex items-center space-x-4">
-                <button
-                  className="bg-primary text-white text-base font-medium py-3 px-10 rounded-lg shadow-lg hover:bg-primary/90"
-                  onClick={() => handelAddToCart()}
-                >
-                  Add to Cart
-                </button>
-              </div>
+              {user.isLoggedIn ? (
+                <div className="mt-8 flex items-center space-x-4">
+                  <button
+                    className="bg-primary text-white text-base font-medium py-3 px-10 rounded-lg shadow-lg hover:bg-primary/90"
+                    onClick={() => handelAddToCart()}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
