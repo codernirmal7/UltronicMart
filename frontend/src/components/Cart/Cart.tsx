@@ -206,8 +206,8 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                     <div className="flex-1 overflow-y-auto px-4 sm:px-6">
                       {cartItems.length > 0 ? (
                         <ul className="divide-y divide-gray-200">
-                          {cartItems.map((product: any) => (
-                            <li key={product?.productId} className="flex py-6">
+                          {cartItems.map((product: any , i :number) => (
+                            <li key={i} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
                                   src={`http://localhost:4000/productImages${
