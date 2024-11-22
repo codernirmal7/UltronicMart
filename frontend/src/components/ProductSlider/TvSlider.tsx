@@ -53,11 +53,11 @@ const TvSlider: React.FC<TvSliderProps> = ({ productData, loading, error }) => {
           <Swiper
             modules={[Navigation]}
             spaceBetween={10}
-            slidesPerView={1} // Show 1 products per slide
+            slidesPerView={3}
             pagination={{ clickable: true }}
             navigation={{
-              nextEl: ".custom-swiper-button-next1",
-              prevEl: ".custom-swiper-button-prev1",
+              nextEl: ".custom-swiper-button-next3",
+              prevEl: ".custom-swiper-button-prev3",
             }}
           
           >
@@ -83,13 +83,14 @@ const TvSlider: React.FC<TvSliderProps> = ({ productData, loading, error }) => {
           </Swiper>
 
           {/* Swiper Navigation Buttons */}
-          <div className="swiper-button-prev custom-swiper-button-prev1">
+          <div className="swiper-button-prev custom-swiper-button-prev3 absolute left-2 top-[50%] z-10 bg-primary/25 rounded-full p-[10px] cursor-pointer translate-y-[-50%]">
             <svg
               viewBox="0 0 1024 1024"
               className="icon"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               fill="rgb(174, 174, 174)"
+              height={25}
             >
               <path
                 d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
@@ -97,13 +98,14 @@ const TvSlider: React.FC<TvSliderProps> = ({ productData, loading, error }) => {
               />
             </svg>
           </div>
-          <div className="swiper-button-next custom-swiper-button-next1">
+          <div className="swiper-button-next custom-swiper-button-next3 absolute right-2 top-[50%] z-10 bg-primary/25 rounded-full p-[10px] cursor-pointer translate-y-[-50%]">
             <svg
               viewBox="0 0 1024 1024"
               className="icon"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               fill="rgb(174, 174, 174)"
+              height={25}
             >
               <path
                 d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z"

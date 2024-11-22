@@ -43,17 +43,6 @@
   opacity: 1;
 }
 /* Custom swiper navigation buttons */
-.custom-swiper-button-next1,
-.custom-swiper-button-prev1 {
-  position: absolute;
-  top: 50%;
-  z-index: 10;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  padding: 10px;
-  cursor: pointer;
-  transform: translateY(-50%);
-}
 
 .custom-swiper-button-prev1 {
   left: 0px;

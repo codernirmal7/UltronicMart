@@ -56,7 +56,7 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
           <Swiper
             modules={[Navigation]}
             spaceBetween={10}
-            slidesPerView={1} // Show 1 products per slide
+            slidesPerView={3}
             pagination={{ clickable: true }}
             navigation={{
               nextEl: ".custom-swiper-button-next1",
@@ -83,7 +83,7 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
           </Swiper>
 
           {/* Swiper Navigation Buttons */}
-          <div className="swiper-button-prev custom-swiper-button-prev1">
+          <div className="swiper-button-prev custom-swiper-button-prev1 absolute top-[50%] z-10 bg-[rgba(255, 255, 255, 0.5)] rounded-full p-[10px] cursor-pointer translate-y-[-50%]">
             <svg
               viewBox="0 0 1024 1024"
               className="icon"
@@ -97,7 +97,7 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
               />
             </svg>
           </div>
-          <div className="swiper-button-next custom-swiper-button-next1">
+          <div className="swiper-button-next custom-swiper-button-next1 absolute top-[50%] z-10 bg-[rgba(255, 255, 255, 0.5)] rounded-full p-[10px] cursor-pointer translate-y-[-50%]">
             <svg
               viewBox="0 0 1024 1024"
               className="icon"
