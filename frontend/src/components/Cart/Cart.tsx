@@ -5,7 +5,7 @@ import {
   decreaseQuantityOfProductFromCart,
   removeProductFromCart,
 } from "@/redux/slices/productSlice";
-import { Dialog, Transition } from "@headlessui/react";
+import { Button, Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { FaCircleMinus, FaCirclePlus, FaXmark } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
@@ -264,15 +264,24 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                         <p>Subtotal</p>
                         <p>${subtotal.toFixed(2)}</p>
                       </div>
-                      <Link
-                        to="/checkout"
-                        className="mt-6 flex justify-center w-full rounded-full bg-primary px-6 py-3 text-white hover:bg-dark-primary"
-                        onClick={() =>
-                          localStorage.setItem("checkoutRedirect", "true")
-                        }
-                      >
-                        Checkout
-                      </Link>
+                      {cart.length === 0 ? (
+                        <Button
+                          className="mt-6 flex justify-center w-full rounded-full px-6 py-3 text-white hover:bg-dark-primary disabled:bg-gray-400 disabled:cursor-not-allowed"
+                          disabled={true}
+                        >
+                          Checkout
+                        </Button>
+                      ) : (
+                        <Link
+                          to="/checkout"
+                          className="mt-6 flex justify-center w-full rounded-full bg-primary/80 px-6 py-3 text-white hover:bg-primary"
+                          onClick={() =>
+                            localStorage.setItem("checkoutRedirect", "true")
+                          }
+                        >
+                          Checkout
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </Dialog.Panel>
