@@ -36,7 +36,7 @@ export default function Checkout() {
   });
 
   const [inputDetails , setInputDetails] = useState({
-    email : user.userData.message.email,
+    email : user.userData?.message?.email,
     cardHolderName : "",
     cardNumber : "",
     cardExpireYDate : "",
