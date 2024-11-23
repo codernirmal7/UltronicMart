@@ -172,24 +172,7 @@ export default function Navbar() {
                   </div>
                   <div className="w-[1px] h-[1.5rem] bg-slate-300 hidden lg:flex"></div>
 
-                  {/* Search */}
-  <div className="dropdown dropdown-end lg:ml-6 relative z-10">
-                  <div
-                    tabIndex={0}
-                    role="button"
-                    className="btn btn-ghost btn-circle avatar"
-                  >
-                    <FaMagnifyingGlass
-                      className="h-6 w-6 fill-primary "
-                      aria-hidden="true"
-                      onClick={handelSearchOpen}
-                    />
-                  </div>
-
-                  <SearchSmallModel isSearchOpen={isSearchOpen}/>
-                
-                </div>
-
+                 
                   <div className="dropdown dropdown-end">
                     <div
                       tabIndex={0}
