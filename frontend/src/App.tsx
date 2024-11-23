@@ -15,6 +15,7 @@ import Phones from "./pages/Phones";
 import Television from "./pages/Television";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
+import PaymentHistory from "./pages/PaymentHistory";
 
 
 
@@ -98,6 +99,14 @@ const router = createBrowserRouter([
     element: (
       <>
         <Checkout />
+      </>
+    ),
+  },
+  {
+    path: "/user/payment-history",
+    element: (
+      <>
+        <PaymentHistory />
       </>
     ),
   },
