@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SuccessAlert from "../alerts/SuccessAlert";
 import ErrorAlert from "../alerts/ErrorAlert";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type CartProps = {
   cartOpen: boolean;

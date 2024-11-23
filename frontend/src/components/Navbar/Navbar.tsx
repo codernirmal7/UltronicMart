@@ -2,14 +2,12 @@ import { Dialog, Popover, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import {
   FaBars,
-  FaMagnifyingGlass,
   FaRegCircleUser,
   FaXmark,
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import UserInfo from "../User/UserInfoSmallModel";
 import brandName from "@/constant/BrandName";
-import SearchSmallModel from "../Search/SearchSmallModel";
 import { FaShoppingCart } from "react-icons/fa";
 import Cart from "../Cart/Cart";
 import { useSelector } from "react-redux";
@@ -33,15 +31,11 @@ export default function Navbar() {
 
 
   const [isUserInfoVisible, setIsUserInfoVisible] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handelUserInfoVisible = () => {
     setIsUserInfoVisible((prev) => !prev);
   };
-  const handelSearchOpen = () => {
-    setIsSearchOpen((prev) => !prev);
-  };
-
+ 
 
   return (
     <>
