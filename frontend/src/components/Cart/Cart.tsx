@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import SuccessAlert from "../alerts/SuccessAlert";
 import ErrorAlert from "../alerts/ErrorAlert";
+import { Link, useNavigate } from "react-router-dom";
 
 type CartProps = {
   cartOpen: boolean;
@@ -137,7 +138,7 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
     }
   };
 
-  const handelRemoveProduct = async (product : any) => {
+  const handelRemoveProduct = async (product: any) => {
     try {
       await dispatch(
         removeProductFromCart({
@@ -206,7 +207,7 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                     <div className="flex-1 overflow-y-auto px-4 sm:px-6">
                       {cartItems.length > 0 ? (
                         <ul className="divide-y divide-gray-200">
-                          {cartItems.map((product: any , i :number) => (
+                          {cartItems.map((product: any, i: number) => (
                             <li key={i} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
@@ -263,9 +264,15 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                         <p>Subtotal</p>
                         <p>${subtotal.toFixed(2)}</p>
                       </div>
-                      <button className="mt-6 w-full rounded-full bg-primary px-6 py-3 text-white hover:bg-dark-primary">
+                      <Link
+                        to="/checkout"
+                        className="mt-6 flex justify-center w-full rounded-full bg-primary px-6 py-3 text-white hover:bg-dark-primary"
+                        onClick={() =>
+                          localStorage.setItem("checkoutRedirect", "true")
+                        }
+                      >
                         Checkout
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </Dialog.Panel>

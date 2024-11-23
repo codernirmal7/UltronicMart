@@ -34,14 +34,14 @@ type ProductDataType = {
 };
 
 // Define the types for the state
-interface AuthState {
+interface ProductState {
   productData: Array<ProductDataType>;
   loading: boolean;
   error: string | null;
 }
 
 // Define the initial state
-const initialState: AuthState = {
+const initialState: ProductState = {
   productData: [],
   loading: false,
   error: null,

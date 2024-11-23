@@ -14,6 +14,7 @@ import Laptops from "./pages/Laptops";
 import Phones from "./pages/Phones";
 import Television from "./pages/Television";
 import ProductDetail from "./pages/ProductDetail";
+import Checkout from "./pages/Checkout";
 
 
 
@@ -89,6 +90,14 @@ const router = createBrowserRouter([
     element: (
       <>
         <ProductDetail />
+      </>
+    ),
+  },
+  {
+    path: "/checkout",
+    element: (
+      <>
+        <Checkout />
       </>
     ),
   },
