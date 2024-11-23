@@ -26,6 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth);
+  const product = useSelector((state: RootState) => state.product);
   const cart = useSelector(
     (state: RootState) =>
       state.auth.userCartAndPaymentHistory?.message?.cart || []
@@ -36,22 +37,34 @@ const ProductCard: React.FC<ProductCardProps> = ({
   })
 
    // Check if product is already in cart
-   if(user.isLoggedIn){
+   if (user.isLoggedIn) {
     useEffect(() => {
       const cartProductIds = cart.map((cartItem: any) => cartItem.productId);
+  
+      // Check stock for the current product
+      const currentProduct = product.productData.find(
+        (productItem) => productItem._id === id
+      );
+  
       if (cartProductIds.includes(id)) {
         setButtonState({
           text: "Product Already Added",
           isDisabled: true,
         });
+      } else if (currentProduct && currentProduct.stock === 0) {
+        setButtonState({
+          text: "Out of Stock",
+          isDisabled: true,
+        });
       } else {
         setButtonState({
-          text: "Add to cart",
+          text: "Add to Cart",
           isDisabled: false,
         });
       }
-    }, [cart]);
-   }
+    }, [cart, id, product.productData]);
+  }
+  
   
 
   const handleAddToCart = async () => {
