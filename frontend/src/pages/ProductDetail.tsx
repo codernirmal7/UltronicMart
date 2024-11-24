@@ -39,13 +39,13 @@ const ProductDetails: React.FC = () => {
         addProductToCart({
           productId: id,
           quantity: 1,
-          userId: user.userData.message.id,
+          userId: user?.userData?.message?.id,
         })
       ).unwrap();
 
       //on Success
       dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        getUserCartAndPaymentHistory({ email: user?.userData?.message?.email })
       );
     } catch (error) {
       console.log(error);

@@ -29,7 +29,7 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productData }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [reviewInput, setReviewInput] = useState({
     productId: productData._id,
-    email: auth.userData.message?.email,
+    email: auth?.userData?.message?.email,
     comment: "",
     rating: 4,
   });
@@ -57,7 +57,7 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productData }) => {
       });
       setReviewInput({
         productId: productData._id,
-        email: auth.userData.message.email,
+        email: auth?.userData?.message?.email,
         comment: "",
         rating: 4,
       }); // Reset input fields but retain productId

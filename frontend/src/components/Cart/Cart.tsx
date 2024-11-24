@@ -41,12 +41,12 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
   });
 
   useEffect(() => {
-    if (user.userData.message?.email) {
+    if (user?.userData?.message?.email) {
       dispatch(
         getUserCartAndPaymentHistory({ email: user.userData.message?.email })
       );
     }
-  }, [dispatch, user.userData.message?.email]);
+  }, [dispatch, user?.userData?.message?.email]);
 
   // Validate cart as an array
   const cartItems = Array.isArray(cart)
@@ -75,13 +75,13 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
         addProductToCart({
           productId: id,
           quantity: 1,
-          userId: user.userData.message.id,
+          userId: user?.userData?.message?.id,
         })
       ).unwrap();
 
       //on Success
       dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        getUserCartAndPaymentHistory({ email: user?.userData?.message?.email })
       );
     } catch (error) {
       console.log(error);
@@ -109,13 +109,13 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
       await dispatch(
         decreaseQuantityOfProductFromCart({
           cartProductId: id,
-          userId: user.userData.message.id,
+          userId: user?.userData?.message?.id,
         })
       ).unwrap();
 
       //on Success
       dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        getUserCartAndPaymentHistory({ email: user?.userData?.message?.email })
       );
     } catch (error) {
       console.log(error);
@@ -143,13 +143,13 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
       await dispatch(
         removeProductFromCart({
           productId: product._id,
-          userId: user.userData.message.id,
+          userId: user?.userData?.message?.id,
         })
       ).unwrap();
 
       //on Success
       dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        getUserCartAndPaymentHistory({ email: user?.userData?.message?.email })
       );
       setIsShowSuccessAlert({
         show: true,

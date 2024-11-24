@@ -49,7 +49,7 @@ const initialState: ProductState = {
 
 interface WriteCommentPayload {
   productId: string | undefined;
-  email: string;
+  email: string | undefined;
   rating: number;
   comment: string;
 }

@@ -14,7 +14,7 @@ const initialState: PaymentState = {
 };
 
 interface purchaseProductPayload {
-  email : string;
+  email : string | undefined;
   cardNumber : string;
   cardExpireYDate : string;
   cardExpireMDate : string;

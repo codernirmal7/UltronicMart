@@ -1,7 +1,7 @@
 import { AppDispatch, RootState } from "@/redux";
 import { getUserCartAndPaymentHistory, getUserData } from "@/redux/slices/authSlice";
 import { getAllProductsData } from "@/redux/slices/productSlice";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -12,7 +12,6 @@ export default function PaymentHistory() {
   const orderProducts = useSelector(
     (state: RootState) => state.auth.userCartAndPaymentHistory?.message?.purchaseHistory || []
   );
-  const user = useSelector((state: RootState) => state.auth.userData || {});
   const products = useSelector((state: RootState) => state.product.productData);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -50,8 +49,8 @@ export default function PaymentHistory() {
 
   // Calculate total items, quantity, and price
   const totalItems = orderItems.length;
-  const totalQuantity = orderItems.reduce((acc, item) => acc + item.quantity, 0);
-  const totalPrice = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalQuantity = orderItems.reduce((acc : any, item : any) => acc + item.quantity, 0);
+  const totalPrice = orderItems.reduce((acc : any, item : any) => acc + item.price * item.quantity, 0);
 
   return (
    

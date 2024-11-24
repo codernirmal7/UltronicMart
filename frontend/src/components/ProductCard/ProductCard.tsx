@@ -73,13 +73,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
         addProductToCart({
           productId: id,
           quantity: 1,
-          userId: user.userData.message.id,
+          userId: user?.userData?.message?.id,
         })
       ).unwrap();
 
       // Refresh cart data
       dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        getUserCartAndPaymentHistory({ email: user?.userData?.message?.email })
       );
     } catch (error) {
       console.error("Failed to add product to cart:", error);
@@ -93,11 +93,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       {/* Image Section */}
       <Link
-        className="relative flex justify-center items-center h-44 overflow-hidden rounded-xl"
+        className="relative flex justify-center items-center h-48 overflow-hidden rounded-xl"
         to={`/product/${id}`}
       >
         <img
-          className="object-contain w-full h-full"
+          className="object-contain w-full h-full p-3"
           src={image}
           alt="product image"
         />

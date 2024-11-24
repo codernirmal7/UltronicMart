@@ -83,33 +83,31 @@ const TvSlider: React.FC<TvSliderProps> = ({ productData, loading, error }) => {
           </Swiper>
 
           {/* Swiper Navigation Buttons */}
-          <div className="swiper-button-prev custom-swiper-button-prev3 absolute left-2 top-[50%] z-10 bg-primary/25 rounded-full p-[10px] cursor-pointer translate-y-[-50%]">
+          <div className="custom-swiper-button-prev3 absolute left-2 top-[50%] z-10 bg-primary/25 rounded-full w-14 h-14 p-2 cursor-pointer translate-y-[-50%]">
             <svg
               viewBox="0 0 1024 1024"
-              className="icon"
+              className="icon fill-primary"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
-              fill="rgb(174, 174, 174)"
-              height={25}
+              
             >
               <path
                 d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
-                fill="rgb(174, 174, 174)"
+                className="fill-primary"
               />
             </svg>
           </div>
-          <div className="swiper-button-next custom-swiper-button-next3 absolute right-2 top-[50%] z-10 bg-primary/25 rounded-full p-[10px] cursor-pointer translate-y-[-50%]">
+          <div className="custom-swiper-button-next3 absolute right-2 top-[50%] z-10 bg-primary/25 rounded-full w-14 h-14 p-2 cursor-pointer translate-y-[-50%]">
             <svg
               viewBox="0 0 1024 1024"
-              className="icon"
+              className="icon fill-primary"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               fill="rgb(174, 174, 174)"
-              height={25}
             >
               <path
                 d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z"
-                fill="rgb(174, 174, 174)"
+                className="fill-primary"
               />
             </svg>
           </div>

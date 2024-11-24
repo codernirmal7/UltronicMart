@@ -1,23 +1,31 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+interface GetUserDataResponse {
+  message?: {
+    email?: string;
+    [key: string]: any; // For additional fields
+  };
+}
+
 // Define the types for the state
 interface AuthState {
-  userData: any;
-  userCartAndPaymentHistory : any;
+  userData: GetUserDataResponse | null; // Adjusted to match expected response structure
+  userCartAndPaymentHistory: any; // Replace with appropriate type
   isLoggedIn: boolean;
   loading: boolean;
   error: string | null;
 }
 
-// Define the initial state
+// Initial State
 const initialState: AuthState = {
-  userData: [],
-  userCartAndPaymentHistory : [],
+  userData: null, // Initialize as null since no data is available initially
+  userCartAndPaymentHistory: null, // Same for payment history
   loading: false,
   error: null,
   isLoggedIn: false,
 };
+
 
 // Define the type for the request payload and response
 interface SignUpPayload {
@@ -67,12 +75,6 @@ interface GetUserDataResponse {
   accountCreatedAt: string;
 }
 
-interface IsLogedResponse {
-  message: string;
-}
-
-interface IsLoggedPayload {}
-
 interface ForgetPasswordPayload {
   email: string | null;
 }
@@ -92,7 +94,7 @@ interface ResetPasswordResponse {
 }
 
 interface GetUserCartAndPaymentHistoryPayload {
-  email : string;
+  email : string | undefined;
 }
 
 interface GetUserCartAndPaymentHistoryResponse {
@@ -226,7 +228,7 @@ export const getUserData = createAsyncThunk<
   GetUserDataResponse, // The type of data that will be returned from the async action
   GetUserDataPayload, // The type of the arguments passed to the action
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
->("/api/v1/auth/user-data", async (payload: GetUserDataPayload, thunkAPI) => {
+>("/api/v1/auth/user-data", async (_, thunkAPI) => {
   try {
     const response = await axios.get("/api/v1/auth/user-data");
     return response.data; // Returning the data as the resolved value

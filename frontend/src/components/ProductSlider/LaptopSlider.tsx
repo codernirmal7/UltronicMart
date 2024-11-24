@@ -83,31 +83,32 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
           </Swiper>
 
           {/* Swiper Navigation Buttons */}
-          <div className="swiper-button-prev custom-swiper-button-prev1 absolute top-[50%] z-10 bg-[rgba(255, 255, 255, 0.5)] rounded-full p-[10px] cursor-pointer translate-y-[-50%]">
+          <div className="custom-swiper-button-prev1 absolute top-[50%] bg-primary/20 z-10 w-14 h-14 p-2 rounded-full cursor-pointer translate-y-[-50%]">
             <svg
               viewBox="0 0 1024 1024"
-              className="icon"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
-              fill="rgb(174, 174, 174)"
+              className="icon fill-primary"
+
             >
               <path
                 d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
-                fill="rgb(174, 174, 174)"
+                className="icon fill-primary"
               />
             </svg>
           </div>
-          <div className="swiper-button-next custom-swiper-button-next1 absolute top-[50%] z-10 bg-[rgba(255, 255, 255, 0.5)] rounded-full p-[10px] cursor-pointer translate-y-[-50%]">
+          <div className="custom-swiper-button-next1 right-0 absolute top-[50%] z-10 bg-primary/25 rounded-full w-14 h-14 p-2 cursor-pointer translate-y-[-50%]">
             <svg
               viewBox="0 0 1024 1024"
-              className="icon"
+              className="icon fill-primary"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
-              fill="rgb(174, 174, 174)"
+              
             >
               <path
                 d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z"
-                fill="rgb(174, 174, 174)"
+                className="icon fill-primary"
+
               />
             </svg>
           </div>

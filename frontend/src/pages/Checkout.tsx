@@ -80,13 +80,13 @@ export default function Checkout() {
         addProductToCart({
           productId: id,
           quantity: 1,
-          userId: user.userData.message.id,
+          userId: user?.userData?.message?.id,
         })
       ).unwrap();
 
       //on Success
       dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        getUserCartAndPaymentHistory({ email: user?.userData?.message?.email })
       );
     } catch (error) {
       console.log(error);
@@ -114,13 +114,13 @@ export default function Checkout() {
       await dispatch(
         decreaseQuantityOfProductFromCart({
           cartProductId: id,
-          userId: user.userData.message.id,
+          userId: user?.userData?.message?.id,
         })
       ).unwrap();
 
       //on Success
       dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        getUserCartAndPaymentHistory({ email: user?.userData?.message?.email })
       );
     } catch (error) {
       console.log(error);
@@ -148,13 +148,13 @@ export default function Checkout() {
       await dispatch(
         removeProductFromCart({
           productId: product._id,
-          userId: user.userData.message.id,
+          userId: user?.userData?.message?.id,
         })
       ).unwrap();
 
       //on Success
       dispatch(
-        getUserCartAndPaymentHistory({ email: user.userData.message?.email })
+        getUserCartAndPaymentHistory({ email: user?.userData?.message?.email })
       );
       setIsShowSuccessAlert({
         show: true,

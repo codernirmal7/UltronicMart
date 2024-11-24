@@ -44,23 +44,6 @@
 }
 /* Custom swiper navigation buttons */
 
-.custom-swiper-button-prev1 {
-  left: 0px;
-}
-
-.custom-swiper-button-next1 {
-  right: 0px;
-}
-
-.custom-swiper-button-next1 svg,
-.custom-swiper-button-prev1 svg {
-  width: 40px;
-  height: 40px;
-  fill: #fff;
-  background-color: #c4d2ff;
-  border-radius: 100%; 
-  padding: 0.5rem;
-}
 
 
 .productslider{
