@@ -72,7 +72,7 @@ const ProductDetails: React.FC = () => {
                           )[1]
                         }`}
                         alt="image"
-                        className="rounded-2xl w-full h-[30rem] md:h-[33rem]"
+                        className="rounded-2xl w-auto  h-auto max-h-[30rem]  mb-9 mt-9"
                       />
                     </Lens>
                   </div>

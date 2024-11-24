@@ -93,7 +93,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       {/* Image Section */}
       <Link
-        className="relative flex justify-center items-center h-60 overflow-hidden rounded-xl"
+        className="relative flex justify-center items-center h-44 overflow-hidden rounded-xl"
         to={`/product/${id}`}
       >
         <img
