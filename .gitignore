@@ -27,3 +27,6 @@ build/
 
 #image folder
 productImages
+
+#dev
+index.html
