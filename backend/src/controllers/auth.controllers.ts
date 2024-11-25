@@ -229,6 +229,8 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
         user.adminAt
       ),
       {
+        httpOnly: true, // Prevents JavaScript access
+        secure: true, // Only send over HTTPS
         maxAge: Date.now() + 7 * 24 * 60 * 60 * 1000, //7days
       }
     );

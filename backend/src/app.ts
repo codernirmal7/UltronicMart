@@ -12,9 +12,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-    origin: "*", //It's means all website can request to this server . Allowed origins
-    methods: ['GET', 'POST'], // Allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'],// Allowed headers
+    origin: 'https://ultronic-mart.netlify.app', // Your frontend domain
+    credentials: true, // Allows cookies to be sent
 };
 app.use(cookieParser());
 app.use(cors(corsOptions))
