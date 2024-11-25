@@ -1,10 +1,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import ProductCard2 from "@/components/ProductCard/ProductCard2";
-import { AppDispatch, RootState } from "@/redux";
-import { getAllProductsData } from "@/redux/slices/productSlice";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { RootState } from "@/redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
 import TelevisionProductFilter from "@/components/FilterProduct/TelevisionProductFilter";
@@ -12,7 +9,6 @@ import { backendURL } from "@/constant/backendUrl";
 
 export default function Television() {
   const product = useSelector((state: RootState) => state.product);
-  const dispatch = useDispatch<AppDispatch>();
   const [navbarOpen, setnavbarOpen] = useState(false);
 
   // State to hold active filters
@@ -64,12 +60,6 @@ export default function Television() {
       matchesScreenSize
     );
   });
-
-  useEffect(() => {
-    dispatch(getAllProductsData());
-  }, []);
-
-
   
 
   return (

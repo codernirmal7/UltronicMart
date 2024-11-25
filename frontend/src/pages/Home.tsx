@@ -4,10 +4,7 @@ import {  FaHeadphones, FaTruckFast } from "react-icons/fa6";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import { FaShieldAlt } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "@/redux";
-import { useEffect } from "react";
-import { getAllProductsData } from "@/redux/slices/productSlice";
+import { RootState } from "@/redux";
 import { useSelector } from "react-redux";
 import LaptopSlider from "@/components/ProductSlider/LaptopSlider";
 import PhonesSlider from "@/components/ProductSlider/Phones";
@@ -40,14 +37,9 @@ const slides = [
 ];
 
 export default function Home() {
-  const dispatch = useDispatch<AppDispatch>();
   const product = useSelector((state: RootState) => state.product);
   //Extrate all properties from product
   const { loading, productData, error } = product;
-
-  useEffect(() => {
-    dispatch(getAllProductsData());
-  }, []);
 
   return (
     <>

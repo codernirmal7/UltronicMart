@@ -15,6 +15,7 @@ import Television from "./pages/Television";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
 import PaymentHistory from "./pages/PaymentHistory";
+import { getAllProductsData } from "./redux/slices/productSlice";
 
 
 
@@ -116,7 +117,8 @@ function App() {
   useEffect(() => {
     dispatch(getUserData('user-data'));
     dispatch(isLoggedIn());
-  }, [dispatch]);
+    dispatch(getAllProductsData())
+  }, []);
   
   return (
     <>
