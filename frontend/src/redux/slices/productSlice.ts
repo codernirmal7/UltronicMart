@@ -1,3 +1,4 @@
+import { backendURL } from "@/constant/backendUrl";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -94,7 +95,7 @@ export const addReview = createAsyncThunk<
 >("/api/v1/product/comment", async (payload: WriteCommentPayload, thunkAPI) => {
   try {
     const response = await axios.post(
-      `/api/v1/product/comment`,
+      `${backendURL}/api/v1/product/comment`,
       payload
     );
     return response.data; // Returning the data as the resolved value
@@ -125,7 +126,7 @@ AddProductToCartResponse, // The type of data that will be returned from the asy
 >("/api/v1/product/addToCart", async (payload: AddProductToCartPayload, thunkAPI) => {
   try {
     const response = await axios.post(
-      `/api/v1/product/addToCart`,
+      `${backendURL}/api/v1/product/addToCart`,
       payload
     );
     return response.data; // Returning the data as the resolved value
@@ -153,7 +154,7 @@ export const getAllProductsData = createAsyncThunk(
   "/api/v1/product/get", // action type (the first argument)
   async () => {
     try {
-      const response = await axios.get("/api/v1/product/get");
+      const response = await axios.get(`${backendURL}/api/v1/product/get`);
       return response.data.products;
     } catch (error: unknown) {
       return error;
@@ -169,7 +170,7 @@ export const removeProductFromCart = createAsyncThunk<
 >("/api/v1/product/remove", async (payload: RemoveProductFromCartPayload, thunkAPI) => {
   try {
     const response = await axios.post(
-      `/api/v1/product/remove`,
+      `${backendURL}/api/v1/product/remove`,
       payload
     );
     return response.data; // Returning the data as the resolved value
@@ -200,7 +201,7 @@ export const decreaseQuantityOfProductFromCart = createAsyncThunk<
 >("/api/v1/product/quantity-decrease", async (payload: DecreaseQuantityOfProductFromCartPayload, thunkAPI) => {
   try {
     const response = await axios.post(
-      `/api/v1/product/quantity-decrease`,
+      `${backendURL}/api/v1/product/quantity-decrease`,
       payload
     );
     return response.data; // Returning the data as the resolved value

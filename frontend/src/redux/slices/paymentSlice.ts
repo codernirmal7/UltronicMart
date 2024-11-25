@@ -1,3 +1,4 @@
+import { backendURL } from "@/constant/backendUrl";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -36,7 +37,7 @@ export const purchaseProduct = createAsyncThunk<
   async (payload: purchaseProductPayload, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/v1/product/purchase`,
+        `${backendURL}/api/v1/product/purchase`,
         payload
       );
       return response.data; // Returning the data as the resolved value

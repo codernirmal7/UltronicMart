@@ -1,3 +1,4 @@
+import { backendURL } from "@/constant/backendUrl";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -109,7 +110,7 @@ export const signUpAuth = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/sign-up", async (payload: SignUpPayload, thunkAPI) => {
   try {
-    const response = await axios.post("/api/v1/auth/sign-up", payload);
+    const response = await axios.post(`${backendURL}/api/v1/auth/sign-up`, payload);
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
@@ -138,7 +139,7 @@ export const verifyEmailAuth = createAsyncThunk<
 >("/api/v1/auth/verify", async (payload: VerifyEmailPayload, thunkAPI) => {
   try {
     const response = await axios.post(
-      `/api/v1/auth/verify?email=${payload.email}`,
+      `${backendURL}/api/v1/auth/verify?email=${payload.email}`,
       payload
     );
     return response.data; // Returning the data as the resolved value
@@ -171,7 +172,7 @@ export const ResendVerificationEmailAuth = createAsyncThunk<
   async (payload: ResendVerificationEmailPayload, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/v1/auth/resend-verification?email=${payload.email}`,
+        `${backendURL}/api/v1/auth/resend-verification?email=${payload.email}`,
         payload
       );
       return response.data; // Returning the data as the resolved value
@@ -202,7 +203,7 @@ export const signInAuth = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/sign-in", async (payload: SignInPayload, thunkAPI) => {
   try {
-    const response = await axios.post("/api/v1/auth/sign-in", payload);
+    const response = await axios.post(`${backendURL}/api/v1/auth/sign-in`, payload);
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
@@ -230,7 +231,7 @@ export const getUserData = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/user-data", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("/api/v1/auth/user-data");
+    const response = await axios.get(`${backendURL}/api/v1/auth/user-data`);
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
@@ -257,7 +258,7 @@ export const getUserCartAndPaymentHistory = createAsyncThunk<
   { rejectValue: string }
 >("/api/v1/auth/activities", async (payload: GetUserCartAndPaymentHistoryPayload, thunkAPI) => {
   try {
-    const response = await axios.post("/api/v1/auth/user-activities", payload);
+    const response = await axios.post(`${backendURL}/api/v1/auth/user-activities`, payload);
     return response.data; 
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
@@ -283,7 +284,7 @@ export const isLoggedIn = createAsyncThunk(
   "/api/v1/auth/isLoggedIn", // action type (the first argument)
   async () => {
     try {
-      const response = await axios.get("/api/v1/auth/islogged-in");
+      const response = await axios.get(`${backendURL}/api/v1/auth/islogged-in`);
       // If the API responds that the user is logged in, return true
       if (response.data.message === "Your are Logged.") {
         return true;
@@ -301,7 +302,7 @@ export const signOut = createAsyncThunk(
   "/api/v1/auth/sign-out", // action type (the first argument)
   async () => {
     try {
-      const response = await axios.get("/api/v1/auth/sign-out");
+      const response = await axios.get(`${backendURL}/api/v1/auth/sign-out`);
       // If the API responds that the user is logged in, return true
       return response.data;
     } catch (error: unknown) {
@@ -321,7 +322,7 @@ export const forgetPasswordAuth = createAsyncThunk<
   async (payload: ForgetPasswordPayload, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/v1/auth/forget-password`,
+        `${backendURL}/api/v1/auth/forget-password`,
         payload
       );
       return response.data; // Returning the data as the resolved value
@@ -351,11 +352,11 @@ export const resetPasswordAuth = createAsyncThunk<
   ResetPasswordPayload, // The type of the arguments passed to the action
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >(
-  "/api/v1/auth/reset-password/:token",
+  `${backendURL}/api/v1/auth/reset-password/:token`,
   async (payload: ResetPasswordPayload, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/v1/auth/reset-password/:${payload.token}`,
+        `${backendURL}/api/v1/auth/reset-password/:${payload.token}`,
         payload
       );
       return response.data; // Returning the data as the resolved value
