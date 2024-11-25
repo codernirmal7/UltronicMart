@@ -1,4 +1,4 @@
-import app from "./app.ts";
+import app from "./app";
 import connectionMongoDB from "./db/connectionMongo.db";
 import "dotenv/config"
 
