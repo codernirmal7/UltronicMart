@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
 import TelevisionProductFilter from "@/components/FilterProduct/TelevisionProductFilter";
+import { backendURL } from "@/constant/backendUrl";
 
 export default function Television() {
   const product = useSelector((state: RootState) => state.product);
@@ -100,7 +101,7 @@ export default function Television() {
                    
                       <ProductCard2
                         id={item._id}
-                        image={`http://localhost:4000/productImages${
+                        image={`${backendURL}/productImages${
                           item.images[0].split("productImages")[1]
                         }`}
                         name={item.name}

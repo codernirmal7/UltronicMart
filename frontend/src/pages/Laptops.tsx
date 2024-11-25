@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { FaFilter } from "react-icons/fa6";
+import { backendURL } from "@/constant/backendUrl";
 
 export default function Laptops() {
   const product = useSelector((state: RootState) => state.product);
@@ -95,7 +96,7 @@ export default function Laptops() {
                   {filteredProducts.map((item) => (
                       <ProductCard2
                         id={item._id}
-                        image={`http://localhost:4000/productImages${
+                        image={`${backendURL}/productImages${
                           item.images[0].split("productImages")[1]
                         }`}
                         name={item.name}

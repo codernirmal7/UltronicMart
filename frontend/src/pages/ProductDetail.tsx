@@ -9,6 +9,7 @@ import CustomerReviews from "@/components/CustomerReviews/CustomerReviews";
 import { useDispatch } from "react-redux";
 import { addProductToCart } from "@/redux/slices/productSlice";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
+import { backendURL } from "@/constant/backendUrl";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -66,7 +67,7 @@ const ProductDetails: React.FC = () => {
                   <div className="relative z-10">
                     <Lens hovering={hovering} setHovering={setHovering}>
                       <img
-                        src={`http://localhost:4000/productImages${
+                        src={`${backendURL}/productImages${
                           product.images[selectedImage].split(
                             "productImages"
                           )[1]
@@ -89,7 +90,7 @@ const ProductDetails: React.FC = () => {
                       onClick={() => setSelectedImage(index)}
                     >
                       <img
-                        src={`http://localhost:4000/productImages${
+                        src={`${backendURL}/productImages${
                           image.split("productImages")[1]
                         }`}
                         alt={`Thumbnail ${index + 1}`}

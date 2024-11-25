@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import ProductCard from "../ProductCard/ProductCard"; // Assuming ProductCard is in the same folder
 import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import { backendURL } from "@/constant/backendUrl";
 
 type Product = {
   _id: string;
@@ -70,7 +71,7 @@ const LaptopSlider: React.FC<LaptopSliderProps> = ({
               >
                 <ProductCard
                   id={item._id}
-                  image={`http://localhost:4000/productImages${
+                  image={`${backendURL}/productImages${
                     item.images[0].split("productImages")[1]
                   }`}
                   name={item.name}

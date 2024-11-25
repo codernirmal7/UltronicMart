@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import SuccessAlert from "../alerts/SuccessAlert";
 import ErrorAlert from "../alerts/ErrorAlert";
 import { Link } from "react-router-dom";
+import { backendURL } from "@/constant/backendUrl";
 
 type CartProps = {
   cartOpen: boolean;
@@ -211,7 +212,7 @@ const Cart: React.FC<CartProps> = ({ cartOpen, setCartOpen }) => {
                             <li key={i} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
-                                  src={`http://localhost:4000/productImages${
+                                  src={`${backendURL}/productImages${
                                     product?.images[0].split("productImages")[1]
                                   }`}
                                   className="h-full w-full object-cover"

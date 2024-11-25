@@ -1,5 +1,6 @@
 import ErrorAlert from "@/components/alerts/ErrorAlert";
 import SuccessAlert from "@/components/alerts/SuccessAlert";
+import { backendURL } from "@/constant/backendUrl";
 import { AppDispatch, RootState } from "@/redux";
 import { getUserCartAndPaymentHistory } from "@/redux/slices/authSlice";
 import { purchaseProduct } from "@/redux/slices/paymentSlice";
@@ -277,7 +278,7 @@ export default function Checkout() {
                   <li key={i} className="flex py-6">
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                       <img
-                        src={`http://localhost:4000/productImages${
+                        src={`${backendURL}/productImages${
                           product?.images[0].split("productImages")[1]
                         }`}
                         className="h-full w-full object-cover"

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import Footer from "@/components/Footer/Footer";
+import { backendURL } from "@/constant/backendUrl";
 
 export default function PaymentHistory() {
   const orderProducts = useSelector(
@@ -141,8 +142,8 @@ export default function PaymentHistory() {
                   className="w-full h-full object-cover"
                   src={
                     item?.images?.[0]
-                      ? `http://localhost:4000/productImages${item.images[0].split("productImages")[1]}`
-                      : "/images/placeholder.jpg"
+                      ? `${backendURL}/productImages${item.images[0].split("productImages")[1]}`
+                      : ""
                   }
                   alt={item.name}
                 />
