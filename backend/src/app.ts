@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-    origin: 'http://ultronic-mart.infinityfreeapp.com/', // Your frontend domain
+    origin: '*', // Your frontend domain
     credentials: true, // Allows cookies to be sent
 };
 app.use(cookieParser());
