@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import productRouter from "./routes/product.routes";
 import adminRouter from "./routes/admin.routes";
 import orderRouter from "./routes/order.routes";
+import "dotenv/config"
 
 const app = express()
 
