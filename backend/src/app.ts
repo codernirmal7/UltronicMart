@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-    origin: '*', // Your frontend domain
+    origin: process.env.FRONTSIDE_URL, // Your frontend domain
     credentials: true, // Allows cookies to be sent
 };
 app.use(cookieParser());

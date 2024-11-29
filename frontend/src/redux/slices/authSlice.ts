@@ -110,7 +110,9 @@ export const signUpAuth = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/sign-up", async (payload: SignUpPayload, thunkAPI) => {
   try {
-    const response = await axios.post(`${backendURL}/api/v1/auth/sign-up`, payload);
+    const response = await axios.post(`${backendURL}/api/v1/auth/sign-up`, payload,{
+      withCredentials: true,
+    });
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
