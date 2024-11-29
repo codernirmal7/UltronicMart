@@ -1,4 +1,5 @@
 import { backendURL } from "@/constant/backendUrl";
+import getCookie from "@/utils/getCookie";
 import setCookie from "@/utils/setCookie";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -103,6 +104,8 @@ interface GetUserCartAndPaymentHistoryResponse {
   cart : any;
   paymentHistory : any;
 }
+
+const token = getCookie('accessToken'); 
 
 // Create an async thunk for signing up
 export const signUpAuth = createAsyncThunk<
@@ -236,7 +239,11 @@ export const getUserData = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/user-data", async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${backendURL}/api/v1/auth/user-data`);
+    const response = await axios.get(`${backendURL}/api/v1/auth/user-data`, {
+      headers: {
+        'Authorization': `Bearer ${token}`, // Send token in the Authorization header
+      },
+    });
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
@@ -289,7 +296,11 @@ export const isLoggedIn = createAsyncThunk(
   "/api/v1/auth/isLoggedIn", // action type (the first argument)
   async () => {
     try {
-      const response = await axios.get(`${backendURL}/api/v1/auth/islogged-in`);
+      const response = await axios.get(`${backendURL}/api/v1/auth/islogged-in`, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Send token in the Authorization header
+        },
+      });
       // If the API responds that the user is logged in, return true
       if (response.data.message === "Your are Logged.") {
         return true;

@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { UserData } from "../utils/types/express";
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
-  const token = req.cookies.accessToken;
+  const token = req.header('Authorization')?.split(' ')[1]; 
   const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY as string;
 
   // validation
