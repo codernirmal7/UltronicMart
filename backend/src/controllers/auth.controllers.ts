@@ -226,14 +226,14 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
       user.cart,
       user.adminAt
     );
-    console.log("Generated Access Token:", accessToken);
     
-    console.log("Cookie options:", {
+    res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // Corrected maxAge
     });
+    
     
     res
       .status(200)
