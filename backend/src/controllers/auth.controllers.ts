@@ -217,25 +217,24 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
       user.email.split("@")[0]
     );
 
-    res.cookie(
-      "accessToken",
-      generateAccessToken(
-        user._id,
-        user.email,
-        user.lastTimeSignIn,
-        user.createdAt,
-        user.purchaseHistory,
-        user.cart,
-        user.adminAt
-      ),
-      {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Cross-origin in production only
-        maxAge: Date.now() + 7 * 24 * 60 * 60 * 1000, //7days
-      }
+    const accessToken = generateAccessToken(
+      user._id,
+      user.email,
+      user.lastTimeSignIn,
+      user.createdAt,
+      user.purchaseHistory,
+      user.cart,
+      user.adminAt
     );
-
+    console.log("Generated Access Token:", accessToken);
+    
+    console.log("Cookie options:", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    });
+    
     res
       .status(200)
       .json({ message: "Sign In successful. Redirecting to the home page" });
