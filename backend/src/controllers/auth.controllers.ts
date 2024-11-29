@@ -228,11 +228,12 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
     );
     
     res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      httpOnly: false,  // Makes the cookie accessible via JavaScript (not recommended for production)
+      secure: false,    // Allows cookies to work over HTTP (use HTTPS in production)
+      sameSite: 'lax',  // Relaxed cross-origin policy
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });  
+  });
+  
     
     res
       .status(200)
