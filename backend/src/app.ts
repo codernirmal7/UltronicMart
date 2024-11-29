@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import productRouter from "./routes/product.routes";
 import adminRouter from "./routes/admin.routes";
 import orderRouter from "./routes/order.routes";
-import "dotenv/config"
+
 
 const app = express()
 
@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-    origin: process.env.FRONTSIDE_URL, // Your frontend domain
+    origin: "https://ultronic-mart.netlify.app", // Your frontend domain
     credentials: true, // Allows cookies to be sent
 };
 app.use(cookieParser());
