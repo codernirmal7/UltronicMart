@@ -229,8 +229,9 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
         user.adminAt
       ),
       {
-        httpOnly: true, // Prevents JavaScript access
-        secure: true, // Only send over HTTPS
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Cross-origin in production only
         maxAge: Date.now() + 7 * 24 * 60 * 60 * 1000, //7days
       }
     );
