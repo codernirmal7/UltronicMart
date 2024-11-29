@@ -29,7 +29,6 @@ const initialState: AuthState = {
   isLoggedIn: false,
 };
 
-
 // Define the type for the request payload and response
 interface SignUpPayload {
   email: string;
@@ -89,7 +88,7 @@ interface ForgetPasswordResponse {
 interface ResetPasswordPayload {
   password: string | null;
   confirmPassword: string | null;
-  token : string | undefined | null;
+  token: string | undefined | null;
 }
 
 interface ResetPasswordResponse {
@@ -97,15 +96,13 @@ interface ResetPasswordResponse {
 }
 
 interface GetUserCartAndPaymentHistoryPayload {
-  email : string | undefined;
+  email: string | undefined;
 }
 
 interface GetUserCartAndPaymentHistoryResponse {
-  cart : any;
-  paymentHistory : any;
+  cart: any;
+  paymentHistory: any;
 }
-
-const token = getCookie('accessToken'); 
 
 // Create an async thunk for signing up
 export const signUpAuth = createAsyncThunk<
@@ -114,7 +111,10 @@ export const signUpAuth = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/sign-up", async (payload: SignUpPayload, thunkAPI) => {
   try {
-    const response = await axios.post(`${backendURL}/api/v1/auth/sign-up`, payload);
+    const response = await axios.post(
+      `${backendURL}/api/v1/auth/sign-up`,
+      payload
+    );
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
@@ -207,10 +207,13 @@ export const signInAuth = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/sign-in", async (payload: SignInPayload, thunkAPI) => {
   try {
-    const response = await axios.post(`${backendURL}/api/v1/auth/sign-in`, payload);
+    const response = await axios.post(
+      `${backendURL}/api/v1/auth/sign-in`,
+      payload
+    );
     const accessToken = response.data.token; // Extract the token from the response data
-     // Set the cookie manually
-    setCookie('accessToken', accessToken, 7);
+    // Set the cookie manually
+    setCookie("accessToken", accessToken, 7);
 
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
@@ -239,9 +242,10 @@ export const getUserData = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/user-data", async (_, thunkAPI) => {
   try {
+    const token = getCookie("accessToken");
     const response = await axios.get(`${backendURL}/api/v1/auth/user-data`, {
       headers: {
-        'Authorization': `Bearer ${token}`, // Send token in the Authorization header
+        Authorization: `Bearer ${token}`, // Send token in the Authorization header
       },
     });
     return response.data; // Returning the data as the resolved value
@@ -265,42 +269,52 @@ export const getUserData = createAsyncThunk<
 });
 
 export const getUserCartAndPaymentHistory = createAsyncThunk<
-  GetUserCartAndPaymentHistoryResponse, 
-  GetUserCartAndPaymentHistoryPayload, 
+  GetUserCartAndPaymentHistoryResponse,
+  GetUserCartAndPaymentHistoryPayload,
   { rejectValue: string }
->("/api/v1/auth/activities", async (payload: GetUserCartAndPaymentHistoryPayload, thunkAPI) => {
-  try {
-    const response = await axios.post(`${backendURL}/api/v1/auth/user-activities`, payload);
-    return response.data; 
-  } catch (error: unknown) {
-    // Handle errors with a proper fallback message
-    if (axios.isAxiosError(error)) {
-      // If it's an Axios error, we can safely access `error.response`
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "An unexpected error occurred"
+>(
+  "/api/v1/auth/activities",
+  async (payload: GetUserCartAndPaymentHistoryPayload, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${backendURL}/api/v1/auth/user-activities`,
+        payload
       );
-    } else if (error instanceof Error) {
-      // If it's a general Error object
-      return thunkAPI.rejectWithValue(
-        error.message || "An unknown error occurred"
-      );
-    } else {
-      // Fallback for unknown error types
-      return thunkAPI.rejectWithValue("An unknown error occurred");
+      return response.data;
+    } catch (error: unknown) {
+      // Handle errors with a proper fallback message
+      if (axios.isAxiosError(error)) {
+        // If it's an Axios error, we can safely access `error.response`
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message || "An unexpected error occurred"
+        );
+      } else if (error instanceof Error) {
+        // If it's a general Error object
+        return thunkAPI.rejectWithValue(
+          error.message || "An unknown error occurred"
+        );
+      } else {
+        // Fallback for unknown error types
+        return thunkAPI.rejectWithValue("An unknown error occurred");
+      }
     }
   }
-});
+);
 
 // Create an async thunk for checking if the user is logged in
 export const isLoggedIn = createAsyncThunk(
   "/api/v1/auth/isLoggedIn", // action type (the first argument)
   async () => {
     try {
-      const response = await axios.get(`${backendURL}/api/v1/auth/islogged-in`, {
-        headers: {
-          'Authorization': `Bearer ${token}`, // Send token in the Authorization header
-        },
-      });
+      const token = getCookie("accessToken");
+      const response = await axios.get(
+        `${backendURL}/api/v1/auth/islogged-in`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token in the Authorization header
+          },
+        }
+      );
       // If the API responds that the user is logged in, return true
       if (response.data.message === "Your are Logged.") {
         return true;
@@ -312,7 +326,6 @@ export const isLoggedIn = createAsyncThunk(
     }
   }
 );
-
 
 // Create an async thunk for forget password
 export const forgetPasswordAuth = createAsyncThunk<
@@ -381,7 +394,6 @@ export const resetPasswordAuth = createAsyncThunk<
     }
   }
 );
-
 
 // Create the auth slice using createSlice
 const authSlice = createSlice({

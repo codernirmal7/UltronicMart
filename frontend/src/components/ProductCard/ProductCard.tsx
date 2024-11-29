@@ -37,11 +37,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
   })
 
    // Check if product is already in cart
-   if (user.isLoggedIn) {
-    useEffect(() => {
+   useEffect(() => {
+    if (user.isLoggedIn) {
       const cartProductIds = cart.map((cartItem: any) => cartItem.productId);
-  
-      // Check stock for the current product
       const currentProduct = product.productData.find(
         (productItem) => productItem._id === id
       );
@@ -62,8 +60,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
           isDisabled: false,
         });
       }
-    }, [cart, id, product.productData]);
-  }
+    }
+  }, [cart, id, product.productData, user.isLoggedIn]); // make sure all dependencies are handled properly
   
   
 

@@ -34,7 +34,7 @@ export default function Auth() {
     if(isLoggedIn){
       navigate(`/`, { replace: true });
     }
-  },[isLoggedIn])
+  },[])
   //toggle button function
   const toggleForm = () => {
     if(isSignInState == "signIn"){
