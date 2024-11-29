@@ -1,9 +1,8 @@
-import { AppDispatch, RootState } from "@/redux/index";
-import { signOut } from "@/redux/slices/authSlice";
+import { RootState } from "@/redux/index";
+import deleteCookie from "@/utils/deleteCookie";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface UserInfoProps {
   isVisible: boolean;
@@ -11,12 +10,12 @@ interface UserInfoProps {
 
 const UserInfo: React.FC<UserInfoProps> = ({ isVisible }) => {
   const auth = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch<AppDispatch>();
   const { userData, isLoggedIn } = auth;
+  const navigate = useNavigate()
 
   const handelSignout = () => {
-    dispatch(signOut());
-    window.location.href = "/auth";
+    deleteCookie("accessToken");
+     navigate("/auth",{replace : true})
   };
 
   return (
@@ -30,7 +29,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isVisible }) => {
           {userData ? (
             <>
               <div>
-                <p className="text-gray-400">{userData.message?.email}</p>
+                <p className="text-gray-400 max-w-[10rem]">{userData.message?.email}</p>
                 <div className="w-full h-[1px] bg-gray-400 mt-1"></div>
                 <ul className="mt-3 flex flex-col gap-2">
                   <Link to="/user/payment-history" className="text-primary">

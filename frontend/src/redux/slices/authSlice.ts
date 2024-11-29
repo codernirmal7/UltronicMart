@@ -313,20 +313,6 @@ export const isLoggedIn = createAsyncThunk(
   }
 );
 
-// Create an async thunk for checking if the sign out
-export const signOut = createAsyncThunk(
-  "/api/v1/auth/sign-out", // action type (the first argument)
-  async () => {
-    try {
-      const response = await axios.get(`${backendURL}/api/v1/auth/sign-out`);
-      // If the API responds that the user is logged in, return true
-      return response.data;
-    } catch (error: unknown) {
-      // Return false if there's an error
-      throw error;
-    }
-  }
-);
 
 // Create an async thunk for forget password
 export const forgetPasswordAuth = createAsyncThunk<

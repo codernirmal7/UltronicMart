@@ -330,15 +330,6 @@ const resetPassword = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-//sign-out
-const signOut = async (req: Request, res: Response): Promise<void> => {
-  try {
-    res.clearCookie("accessToken");
-    res.status(404).json({ message: "Sign out successful." });
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-};
 
 //user-data
 const userData = async (req: Request, res: Response): Promise<void> => {
@@ -392,7 +383,6 @@ export {
   signIn,
   forgetPassword,
   resetPassword,
-  signOut,
   userData,
   loggedInMessage,
   getUserCartAndPaymentHistory,

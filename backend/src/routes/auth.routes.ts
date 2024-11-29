@@ -4,7 +4,6 @@ import {
   resendVerificationCode,
   resetPassword,
   signIn,
-  signOut,
   signUp,
   verifyEmail,
   userData,
@@ -25,7 +24,6 @@ authRouter.route("/sign-in").post(signIn);
 authRouter.route("/forget-password").post(forgetPassword);
 authRouter.route("/reset-password/:token").post(resetPassword);
 
-authRouter.route("/sign-out").get(signOut);
 authRouter.route("/user-data").get(verifyToken, userData);
 authRouter.route("/islogged-in").get(verifyToken,loggedInMessage)
 
