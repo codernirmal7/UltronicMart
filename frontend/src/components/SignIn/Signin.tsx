@@ -8,9 +8,8 @@ import React, { useEffect, useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { isLoggedIn as isLoggedInAuth } from '@/redux/slices/authSlice';
-
+import { Link, useNavigate } from "react-router-dom";
+import { isLoggedIn as isLoggedInAuth } from "@/redux/slices/authSlice";
 
 type SignInProps = {
   isSignInState: string;
@@ -67,10 +66,9 @@ const Signin: React.FC<SignInProps> = ({
       dispatch(isLoggedInAuth());
       dispatch(getUserData("user-data"));
 
-
-      setTimeout(()=>{
+      setTimeout(() => {
         navigate(`/`, { replace: true });
-      },2000)
+      }, 2000);
 
       // Optionally, handle navigation or reset form here if needed
     } catch (error: unknown) {
@@ -82,6 +80,14 @@ const Signin: React.FC<SignInProps> = ({
           show: true,
           message: error, // This will be the error string from rejectWithValue
         });
+        if (
+          error ===
+          "Please verify your email before logging in. Verification code has been sent."
+        ) {
+          setTimeout(() => {
+            navigate("/auth/verify", { replace: true });
+          }, 2000);
+        }
       } else if (error instanceof Error) {
         setIsShowErrorAlert({
           show: true,
@@ -176,12 +182,12 @@ const Signin: React.FC<SignInProps> = ({
           </LabelInputContainer>
 
           <div className="w-full flex  mb-4">
-            <a
-              href="#forgetpassword"
+            <Link
+              to="/auth/forget-password"
               className="text-primary dark:text-gray-200 font-medium hover:underline"
             >
               Forget your password?
-            </a>
+            </Link>
           </div>
 
           {/* Sign In Button */}

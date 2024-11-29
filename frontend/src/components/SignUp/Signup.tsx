@@ -7,6 +7,7 @@ import { signUpAuth } from "@/redux/slices/authSlice";
 import { AppDispatch } from "@/redux";
 import { FaEnvelope } from "react-icons/fa6";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 type SignUpProps = {
   isSignInState: string;
@@ -29,6 +30,7 @@ const Signup: React.FC<SignUpProps> = ({
   const [typeOfPassword, setTypeOfPassword] = useState<string>("");
 
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate()
 
   const signUp: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -49,8 +51,10 @@ const Signup: React.FC<SignUpProps> = ({
       // On success, show success message
       setIsShowSuccessAlert({
         show: true,
-        message: "User registered successfully. Check your email to verify.",
+        message: "User registered successfully. Check your email for verification code.",
       });
+      
+      navigate("/auth/verify",{replace : true})
 
       // Optionally, handle navigation or form reset here
     } catch (error: unknown) {
