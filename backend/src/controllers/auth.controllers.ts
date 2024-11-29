@@ -99,7 +99,7 @@ const verifyEmail = async (req: Request, res: Response): Promise<void> => {
     user.verificationTokenExpiresAt = null; // Clear the expiration
     await user.save();
 
-    sendWelcomeEmail(email)
+    sendWelcomeEmail(email);
 
     res.status(200).json({ message: "Email verified successfully!" });
   } catch (error) {
@@ -226,18 +226,10 @@ const signIn = async (req: Request, res: Response): Promise<void> => {
       user.cart,
       user.adminAt
     );
-    
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true, 
-      secure: true,    // Allows cookies to work over HTTP (use HTTPS in production)
-      sameSite: 'none',  // Relaxed cross-origin policy
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });
-  
-    
+
     res
       .status(200)
-      .json({ message: "Sign In successful. Redirecting to the home page" });
+      .json({ message: "Sign In successful. Redirecting to the home page" , token : accessToken });
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -362,31 +354,32 @@ const userData = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const getUserCartAndPaymentHistory = async (req : Request , res : Response)=>{
-  const {email} = req.body
+const getUserCartAndPaymentHistory = async (req: Request, res: Response) => {
+  const { email } = req.body;
   try {
-    const data = await UserModel.findOne({email},{
+    const data = await UserModel.findOne(
+      { email },
+      {
         password: false,
         confirmPassword: false,
         resetPasswordToken: false,
         resetPasswordTokenExpiresAt: false,
         verificationToken: false,
         verificationTokenExpiresAt: false,
-        adminAt : false,
-        email : false,
-        _id : false,
+        adminAt: false,
+        email: false,
+        _id: false,
         __v: false,
-        createdAt : false,
-        updatedAt : false,
-        accountDisabledAt : false
+        createdAt: false,
+        updatedAt: false,
+        accountDisabledAt: false,
       }
-    )
+    );
     res.status(200).json({ message: data });
-
   } catch (error) {
     res.status(500).json({ message: error });
   }
-}
+};
 
 const loggedInMessage = async (req: Request, res: Response): Promise<void> => {
   res.status(200).json({ message: "Your are Logged." });
@@ -402,5 +395,5 @@ export {
   signOut,
   userData,
   loggedInMessage,
-  getUserCartAndPaymentHistory
+  getUserCartAndPaymentHistory,
 };
