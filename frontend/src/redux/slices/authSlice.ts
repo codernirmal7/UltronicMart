@@ -1,4 +1,5 @@
 import { backendURL } from "@/constant/backendUrl";
+import setCookie from "@/utils/setCookie";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -110,9 +111,7 @@ export const signUpAuth = createAsyncThunk<
   { rejectValue: string } // You can also handle errors in a specific way using rejectValue
 >("/api/v1/auth/sign-up", async (payload: SignUpPayload, thunkAPI) => {
   try {
-    const response = await axios.post(`${backendURL}/api/v1/auth/sign-up`, payload,{
-      withCredentials: true,
-    });
+    const response = await axios.post(`${backendURL}/api/v1/auth/sign-up`, payload);
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
@@ -206,6 +205,10 @@ export const signInAuth = createAsyncThunk<
 >("/api/v1/auth/sign-in", async (payload: SignInPayload, thunkAPI) => {
   try {
     const response = await axios.post(`${backendURL}/api/v1/auth/sign-in`, payload);
+    const accessToken = response.data.token; // Extract the token from the response data
+     // Set the cookie manually
+    setCookie('accessToken', accessToken, 7);
+
     return response.data; // Returning the data as the resolved value
   } catch (error: unknown) {
     // Handle errors with a proper fallback message
